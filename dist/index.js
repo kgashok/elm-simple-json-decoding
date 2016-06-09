@@ -7,6 +7,7 @@ var app = Elm.Fcc.fullscreen(model);
  */
 
 app.ports.modelChange.subscribe(function(model) {
+  console.log ("Writing to storage..." + model); 
   localStorage.setItem('fccModel', JSON.stringify(model));
 });
 

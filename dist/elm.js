@@ -8027,16 +8027,31 @@ var _evancz$elm_http$Http$post = F3(
 	});
 
 var _user$project$Model$fccAPI = 'https://www.freecodecamp.com/api/users/about?username=';
-var _user$project$Model$initialModel = {url: _user$project$Model$fccAPI, uname: '', result: '', error: false, points: -1};
+var _user$project$Model$initialModel = {url: _user$project$Model$fccAPI, name: '', uname: '', error: false, points: -1};
 var _user$project$Model$url2 = 'https://api.myjson.com/bins/2kjv4';
 var _user$project$Model$url1 = 'https://api.myjson.com/bins/3fueo';
 var _user$project$Model$Model = F5(
 	function (a, b, c, d, e) {
-		return {url: a, uname: b, result: c, error: d, points: e};
+		return {url: a, name: b, uname: c, error: d, points: e};
 	});
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v1.0-beta-7-g4dc79c0';
+var _user$project$Version$version = 'v1.0-beta-8-g7e7f420';
+
+var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
+	'modelChange',
+	function (v) {
+		return {url: v.url, name: v.name, uname: v.uname, error: v.error, points: v.points};
+	});
+var _user$project$Ports$logExternalOut = _elm_lang$core$Native_Platform.outgoingPort(
+	'logExternalOut',
+	function (v) {
+		return v;
+	});
+var _user$project$Ports$logExternal = function (value) {
+	return _user$project$Ports$logExternalOut(
+		_elm_lang$core$Basics$toString(value));
+};
 
 var _user$project$Update$decodePoints = A2(
 	_elm_lang$core$Json_Decode$at,
@@ -8069,19 +8084,23 @@ var _user$project$Update$update = F2(
 		var _p0 = action;
 		switch (_p0.ctor) {
 			case 'FetchData':
+				var model$ = _elm_lang$core$Native_Utils.update(
+					model,
+					{uname: model.name});
 				return {
 					ctor: '_Tuple2',
-					_0: model,
+					_0: model$,
 					_1: _user$project$Update$makeRequest(
-						A2(_elm_lang$core$Basics_ops['++'], model.url, model.uname))
+						A2(_elm_lang$core$Basics_ops['++'], model$.url, model$.uname))
 				};
 			case 'FetchSucceed':
+				var model$ = _elm_lang$core$Native_Utils.update(
+					model,
+					{points: _p0._0, error: false});
 				return {
 					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{points: _p0._0, error: false}),
-					_1: _elm_lang$core$Platform_Cmd$none
+					_0: model$,
+					_1: _user$project$Ports$modelChange(model$)
 				};
 			case 'StoreURL':
 				return {
@@ -8089,7 +8108,7 @@ var _user$project$Update$update = F2(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							uname: _elm_lang$core$String$toLower(_p0._0)
+							name: _elm_lang$core$String$toLower(_p0._0)
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
@@ -8118,10 +8137,10 @@ var _user$project$View$rStyle = _elm_lang$html$Html_Attributes$style(
 			{ctor: '_Tuple2', _0: 'fontSize', _1: '300%'}
 		]));
 var _user$project$View$buildResponse = function (model) {
-	return _elm_lang$core$Native_Utils.eq(model.error, true) ? 'There was an error' : ((!_elm_lang$core$Native_Utils.eq(model.result, '')) ? A2(_elm_lang$core$Basics_ops['++'], 'I just found: ', model.result) : ((!_elm_lang$core$Native_Utils.eq(model.points, -1)) ? A2(
+	return _elm_lang$core$Native_Utils.eq(model.error, true) ? 'There was an error' : ((!_elm_lang$core$Native_Utils.eq(model.points, -1)) ? A2(
 		_elm_lang$core$Basics_ops['++'],
 		'Challenges completed: ',
-		_elm_lang$core$Basics$toString(model.points)) : ''));
+		_elm_lang$core$Basics$toString(model.points)) : '');
 };
 var _user$project$View$view = function (model) {
 	var response = _user$project$View$buildResponse(model);
@@ -8215,22 +8234,7 @@ var _user$project$View$view = function (model) {
 			]));
 };
 
-var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
-	'modelChange',
-	function (v) {
-		return {url: v.url, uname: v.uname, result: v.result, error: v.error, points: v.points};
-	});
-var _user$project$Ports$logExternalOut = _elm_lang$core$Native_Platform.outgoingPort(
-	'logExternalOut',
-	function (v) {
-		return v;
-	});
-var _user$project$Ports$logExternal = function (value) {
-	return _user$project$Ports$logExternalOut(
-		_elm_lang$core$Basics$toString(value));
-};
-
-var _user$project$Fcc$subscriptions = function (model) {
+var _user$project$Fcc$subscriptions = function (_p0) {
 	return _elm_lang$core$Platform_Sub$none;
 };
 var _user$project$Fcc$init = function (savedModel) {
@@ -8242,9 +8246,9 @@ var _user$project$Fcc$init = function (savedModel) {
 };
 var _user$project$Fcc$update = F2(
 	function (msg, model) {
-		var _p0 = A2(_user$project$Update$update, msg, model);
-		var nextModel = _p0._0;
-		var nextCmd = _p0._1;
+		var _p1 = A2(_user$project$Update$update, msg, model);
+		var nextModel = _p1._0;
+		var nextCmd = _p1._1;
 		return {
 			ctor: '_Tuple2',
 			_0: nextModel,
@@ -8252,7 +8256,6 @@ var _user$project$Fcc$update = F2(
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_user$project$Ports$logExternal(msg),
-						_user$project$Ports$modelChange(model),
 						nextCmd
 					]))
 		};
@@ -8273,12 +8276,12 @@ var _user$project$Fcc$main = {
 					function (error) {
 						return A2(
 							_elm_lang$core$Json_Decode$andThen,
-							A2(_elm_lang$core$Json_Decode_ops[':='], 'points', _elm_lang$core$Json_Decode$int),
-							function (points) {
+							A2(_elm_lang$core$Json_Decode_ops[':='], 'name', _elm_lang$core$Json_Decode$string),
+							function (name) {
 								return A2(
 									_elm_lang$core$Json_Decode$andThen,
-									A2(_elm_lang$core$Json_Decode_ops[':='], 'result', _elm_lang$core$Json_Decode$string),
-									function (result) {
+									A2(_elm_lang$core$Json_Decode_ops[':='], 'points', _elm_lang$core$Json_Decode$int),
+									function (points) {
 										return A2(
 											_elm_lang$core$Json_Decode$andThen,
 											A2(_elm_lang$core$Json_Decode_ops[':='], 'uname', _elm_lang$core$Json_Decode$string),
@@ -8288,7 +8291,7 @@ var _user$project$Fcc$main = {
 													A2(_elm_lang$core$Json_Decode_ops[':='], 'url', _elm_lang$core$Json_Decode$string),
 													function (url) {
 														return _elm_lang$core$Json_Decode$succeed(
-															{error: error, points: points, result: result, uname: uname, url: url});
+															{error: error, name: name, points: points, uname: uname, url: url});
 													});
 											});
 									});

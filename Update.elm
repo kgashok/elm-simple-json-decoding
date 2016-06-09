@@ -7,7 +7,7 @@ import String
 
 
 import Model exposing (fccAPI, Model)
-
+import Ports
 
 
 -- UPDATE
@@ -24,13 +24,20 @@ update : Msg -> Model -> (Model, Cmd Msg)
 update action model =
   case action of
     FetchData ->
-      (model, makeRequest (model.url ++ model.uname) )
+      let 
+        model' = {model|uname = model.name}
+      in 
+        (model', 
+         makeRequest (model'.url ++ model'.uname) )
 
     FetchSucceed val ->
-      ({ model | points = val, error = False }, Cmd.none)
+      let 
+        model' = {model | points = val, error = False}
+      in 
+        (model', Ports.modelChange model')
 
-    StoreURL uname ->
-      ({ model | uname = String.toLower uname }, Cmd.none)
+    StoreURL name ->
+      ({ model | name = String.toLower name }, Cmd.none)
 
     FetchFail _ ->
       ({ model | error = True, points = -1, uname="" }, Cmd.none)

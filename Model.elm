@@ -28,8 +28,8 @@ fccAPI = "https://www.freecodecamp.com/api/users/about?username="
 
 type alias Model =
   { url : String
+  , name : String 
   , uname : String 
-  , result : String 
   , error : Bool
   , points : Int 
   }
@@ -38,8 +38,8 @@ type alias Model =
 initialModel : Model
 initialModel = 
   { url = fccAPI
+  , name = ""
   , uname = ""
-  , result = ""
   , error = False
   , points = -1
   }

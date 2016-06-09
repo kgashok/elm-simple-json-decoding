@@ -17,7 +17,7 @@ update msg model =
     ( nextModel
     , Cmd.batch
       [ Ports.logExternal msg
-      , Ports.modelChange model
+      -- , Ports.modelChange model
       , nextCmd
       ]
     )
@@ -42,7 +42,7 @@ main =
 
 
 subscriptions : Model -> Sub Msg
-subscriptions model =
-  Sub.none
+subscriptions =
+  \_ -> Sub.none
 
 
