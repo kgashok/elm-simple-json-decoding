@@ -8026,6 +8026,17 @@ var _evancz$elm_http$Http$post = F3(
 			A2(_evancz$elm_http$Http$send, _evancz$elm_http$Http$defaultSettings, request));
 	});
 
+var _user$project$Model$pointsData = F2(
+	function (p, time) {
+		return {points: p, ts: time};
+	});
+var _user$project$Model$createCamper = function (name) {
+	return {
+		uname: name,
+		chist: _elm_lang$core$Native_List.fromArray(
+			[])
+	};
+};
 var _user$project$Model$fccAPI = 'https://www.freecodecamp.com/api/users/about?username=';
 var _user$project$Model$initialModel = {
 	url: _user$project$Model$fccAPI,
@@ -8054,12 +8065,30 @@ var _user$project$Model$Cdata = F2(
 	});
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v1.0-beta-8-g7e7f420';
+var _user$project$Version$version = 'v1.0-beta-10-g2b03b8e';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
 	function (v) {
-		return {url: v.url, name: v.name, uname: v.uname, error: v.error, points: v.points, ts: v.ts};
+		return {
+			url: v.url,
+			name: v.name,
+			uname: v.uname,
+			error: v.error,
+			points: v.points,
+			ts: v.ts,
+			tList: _elm_lang$core$Native_List.toArray(v.tList).map(
+				function (v) {
+					return {
+						uname: v.uname,
+						chist: _elm_lang$core$Native_List.toArray(v.chist).map(
+							function (v) {
+								return {points: v.points, ts: v.ts};
+							})
+					};
+				}),
+			tPoints: v.tPoints
+		};
 	});
 var _user$project$Ports$logExternalOut = _elm_lang$core$Native_Platform.outgoingPort(
 	'logExternalOut',
