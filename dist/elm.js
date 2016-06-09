@@ -8072,7 +8072,8 @@ var _user$project$Update$update = F2(
 				return {
 					ctor: '_Tuple2',
 					_0: model,
-					_1: _user$project$Update$makeRequest(model.url)
+					_1: _user$project$Update$makeRequest(
+						A2(_elm_lang$core$Basics_ops['++'], model.url, model.uname))
 				};
 			case 'FetchSucceed':
 				return {
@@ -8083,17 +8084,12 @@ var _user$project$Update$update = F2(
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'StoreURL':
-				var _p1 = _p0._0;
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							uname: _elm_lang$core$String$toLower(_p1),
-							url: A2(
-								_elm_lang$core$Basics_ops['++'],
-								_user$project$Model$fccAPI,
-								_elm_lang$core$String$toLower(_p1))
+							uname: _elm_lang$core$String$toLower(_p0._0)
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
@@ -8102,7 +8098,7 @@ var _user$project$Update$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{error: true}),
+						{error: true, points: -1, uname: ''}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 		}

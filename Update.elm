@@ -24,17 +24,16 @@ update : Msg -> Model -> (Model, Cmd Msg)
 update action model =
   case action of
     FetchData ->
-      (model, makeRequest model.url)
+      (model, makeRequest (model.url ++ model.uname) )
 
     FetchSucceed val ->
       ({ model | points = val, error = False }, Cmd.none)
 
     StoreURL uname ->
-      ({ model | uname = String.toLower uname, 
-          url = fccAPI ++ String.toLower uname }, Cmd.none)
+      ({ model | uname = String.toLower uname }, Cmd.none)
 
     FetchFail _ ->
-      ({ model | error = True }, Cmd.none)
+      ({ model | error = True, points = -1, uname="" }, Cmd.none)
 
     --FetchPoints val -> 
     --  ({ model | points = val, error = False }, Cmd.none )
