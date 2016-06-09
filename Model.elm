@@ -36,12 +36,10 @@ type alias Model =
 
 
 initialModel : Model
-initialModel = {
-  url = fccAPI
+initialModel = 
+  { url = fccAPI
   , uname = ""
   , result = ""
   , error = False
   , points = -1
   }
-
-
