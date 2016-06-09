@@ -4,7 +4,7 @@ import Http
 import Json.Decode as Json exposing ((:=))
 import Task
 import String
-
+import Time exposing (Time, second, minute)
 
 import Model exposing (fccAPI, Model)
 import Ports
@@ -17,6 +17,7 @@ type Msg
   | FetchSucceed Int
   | StoreURL String
   | FetchFail Http.Error
+  | Tick Time 
   --| FetchPoints String
 
 
@@ -44,6 +45,14 @@ update action model =
 
     --FetchPoints val -> 
     --  ({ model | points = val, error = False }, Cmd.none )
+
+    Tick newTime -> 
+      let
+        model' = {model | ts = newTime, uname = model.name}
+
+      in  
+        (model', 
+         makeRequest (model'.url ++ model'.uname) )
 
 
 -- HTTP

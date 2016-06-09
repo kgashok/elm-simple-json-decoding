@@ -8027,12 +8027,30 @@ var _evancz$elm_http$Http$post = F3(
 	});
 
 var _user$project$Model$fccAPI = 'https://www.freecodecamp.com/api/users/about?username=';
-var _user$project$Model$initialModel = {url: _user$project$Model$fccAPI, name: '', uname: '', error: false, points: -1};
+var _user$project$Model$initialModel = {
+	url: _user$project$Model$fccAPI,
+	name: '',
+	uname: '',
+	error: false,
+	points: -1,
+	ts: 0,
+	tList: _elm_lang$core$Native_List.fromArray(
+		[]),
+	tPoints: 0
+};
 var _user$project$Model$url2 = 'https://api.myjson.com/bins/2kjv4';
 var _user$project$Model$url1 = 'https://api.myjson.com/bins/3fueo';
-var _user$project$Model$Model = F5(
-	function (a, b, c, d, e) {
-		return {url: a, name: b, uname: c, error: d, points: e};
+var _user$project$Model$Model = F8(
+	function (a, b, c, d, e, f, g, h) {
+		return {url: a, name: b, uname: c, error: d, points: e, ts: f, tList: g, tPoints: h};
+	});
+var _user$project$Model$Camper = F2(
+	function (a, b) {
+		return {uname: a, chist: b};
+	});
+var _user$project$Model$Cdata = F2(
+	function (a, b) {
+		return {points: a, ts: b};
 	});
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
@@ -8041,7 +8059,7 @@ var _user$project$Version$version = 'v1.0-beta-8-g7e7f420';
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
 	function (v) {
-		return {url: v.url, name: v.name, uname: v.uname, error: v.error, points: v.points};
+		return {url: v.url, name: v.name, uname: v.uname, error: v.error, points: v.points, ts: v.ts};
 	});
 var _user$project$Ports$logExternalOut = _elm_lang$core$Native_Platform.outgoingPort(
 	'logExternalOut',
@@ -8063,6 +8081,9 @@ var _user$project$Update$decodeTitle = A2(
 	_elm_lang$core$Native_List.fromArray(
 		['title']),
 	_elm_lang$core$Json_Decode$string);
+var _user$project$Update$Tick = function (a) {
+	return {ctor: 'Tick', _0: a};
+};
 var _user$project$Update$FetchFail = function (a) {
 	return {ctor: 'FetchFail', _0: a};
 };
@@ -8112,13 +8133,23 @@ var _user$project$Update$update = F2(
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
-			default:
+			case 'FetchFail':
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{error: true, points: -1, uname: ''}),
 					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				var model$ = _elm_lang$core$Native_Utils.update(
+					model,
+					{ts: _p0._0, uname: model.name});
+				return {
+					ctor: '_Tuple2',
+					_0: model$,
+					_1: _user$project$Update$makeRequest(
+						A2(_elm_lang$core$Basics_ops['++'], model$.url, model$.uname))
 				};
 		}
 	});
@@ -8234,9 +8265,10 @@ var _user$project$View$view = function (model) {
 			]));
 };
 
-var _user$project$Fcc$subscriptions = function (_p0) {
-	return _elm_lang$core$Platform_Sub$none;
+var _user$project$Subscriptions$subscriptions = function (model) {
+	return A2(_elm_lang$core$Time$every, _elm_lang$core$Time$minute, _user$project$Update$Tick);
 };
+
 var _user$project$Fcc$init = function (savedModel) {
 	return {
 		ctor: '_Tuple2',
@@ -8246,9 +8278,9 @@ var _user$project$Fcc$init = function (savedModel) {
 };
 var _user$project$Fcc$update = F2(
 	function (msg, model) {
-		var _p1 = A2(_user$project$Update$update, msg, model);
-		var nextModel = _p1._0;
-		var nextCmd = _p1._1;
+		var _p0 = A2(_user$project$Update$update, msg, model);
+		var nextModel = _p0._0;
+		var nextCmd = _p0._1;
 		return {
 			ctor: '_Tuple2',
 			_0: nextModel,
@@ -8262,7 +8294,7 @@ var _user$project$Fcc$update = F2(
 	});
 var _user$project$Fcc$main = {
 	main: _elm_lang$html$Html_App$programWithFlags(
-		{init: _user$project$Fcc$init, view: _user$project$View$view, update: _user$project$Fcc$update, subscriptions: _user$project$Fcc$subscriptions}),
+		{init: _user$project$Fcc$init, view: _user$project$View$view, update: _user$project$Fcc$update, subscriptions: _user$project$Subscriptions$subscriptions}),
 	flags: _elm_lang$core$Json_Decode$oneOf(
 		_elm_lang$core$Native_List.fromArray(
 			[
@@ -8284,14 +8316,59 @@ var _user$project$Fcc$main = {
 									function (points) {
 										return A2(
 											_elm_lang$core$Json_Decode$andThen,
-											A2(_elm_lang$core$Json_Decode_ops[':='], 'uname', _elm_lang$core$Json_Decode$string),
-											function (uname) {
+											A2(
+												_elm_lang$core$Json_Decode_ops[':='],
+												'tList',
+												_elm_lang$core$Json_Decode$list(
+													A2(
+														_elm_lang$core$Json_Decode$andThen,
+														A2(
+															_elm_lang$core$Json_Decode_ops[':='],
+															'chist',
+															_elm_lang$core$Json_Decode$list(
+																A2(
+																	_elm_lang$core$Json_Decode$andThen,
+																	A2(_elm_lang$core$Json_Decode_ops[':='], 'points', _elm_lang$core$Json_Decode$int),
+																	function (points) {
+																		return A2(
+																			_elm_lang$core$Json_Decode$andThen,
+																			A2(_elm_lang$core$Json_Decode_ops[':='], 'ts', _elm_lang$core$Json_Decode$float),
+																			function (ts) {
+																				return _elm_lang$core$Json_Decode$succeed(
+																					{points: points, ts: ts});
+																			});
+																	}))),
+														function (chist) {
+															return A2(
+																_elm_lang$core$Json_Decode$andThen,
+																A2(_elm_lang$core$Json_Decode_ops[':='], 'uname', _elm_lang$core$Json_Decode$string),
+																function (uname) {
+																	return _elm_lang$core$Json_Decode$succeed(
+																		{chist: chist, uname: uname});
+																});
+														}))),
+											function (tList) {
 												return A2(
 													_elm_lang$core$Json_Decode$andThen,
-													A2(_elm_lang$core$Json_Decode_ops[':='], 'url', _elm_lang$core$Json_Decode$string),
-													function (url) {
-														return _elm_lang$core$Json_Decode$succeed(
-															{error: error, name: name, points: points, uname: uname, url: url});
+													A2(_elm_lang$core$Json_Decode_ops[':='], 'tPoints', _elm_lang$core$Json_Decode$int),
+													function (tPoints) {
+														return A2(
+															_elm_lang$core$Json_Decode$andThen,
+															A2(_elm_lang$core$Json_Decode_ops[':='], 'ts', _elm_lang$core$Json_Decode$float),
+															function (ts) {
+																return A2(
+																	_elm_lang$core$Json_Decode$andThen,
+																	A2(_elm_lang$core$Json_Decode_ops[':='], 'uname', _elm_lang$core$Json_Decode$string),
+																	function (uname) {
+																		return A2(
+																			_elm_lang$core$Json_Decode$andThen,
+																			A2(_elm_lang$core$Json_Decode_ops[':='], 'url', _elm_lang$core$Json_Decode$string),
+																			function (url) {
+																				return _elm_lang$core$Json_Decode$succeed(
+																					{error: error, name: name, points: points, tList: tList, tPoints: tPoints, ts: ts, uname: uname, url: url});
+																			});
+																	});
+															});
 													});
 											});
 									});

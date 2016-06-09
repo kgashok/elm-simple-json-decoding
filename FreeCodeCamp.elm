@@ -5,6 +5,7 @@ import Html.App as Html
 import Model exposing (initialModel, fccAPI, Model) 
 import View exposing (view) 
 import Update exposing (update, Msg) 
+import Subscriptions exposing (subscriptions)
 
 import Ports
 
@@ -38,11 +39,5 @@ main =
     }
 
 
--- SUBSCRIPTIONS
-
-
-subscriptions : Model -> Sub Msg
-subscriptions =
-  \_ -> Sub.none
 
 
