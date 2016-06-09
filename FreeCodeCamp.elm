@@ -106,7 +106,7 @@ buildResponse model =
     else if model.result /= ""
     then "I just found: " ++ model.result
     else if model.points /= -1
-    then "I just found: " ++ (toString model.points)
+    then "Challenges completed: " ++ (toString model.points)
     else "" 
   
 
