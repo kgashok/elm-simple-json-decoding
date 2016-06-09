@@ -98,18 +98,21 @@ url2 = "https://api.myjson.com/bins/2kjv4"
 fccAPI : String 
 fccAPI = "https://www.freecodecamp.com/api/users/about?username="
 
+buildResponse : Model -> String 
+buildResponse model = 
+    if model.error == True
+    then "There was an error"
+    else if model.result /= ""
+    then "I just found: " ++ model.result
+    else if model.points /= -1
+    then "I just found: " ++ (toString model.points)
+    else "" 
+  
 
 view : Model -> Html Msg
 view model =
   let
-    response =
-      if model.error == True
-      then "There was an error"
-      else if model.result /= ""
-      then "I just found: " ++ model.result
-      else if model.points /= -1
-      then "I just found: " ++ (toString model.points)
-      else "" 
+    response = buildResponse model
   in
     div []
       [ h3 [] [ text "Simple Object"]
