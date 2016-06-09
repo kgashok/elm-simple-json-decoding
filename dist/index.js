@@ -1,5 +1,5 @@
-var model = getModel()
-var app = Elm.Main.fullscreen(model);
+var model = getModel();
+var app = Elm.Fcc.fullscreen(model);
 
 /**
  * on elm's modelChange save the model to localStorage
@@ -7,7 +7,7 @@ var app = Elm.Main.fullscreen(model);
  */
 
 app.ports.modelChange.subscribe(function(model) {
-  localStorage.setItem('slackm8Model', JSON.stringify(model));
+  localStorage.setItem('fccModel', JSON.stringify(model));
 });
 
 
@@ -21,6 +21,6 @@ app.ports.logExternalOut.subscribe(function (value) {
  */
 
 function getModel () {
-  var model = localStorage.getItem('slackm8Model');
+  var model = localStorage.getItem('fccModel');
   return model ? JSON.parse(model) : null;
 }
