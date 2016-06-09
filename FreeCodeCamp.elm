@@ -6,6 +6,7 @@ import Http
 import Json.Decode as Json exposing ((:=))
 import Task
 import String
+import Version exposing (version, gitRepo)
 
 {-
   https://api.myjson.com/bins/4j9e0?pretty=1 - for kgashok
@@ -125,6 +126,10 @@ view model =
         , button [ onClick FetchData ] [ text "Fetch!" ]
         , h1 [rStyle]  [ text response ]
         , div [] [ text (toString model) ]
+        , footer [] 
+          [a [href (gitRepo ++ "/issues/new"), 
+              target "_blank", 
+              rel "noopener noreferrer"] [text version] ]
       ]
 
 rStyle : Attribute msg 

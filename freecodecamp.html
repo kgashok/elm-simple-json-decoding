@@ -7992,6 +7992,8 @@ var _evancz$elm_http$Http$post = F3(
 			decoder,
 			A2(_evancz$elm_http$Http$send, _evancz$elm_http$Http$defaultSettings, request));
 	});
+var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
+var _user$project$Version$version = 'v1.0-beta-1-g058c682';
 var _user$project$Main$decodePoints = A2(
 	_elm_lang$core$Json_Decode$at,
 	_elm_lang$core$Native_List.fromArray(
@@ -8012,6 +8014,12 @@ var _user$project$Main$rStyle = _elm_lang$html$Html_Attributes$style(
 			{ctor: '_Tuple2', _0: 'color', _1: 'white'},
 			{ctor: '_Tuple2', _0: 'fontSize', _1: '300%'}
 		]));
+var _user$project$Main$buildResponse = function (model) {
+	return _elm_lang$core$Native_Utils.eq(model.error, true) ? 'There was an error' : ((!_elm_lang$core$Native_Utils.eq(model.result, '')) ? A2(_elm_lang$core$Basics_ops['++'], 'I just found: ', model.result) : ((!_elm_lang$core$Native_Utils.eq(model.points, -1)) ? A2(
+		_elm_lang$core$Basics_ops['++'],
+		'I just found: ',
+		_elm_lang$core$Basics$toString(model.points)) : ''));
+};
 var _user$project$Main$fccAPI = 'https://www.freecodecamp.com/api/users/about?username=';
 var _user$project$Main$url2 = 'https://api.myjson.com/bins/2kjv4';
 var _user$project$Main$url1 = 'https://api.myjson.com/bins/3fueo';
@@ -8087,10 +8095,7 @@ var _user$project$Main$getData = F2(
 	});
 var _user$project$Main$FetchData = {ctor: 'FetchData'};
 var _user$project$Main$view = function (model) {
-	var response = _elm_lang$core$Native_Utils.eq(model.error, true) ? 'There was an error' : ((!_elm_lang$core$Native_Utils.eq(model.result, '')) ? A2(_elm_lang$core$Basics_ops['++'], 'I just found: ', model.result) : ((!_elm_lang$core$Native_Utils.eq(model.points, -1)) ? A2(
-		_elm_lang$core$Basics_ops['++'],
-		'I just found: ',
-		_elm_lang$core$Basics$toString(model.points)) : ''));
+	var response = _user$project$Main$buildResponse(model);
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
@@ -8157,6 +8162,26 @@ var _user$project$Main$view = function (model) {
 					[
 						_elm_lang$html$Html$text(
 						_elm_lang$core$Basics$toString(model))
+					])),
+				A2(
+				_elm_lang$html$Html$footer,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$a,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$href(
+								A2(_elm_lang$core$Basics_ops['++'], _user$project$Version$gitRepo, '/issues/new')),
+								_elm_lang$html$Html_Attributes$target('_blank'),
+								_elm_lang$html$Html_Attributes$rel('noopener noreferrer')
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text(_user$project$Version$version)
+							]))
 					]))
 			]));
 };
