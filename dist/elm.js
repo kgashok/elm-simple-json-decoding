@@ -8110,6 +8110,27 @@ var _user$project$Update$decodeTitle = A2(
 	_elm_lang$core$Native_List.fromArray(
 		['title']),
 	_elm_lang$core$Json_Decode$string);
+var _user$project$Update$addToList = F2(
+	function (n, model) {
+		var camper = _user$project$Model$createCamper(n);
+		var clist = A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.uname;
+			},
+			model.tList);
+		var isPresent = A2(_elm_lang$core$List$member, n, clist);
+		var _p0 = isPresent;
+		if (_p0 === true) {
+			return model;
+		} else {
+			return _elm_lang$core$Native_Utils.update(
+				model,
+				{
+					tList: A2(_elm_lang$core$List_ops['::'], camper, model.tList)
+				});
+		}
+	});
 var _user$project$Update$Tick = function (a) {
 	return {ctor: 'Tick', _0: a};
 };
@@ -8131,12 +8152,13 @@ var _user$project$Update$makeRequest = function (url) {
 };
 var _user$project$Update$update = F2(
 	function (action, model) {
-		var _p0 = action;
-		switch (_p0.ctor) {
+		var _p1 = action;
+		switch (_p1.ctor) {
 			case 'FetchData':
-				var model$ = _elm_lang$core$Native_Utils.update(
+				var model_ = _elm_lang$core$Native_Utils.update(
 					model,
 					{uname: model.name});
+				var model$ = A2(_user$project$Update$addToList, model_.name, model_);
 				return {
 					ctor: '_Tuple2',
 					_0: model$,
@@ -8146,7 +8168,7 @@ var _user$project$Update$update = F2(
 			case 'FetchSucceed':
 				var model$ = _elm_lang$core$Native_Utils.update(
 					model,
-					{points: _p0._0, error: false});
+					{points: _p1._0, error: false});
 				return {
 					ctor: '_Tuple2',
 					_0: model$,
@@ -8158,7 +8180,7 @@ var _user$project$Update$update = F2(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							name: _elm_lang$core$String$toLower(_p0._0)
+							name: _elm_lang$core$String$toLower(_p1._0)
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
@@ -8173,7 +8195,13 @@ var _user$project$Update$update = F2(
 			default:
 				var model$ = _elm_lang$core$Native_Utils.update(
 					model,
-					{ts: _p0._0, uname: model.name});
+					{ts: _p1._0, uname: model.name});
+				var clist = A2(
+					_elm_lang$core$List$map,
+					function (_) {
+						return _.uname;
+					},
+					model$.tList);
 				return {
 					ctor: '_Tuple2',
 					_0: model$,
@@ -8203,6 +8231,12 @@ var _user$project$View$buildResponse = function (model) {
 		_elm_lang$core$Basics$toString(model.points)) : '');
 };
 var _user$project$View$view = function (model) {
+	var clist = A2(
+		_elm_lang$core$List$map,
+		function (_) {
+			return _.uname;
+		},
+		model.tList);
 	var response = _user$project$View$buildResponse(model);
 	return A2(
 		_elm_lang$html$Html$div,
@@ -8269,7 +8303,7 @@ var _user$project$View$view = function (model) {
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_elm_lang$html$Html$text(
-						_elm_lang$core$Basics$toString(model))
+						_elm_lang$core$Basics$toString(clist))
 					])),
 				A2(
 				_elm_lang$html$Html$footer,
@@ -8295,7 +8329,7 @@ var _user$project$View$view = function (model) {
 };
 
 var _user$project$Subscriptions$subscriptions = function (model) {
-	return A2(_elm_lang$core$Time$every, _elm_lang$core$Time$minute, _user$project$Update$Tick);
+	return A2(_elm_lang$core$Time$every, 30 * _elm_lang$core$Time$second, _user$project$Update$Tick);
 };
 
 var _user$project$Fcc$init = function (savedModel) {

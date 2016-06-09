@@ -26,6 +26,7 @@ view : Model -> Html Msg
 view model =
   let
     response = buildResponse model
+    clist    = List.map .uname model.tList
   in
     div []
       [ h3 [] [ text "Simple Object"]
@@ -37,7 +38,7 @@ view model =
         ] []
         , button [ onClick FetchData ] [ text "Fetch!" ]
         , h1 [rStyle]  [ text response ]
-        , div [] [ text (toString model) ]
+        , div [] [ text (toString clist) ]
         , footer [] 
           [a [href (gitRepo ++ "/issues/new"), 
               target "_blank", 

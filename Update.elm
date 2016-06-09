@@ -6,7 +6,7 @@ import Task
 import String
 import Time exposing (Time, second, minute)
 
-import Model exposing (fccAPI, Model)
+import Model exposing (..)
 import Ports
 
 
@@ -25,8 +25,9 @@ update : Msg -> Model -> (Model, Cmd Msg)
 update action model =
   case action of
     FetchData ->
-      let 
-        model' = {model|uname = model.name}
+      let
+        model_ = {model|uname = model.name}
+        model' =  addToList model_.name model_
       in 
         (model', 
          makeRequest (model'.url ++ model'.uname) )
@@ -49,6 +50,7 @@ update action model =
     Tick newTime -> 
       let
         model' = {model | ts = newTime, uname = model.name}
+        clist  = List.map .uname model'.tList
 
       in  
         (model', 
@@ -56,6 +58,18 @@ update action model =
 
 
 -- HTTP
+
+addToList : String -> Model -> Model 
+addToList n model = 
+  let 
+    clist = List.map .uname model.tList
+    isPresent = List.member n clist
+    camper = createCamper n 
+  in 
+    case isPresent of 
+      True -> model 
+      False -> {model | tList = camper :: model.tList} 
+
 
 makeRequest : String -> Cmd Msg
 makeRequest url =
