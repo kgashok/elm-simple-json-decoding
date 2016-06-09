@@ -7,6 +7,9 @@ A playground of basic examples decoding a JSON object.
 * [Nested list](http://chrisbuttery.github.io/elm-simple-json-decoding/nested_list.html)
 * [Oddly shaped object](http://chrisbuttery.github.io/elm-simple-json-decoding/oddly_shaped_object.html)
 
+* [FCC String](http://kgashok.github.io/elm-simple-json-decoding/freecodecamp.html)
+
+
 ### Example data structure
 
 [https://api.myjson.com/bins/yws2](https://api.myjson.com/bins/yws2)
