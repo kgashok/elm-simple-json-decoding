@@ -8036,7 +8036,7 @@ var _user$project$Model$Model = F5(
 	});
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v1.0-beta-5-g6ae49e4';
+var _user$project$Version$version = 'v1.0-beta-7-g4dc79c0';
 
 var _user$project$Update$decodePoints = A2(
 	_elm_lang$core$Json_Decode$at,
