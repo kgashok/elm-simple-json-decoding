@@ -8005,13 +8005,14 @@ var _user$project$Main$decodeTitle = A2(
 var _user$project$Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
 };
-var _user$project$Main$url = 'https://api.myjson.com/bins/2kjv4';
+var _user$project$Main$fccAPI = 'https://www.freecodecamp.com/api/users/about?username=';
+var _user$project$Main$url2 = 'https://api.myjson.com/bins/2kjv4';
 var _user$project$Main$url1 = 'https://api.myjson.com/bins/3fueo';
-var _user$project$Main$initialModel = {url: '', result: '', error: false, points: -1};
+var _user$project$Main$initialModel = {url: _user$project$Main$fccAPI, uname: '', result: '', error: false, points: -1};
 var _user$project$Main$init = {ctor: '_Tuple2', _0: _user$project$Main$initialModel, _1: _elm_lang$core$Platform_Cmd$none};
-var _user$project$Main$Model = F4(
-	function (a, b, c, d) {
-		return {url: a, result: b, error: c, points: d};
+var _user$project$Main$Model = F5(
+	function (a, b, c, d, e) {
+		return {url: a, uname: b, result: c, error: d, points: e};
 	});
 var _user$project$Main$FetchFail = function (a) {
 	return {ctor: 'FetchFail', _0: a};
@@ -8048,11 +8049,15 @@ var _user$project$Main$update = F2(
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'StoreURL':
+				var _p1 = _p0._0;
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{url: _p0._0}),
+						{
+							uname: _p1,
+							url: A2(_elm_lang$core$Basics_ops['++'], _user$project$Main$fccAPI, _p1)
+						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			default:
@@ -8083,7 +8088,7 @@ var _user$project$Main$view = function (model) {
 					[]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html$text('Simple string')
+						_elm_lang$html$Html$text('Simple Object')
 					])),
 				A2(
 				_elm_lang$html$Html$p,
@@ -8091,7 +8096,7 @@ var _user$project$Main$view = function (model) {
 					[]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html$text('Here I want to grab the \'title\'')
+						_elm_lang$html$Html$text('Here I want to grab the \'\'browniePoints\'\'')
 					])),
 				A2(
 				_elm_lang$html$Html$p,
@@ -8100,13 +8105,13 @@ var _user$project$Main$view = function (model) {
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_elm_lang$html$Html$text(
-						A2(_elm_lang$core$Basics_ops['++'], 'Demo URL: ', _user$project$Main$url))
+						A2(_elm_lang$core$Basics_ops['++'], 'FCC URL: ', _user$project$Main$fccAPI))
 					])),
 				A2(
 				_elm_lang$html$Html$input,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html_Attributes$placeholder('Enter a URL'),
+						_elm_lang$html$Html_Attributes$placeholder('Enter a FCC username'),
 						_elm_lang$html$Html_Events$onInput(_user$project$Main$StoreURL)
 					]),
 				_elm_lang$core$Native_List.fromArray(
