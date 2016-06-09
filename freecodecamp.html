@@ -7995,7 +7995,7 @@ var _evancz$elm_http$Http$post = F3(
 var _user$project$Main$decodePoints = A2(
 	_elm_lang$core$Json_Decode$at,
 	_elm_lang$core$Native_List.fromArray(
-		['browniePoints']),
+		['about', 'browniePoints']),
 	_elm_lang$core$Json_Decode$string);
 var _user$project$Main$decodeTitle = A2(
 	_elm_lang$core$Json_Decode$at,
@@ -8025,13 +8025,13 @@ var _user$project$Main$makeRequest = function (url) {
 		_elm_lang$core$Task$perform,
 		_user$project$Main$FetchFail,
 		_user$project$Main$FetchSucceed,
-		A2(_evancz$elm_http$Http$get, _user$project$Main$decodeTitle, url));
+		A2(_evancz$elm_http$Http$get, _user$project$Main$decodePoints, url));
 };
 var _user$project$Main$update = F2(
 	function (action, model) {
 		var _p0 = action;
 		switch (_p0.ctor) {
-			case 'FetchTitle':
+			case 'FetchData':
 				return {
 					ctor: '_Tuple2',
 					_0: model,
@@ -8063,7 +8063,7 @@ var _user$project$Main$update = F2(
 				};
 		}
 	});
-var _user$project$Main$FetchTitle = {ctor: 'FetchTitle'};
+var _user$project$Main$FetchData = {ctor: 'FetchData'};
 var _user$project$Main$view = function (model) {
 	var response = _elm_lang$core$Native_Utils.eq(model.error, true) ? 'There was an error' : ((!_elm_lang$core$Native_Utils.eq(model.result, '')) ? A2(_elm_lang$core$Basics_ops['++'], 'I just found: ', model.result) : '');
 	return A2(
@@ -8109,7 +8109,7 @@ var _user$project$Main$view = function (model) {
 				_elm_lang$html$Html$button,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html_Events$onClick(_user$project$Main$FetchTitle)
+						_elm_lang$html$Html_Events$onClick(_user$project$Main$FetchData)
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[

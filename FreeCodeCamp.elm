@@ -36,7 +36,7 @@ type alias Model =
   { url : String
   , result : String 
   , error : Bool
-  , points : String 
+  , points : Int 
   }
 
 
@@ -45,7 +45,7 @@ initialModel = {
   url = ""
   , result = ""
   , error = False
-  , points = "NA"
+  , points = -1
   }
 
 
@@ -58,8 +58,8 @@ init =
 
 
 type Msg
-  = FetchTitle
-  | FetchSucceed String
+  = FetchData
+  | FetchSucceed Int
   | StoreURL String
   | FetchFail Http.Error
   --| FetchPoints String
@@ -68,11 +68,11 @@ type Msg
 update : Msg -> Model -> (Model, Cmd Msg)
 update action model =
   case action of
-    FetchTitle ->
+    FetchData ->
       (model, makeRequest model.url)
 
-    FetchSucceed str ->
-      ({ model | result = str, error = False }, Cmd.none)
+    FetchSucceed val ->
+      ({ model | points = val, error = False }, Cmd.none)
 
     StoreURL url ->
       ({ model | url = url }, Cmd.none)
@@ -85,6 +85,11 @@ update action model =
 
 -- VIEW
 
+url1 : String
+url1 = "https://api.myjson.com/bins/3fueo"
+
+url : String 
+url  = "https://api.myjson.com/bins/2kjv4"
 
 view : Model -> Html Msg
 view model =
@@ -94,17 +99,19 @@ view model =
       then "There was an error"
       else if model.result /= ""
       then "I just found: " ++ model.result
-      else ""
+      else if model.points /= -1
+      then "I just found: " ++ (toString model.points)
+      else "" 
   in
     div []
       [ h1 [] [ text "Simple string"]
       , p [] [ text "Here I want to grab the 'title'"]
-      , p [] [ text "Demo URL: https://api.myjson.com/bins/2kjv4"]
+      , p [] [ text ("Demo URL: " ++ url) ]
       , input [
           placeholder "Enter a URL",
           onInput StoreURL
         ] []
-        , button [ onClick FetchTitle ] [ text "Fetch!" ]
+        , button [ onClick FetchData ] [ text "Fetch!" ]
         , p [] [ text response ]
         , div [] [ text (toString model) ]
       ]
@@ -123,7 +130,8 @@ subscriptions model =
 
 makeRequest : String -> Cmd Msg
 makeRequest url =
-  Task.perform FetchFail FetchSucceed (Http.get decodeTitle url)
+
+  Task.perform FetchFail FetchSucceed (Http.get decodePoints url)
 
 
 -- decodeTitle
@@ -133,6 +141,7 @@ decodeTitle : Json.Decoder String
 decodeTitle =
   Json.at ["title"] Json.string
 
-decodePoints : Json.Decoder String
+
+decodePoints : Json.Decoder Int
 decodePoints = 
-  Json.at ["browniePoints"] Json.string 
+  Json.at ["about", "browniePoints"] Json.int 
