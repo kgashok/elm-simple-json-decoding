@@ -5,6 +5,7 @@ import Html.Events exposing (..)
 import Http
 import Json.Decode as Json exposing ((:=))
 import Task
+import String
 
 {-
   https://api.myjson.com/bins/4j9e0?pretty=1 - for kgashok
@@ -77,7 +78,8 @@ update action model =
       ({ model | points = val, error = False }, Cmd.none)
 
     StoreURL uname ->
-      ({ model | uname = uname, url = fccAPI ++ uname }, Cmd.none)
+      ({ model | uname = String.toLower uname, 
+          url = fccAPI ++ String.toLower uname }, Cmd.none)
 
     FetchFail _ ->
       ({ model | error = True }, Cmd.none)
