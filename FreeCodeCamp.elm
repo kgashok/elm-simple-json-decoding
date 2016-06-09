@@ -89,7 +89,11 @@ url1 : String
 url1 = "https://api.myjson.com/bins/3fueo"
 
 url : String 
-url  = "https://api.myjson.com/bins/2kjv4"
+url = "https://api.myjson.com/bins/2kjv4"
+
+fccAPI : String 
+fccAPI = "https://www.freecodecamp.com/api/users/about?username="
+
 
 view : Model -> Html Msg
 view model =
@@ -105,8 +109,8 @@ view model =
   in
     div []
       [ h1 [] [ text "Simple string"]
-      , p [] [ text "Here I want to grab the 'title'"]
-      , p [] [ text ("Demo URL: " ++ url) ]
+      , p [] [ text "Here I want to grab the ''browniePoints''"]
+      , p [] [ text ("FCC URL: " ++ url) ]
       , input [
           placeholder "Enter a URL",
           onInput StoreURL
