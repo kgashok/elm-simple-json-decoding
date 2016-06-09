@@ -140,6 +140,14 @@ makeRequest url =
   Task.perform FetchFail FetchSucceed (Http.get decodePoints url)
 
 
+getData : String -> String -> Cmd Msg 
+getData api uname = 
+  let 
+    url = api ++ uname
+  in 
+    makeRequest url 
+
+
 -- decodeTitle
 -- return the string from 'title'
 
