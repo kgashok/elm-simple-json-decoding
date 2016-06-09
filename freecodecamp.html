@@ -8005,6 +8005,13 @@ var _user$project$Main$decodeTitle = A2(
 var _user$project$Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
 };
+var _user$project$Main$rStyle = _elm_lang$html$Html_Attributes$style(
+	_elm_lang$core$Native_List.fromArray(
+		[
+			{ctor: '_Tuple2', _0: 'backgroundColor', _1: '#ff6600'},
+			{ctor: '_Tuple2', _0: 'color', _1: 'white'},
+			{ctor: '_Tuple2', _0: 'fontSize', _1: '300%'}
+		]));
 var _user$project$Main$fccAPI = 'https://www.freecodecamp.com/api/users/about?username=';
 var _user$project$Main$url2 = 'https://api.myjson.com/bins/2kjv4';
 var _user$project$Main$url1 = 'https://api.myjson.com/bins/3fueo';
@@ -8070,6 +8077,11 @@ var _user$project$Main$update = F2(
 				};
 		}
 	});
+var _user$project$Main$getData = F2(
+	function (api, uname) {
+		var url = A2(_elm_lang$core$Basics_ops['++'], api, uname);
+		return _user$project$Main$makeRequest(url);
+	});
 var _user$project$Main$FetchData = {ctor: 'FetchData'};
 var _user$project$Main$view = function (model) {
 	var response = _elm_lang$core$Native_Utils.eq(model.error, true) ? 'There was an error' : ((!_elm_lang$core$Native_Utils.eq(model.result, '')) ? A2(_elm_lang$core$Basics_ops['++'], 'I just found: ', model.result) : ((!_elm_lang$core$Native_Utils.eq(model.points, -1)) ? A2(
@@ -8083,7 +8095,7 @@ var _user$project$Main$view = function (model) {
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
-				_elm_lang$html$Html$h1,
+				_elm_lang$html$Html$h3,
 				_elm_lang$core$Native_List.fromArray(
 					[]),
 				_elm_lang$core$Native_List.fromArray(
@@ -8127,9 +8139,9 @@ var _user$project$Main$view = function (model) {
 						_elm_lang$html$Html$text('Fetch!')
 					])),
 				A2(
-				_elm_lang$html$Html$p,
+				_elm_lang$html$Html$h1,
 				_elm_lang$core$Native_List.fromArray(
-					[]),
+					[_user$project$Main$rStyle]),
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_elm_lang$html$Html$text(response)

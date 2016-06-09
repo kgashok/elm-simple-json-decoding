@@ -110,7 +110,7 @@ view model =
       else "" 
   in
     div []
-      [ h1 [] [ text "Simple Object"]
+      [ h3 [] [ text "Simple Object"]
       , p [] [ text "Here I want to grab the ''browniePoints''"]
       , p [] [ text ("FCC URL: " ++ fccAPI) ]
       , input [
@@ -118,9 +118,17 @@ view model =
           onInput StoreURL
         ] []
         , button [ onClick FetchData ] [ text "Fetch!" ]
-        , p [] [ text response ]
+        , h1 [rStyle]  [ text response ]
         , div [] [ text (toString model) ]
       ]
+
+rStyle : Attribute msg 
+rStyle = 
+  style 
+    [ ("backgroundColor", "#ff6600"),
+      ("color", "white"),
+      ("fontSize", "300%")
+    ]
 
 
 -- SUBSCRIPTIONS
