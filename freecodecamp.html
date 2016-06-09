@@ -7996,7 +7996,7 @@ var _user$project$Main$decodePoints = A2(
 	_elm_lang$core$Json_Decode$at,
 	_elm_lang$core$Native_List.fromArray(
 		['about', 'browniePoints']),
-	_elm_lang$core$Json_Decode$string);
+	_elm_lang$core$Json_Decode$int);
 var _user$project$Main$decodeTitle = A2(
 	_elm_lang$core$Json_Decode$at,
 	_elm_lang$core$Native_List.fromArray(
@@ -8005,7 +8005,9 @@ var _user$project$Main$decodeTitle = A2(
 var _user$project$Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
 };
-var _user$project$Main$initialModel = {url: '', result: '', error: false, points: 'NA'};
+var _user$project$Main$url = 'https://api.myjson.com/bins/2kjv4';
+var _user$project$Main$url1 = 'https://api.myjson.com/bins/3fueo';
+var _user$project$Main$initialModel = {url: '', result: '', error: false, points: -1};
 var _user$project$Main$init = {ctor: '_Tuple2', _0: _user$project$Main$initialModel, _1: _elm_lang$core$Platform_Cmd$none};
 var _user$project$Main$Model = F4(
 	function (a, b, c, d) {
@@ -8042,7 +8044,7 @@ var _user$project$Main$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{result: _p0._0, error: false}),
+						{points: _p0._0, error: false}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'StoreURL':
@@ -8065,7 +8067,10 @@ var _user$project$Main$update = F2(
 	});
 var _user$project$Main$FetchData = {ctor: 'FetchData'};
 var _user$project$Main$view = function (model) {
-	var response = _elm_lang$core$Native_Utils.eq(model.error, true) ? 'There was an error' : ((!_elm_lang$core$Native_Utils.eq(model.result, '')) ? A2(_elm_lang$core$Basics_ops['++'], 'I just found: ', model.result) : '');
+	var response = _elm_lang$core$Native_Utils.eq(model.error, true) ? 'There was an error' : ((!_elm_lang$core$Native_Utils.eq(model.result, '')) ? A2(_elm_lang$core$Basics_ops['++'], 'I just found: ', model.result) : ((!_elm_lang$core$Native_Utils.eq(model.points, -1)) ? A2(
+		_elm_lang$core$Basics_ops['++'],
+		'I just found: ',
+		_elm_lang$core$Basics$toString(model.points)) : ''));
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
@@ -8094,7 +8099,8 @@ var _user$project$Main$view = function (model) {
 					[]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html$text('Demo URL: https://api.myjson.com/bins/2kjv4')
+						_elm_lang$html$Html$text(
+						A2(_elm_lang$core$Basics_ops['++'], 'Demo URL: ', _user$project$Main$url))
 					])),
 				A2(
 				_elm_lang$html$Html$input,
