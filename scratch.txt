@@ -1,0 +1,6 @@
+Using myjson to get validated data 
+
+https://api.myjson.com/bins/3vwc8 - for error from freecodecamp
+https://api.myjson.com/bins/4j9e0?pretty=1 - for kgashok
+
+https://api.myjson.com/bins/2kjv4 - with Title! 
