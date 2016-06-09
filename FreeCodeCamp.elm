@@ -34,6 +34,7 @@ main =
 
 type alias Model =
   { url : String
+  , uname : String 
   , result : String 
   , error : Bool
   , points : Int 
@@ -42,7 +43,8 @@ type alias Model =
 
 initialModel : Model
 initialModel = {
-  url = ""
+  url = fccAPI
+  , uname = ""
   , result = ""
   , error = False
   , points = -1
@@ -74,8 +76,8 @@ update action model =
     FetchSucceed val ->
       ({ model | points = val, error = False }, Cmd.none)
 
-    StoreURL url ->
-      ({ model | url = url }, Cmd.none)
+    StoreURL uname ->
+      ({ model | uname = uname, url = fccAPI ++ uname }, Cmd.none)
 
     FetchFail _ ->
       ({ model | error = True }, Cmd.none)
@@ -88,8 +90,8 @@ update action model =
 url1 : String
 url1 = "https://api.myjson.com/bins/3fueo"
 
-url : String 
-url = "https://api.myjson.com/bins/2kjv4"
+url2 : String 
+url2 = "https://api.myjson.com/bins/2kjv4"
 
 fccAPI : String 
 fccAPI = "https://www.freecodecamp.com/api/users/about?username="
@@ -108,11 +110,11 @@ view model =
       else "" 
   in
     div []
-      [ h1 [] [ text "Simple string"]
+      [ h1 [] [ text "Simple Object"]
       , p [] [ text "Here I want to grab the ''browniePoints''"]
-      , p [] [ text ("FCC URL: " ++ url) ]
+      , p [] [ text ("FCC URL: " ++ fccAPI) ]
       , input [
-          placeholder "Enter a URL",
+          placeholder "Enter a FCC username",
           onInput StoreURL
         ] []
         , button [ onClick FetchData ] [ text "Fetch!" ]
