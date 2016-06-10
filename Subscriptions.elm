@@ -10,7 +10,7 @@ import Update exposing (Msg(..))
 subscriptions : Model -> Sub Msg
 subscriptions model =
   --Time.every minute Tick
-  Time.every (10 * second) Tick
+  Time.every (45 * second) Tick
 
 
 

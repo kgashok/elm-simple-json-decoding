@@ -8071,7 +8071,7 @@ var _user$project$Model$Cdata = F2(
 	});
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v1.0-beta-16-ge80a7ac';
+var _user$project$Version$version = 'v2.0-beta-0-gdc080ba';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -8284,12 +8284,84 @@ var _user$project$Update$update = F2(
 	});
 var _user$project$Update$FetchData = {ctor: 'FetchData'};
 
+var _user$project$View$footer = A2(
+	_elm_lang$html$Html$div,
+	_elm_lang$core$Native_List.fromArray(
+		[]),
+	_elm_lang$core$Native_List.fromArray(
+		[
+			A2(
+			_elm_lang$html$Html$a,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$href(
+					A2(_elm_lang$core$Basics_ops['++'], _user$project$Version$gitRepo, '/issues/new')),
+					_elm_lang$html$Html_Attributes$target('_blank'),
+					_elm_lang$html$Html_Attributes$rel('noopener noreferrer')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text(_user$project$Version$version)
+				]))
+		]));
+var _user$project$View$camperItem = function (camper) {
+	var points = A2(
+		_elm_lang$core$List$map,
+		function (_) {
+			return _.points;
+		},
+		camper.chist);
+	return A2(
+		_elm_lang$html$Html$li,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$span,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('uname')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(camper.uname)
+					])),
+				A2(
+				_elm_lang$html$Html$span,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('points')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(
+						_elm_lang$core$Basics$toString(points))
+					]))
+			]));
+};
+var _user$project$View$campList = F2(
+	function (display, campers) {
+		var items = A2(_elm_lang$core$List$map, _user$project$View$camperItem, campers);
+		return A2(
+			_elm_lang$html$Html$div,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$ul,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					items)
+				]));
+	});
 var _user$project$View$rStyle = _elm_lang$html$Html_Attributes$style(
 	_elm_lang$core$Native_List.fromArray(
 		[
 			{ctor: '_Tuple2', _0: 'backgroundColor', _1: '#ff6600'},
 			{ctor: '_Tuple2', _0: 'color', _1: 'white'},
-			{ctor: '_Tuple2', _0: 'fontSize', _1: '300%'}
+			{ctor: '_Tuple2', _0: 'fontSize', _1: '100%'}
 		]));
 var _user$project$View$buildResponse = function (model) {
 	return _elm_lang$core$Native_Utils.eq(model.error, true) ? 'There was an error' : ((!_elm_lang$core$Native_Utils.eq(model.points, -1)) ? A2(
@@ -8363,40 +8435,13 @@ var _user$project$View$view = function (model) {
 					[
 						_elm_lang$html$Html$text(response)
 					])),
-				A2(
-				_elm_lang$html$Html$div,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text(
-						_elm_lang$core$Basics$toString(model))
-					])),
-				A2(
-				_elm_lang$html$Html$footer,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						A2(
-						_elm_lang$html$Html$a,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$href(
-								A2(_elm_lang$core$Basics_ops['++'], _user$project$Version$gitRepo, '/issues/new')),
-								_elm_lang$html$Html_Attributes$target('_blank'),
-								_elm_lang$html$Html_Attributes$rel('noopener noreferrer')
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html$text(_user$project$Version$version)
-							]))
-					]))
+				A2(_user$project$View$campList, true, model.tList),
+				_user$project$View$footer
 			]));
 };
 
 var _user$project$Subscriptions$subscriptions = function (model) {
-	return A2(_elm_lang$core$Time$every, 10 * _elm_lang$core$Time$second, _user$project$Update$Tick);
+	return A2(_elm_lang$core$Time$every, 45 * _elm_lang$core$Time$second, _user$project$Update$Tick);
 };
 
 var _user$project$Fcc$init = function (savedModel) {
