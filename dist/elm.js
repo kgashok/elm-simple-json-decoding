@@ -8030,13 +8030,15 @@ var _user$project$Model$pointsData = F2(
 	function (p, time) {
 		return {points: p, ts: time};
 	});
-var _user$project$Model$createCamper = function (name) {
-	return {
-		uname: name,
-		chist: _elm_lang$core$Native_List.fromArray(
-			[])
-	};
-};
+var _user$project$Model$createCamper = F2(
+	function (member, ts) {
+		var data = A2(_user$project$Model$pointsData, member.points, ts);
+		return {
+			uname: member.uname,
+			chist: _elm_lang$core$Native_List.fromArray(
+				[data])
+		};
+	});
 var _user$project$Model$fccAPI = 'https://www.freecodecamp.com/api/users/about?username=';
 var _user$project$Model$initialModel = {
 	url: _user$project$Model$fccAPI,
@@ -8058,6 +8060,10 @@ var _user$project$Model$Model = F8(
 var _user$project$Model$Camper = F2(
 	function (a, b) {
 		return {uname: a, chist: b};
+	});
+var _user$project$Model$Member = F2(
+	function (a, b) {
+		return {uname: a, points: b};
 	});
 var _user$project$Model$Cdata = F2(
 	function (a, b) {
@@ -8100,6 +8106,15 @@ var _user$project$Ports$logExternal = function (value) {
 		_elm_lang$core$Basics$toString(value));
 };
 
+var _user$project$Update$decodeData = A2(
+	_elm_lang$core$Json_Decode$at,
+	_elm_lang$core$Native_List.fromArray(
+		['about']),
+	A3(
+		_elm_lang$core$Json_Decode$object2,
+		_user$project$Model$Member,
+		A2(_elm_lang$core$Json_Decode_ops[':='], 'username', _elm_lang$core$Json_Decode$string),
+		A2(_elm_lang$core$Json_Decode_ops[':='], 'browniePoints', _elm_lang$core$Json_Decode$int)));
 var _user$project$Update$decodePoints = A2(
 	_elm_lang$core$Json_Decode$at,
 	_elm_lang$core$Native_List.fromArray(
@@ -8111,21 +8126,24 @@ var _user$project$Update$decodeTitle = A2(
 		['title']),
 	_elm_lang$core$Json_Decode$string);
 var _user$project$Update$addToList = F2(
-	function (n, model) {
-		var camper = _user$project$Model$createCamper(n);
+	function (member, model) {
+		var model$ = _elm_lang$core$Native_Utils.update(
+			model,
+			{points: member.points, error: false});
+		var camper = A2(_user$project$Model$createCamper, member, model.ts);
 		var clist = A2(
 			_elm_lang$core$List$map,
 			function (_) {
 				return _.uname;
 			},
 			model.tList);
-		var isPresent = A2(_elm_lang$core$List$member, n, clist);
+		var isPresent = A2(_elm_lang$core$List$member, member.uname, clist);
 		var _p0 = isPresent;
 		if (_p0 === true) {
-			return model;
+			return model$;
 		} else {
 			return _elm_lang$core$Native_Utils.update(
-				model,
+				model$,
 				{
 					tList: A2(_elm_lang$core$List_ops['::'], camper, model.tList)
 				});
@@ -8148,8 +8166,13 @@ var _user$project$Update$makeRequest = function (url) {
 		_elm_lang$core$Task$perform,
 		_user$project$Update$FetchFail,
 		_user$project$Update$FetchSucceed,
-		A2(_evancz$elm_http$Http$get, _user$project$Update$decodePoints, url));
+		A2(_evancz$elm_http$Http$get, _user$project$Update$decodeData, url));
 };
+var _user$project$Update$getData = F2(
+	function (api, uname) {
+		var url = A2(_elm_lang$core$Basics_ops['++'], api, uname);
+		return _user$project$Update$makeRequest(url);
+	});
 var _user$project$Update$update = F2(
 	function (action, model) {
 		var _p1 = action;
@@ -8161,14 +8184,10 @@ var _user$project$Update$update = F2(
 				return {
 					ctor: '_Tuple2',
 					_0: model$,
-					_1: _user$project$Update$makeRequest(
-						A2(_elm_lang$core$Basics_ops['++'], model$.url, model$.uname))
+					_1: A2(_user$project$Update$getData, model$.url, model$.uname)
 				};
 			case 'FetchSucceed':
-				var model_ = _elm_lang$core$Native_Utils.update(
-					model,
-					{points: _p1._0, error: false});
-				var model$ = A2(_user$project$Update$addToList, model_.name, model_);
+				var model$ = A2(_user$project$Update$addToList, _p1._0, model);
 				return {
 					ctor: '_Tuple2',
 					_0: model$,
@@ -8209,11 +8228,6 @@ var _user$project$Update$update = F2(
 						A2(_elm_lang$core$Basics_ops['++'], model$.url, model$.uname))
 				};
 		}
-	});
-var _user$project$Update$getData = F2(
-	function (api, uname) {
-		var url = A2(_elm_lang$core$Basics_ops['++'], api, uname);
-		return _user$project$Update$makeRequest(url);
 	});
 var _user$project$Update$FetchData = {ctor: 'FetchData'};
 
@@ -8303,7 +8317,7 @@ var _user$project$View$view = function (model) {
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_elm_lang$html$Html$text(
-						_elm_lang$core$Basics$toString(clist))
+						_elm_lang$core$Basics$toString(model))
 					])),
 				A2(
 				_elm_lang$html$Html$footer,

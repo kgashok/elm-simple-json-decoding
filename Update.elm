@@ -10,11 +10,12 @@ import Model exposing (..)
 import Ports
 
 
+
 -- UPDATE
 
 type Msg
   = FetchData
-  | FetchSucceed Int
+  | FetchSucceed Member
   | StoreURL String
   | FetchFail Http.Error
   | Tick Time 
@@ -29,12 +30,12 @@ update action model =
         model' = {model|uname = model.name}
       in 
         (model', 
-         makeRequest (model'.url ++ model'.uname) )
+         --makeRequest (model'.url ++ model'.uname) )
+         getData model'.url model'.uname)
 
-    FetchSucceed val ->
+    FetchSucceed member ->
       let 
-        model_ = {model | points = val, error = False}
-        model' =  addToList model_.name model_
+        model' =  addToList member model
       in 
         (model', Ports.modelChange model')
 
@@ -59,22 +60,25 @@ update action model =
 
 -- HTTP
 
-addToList : String -> Model -> Model 
-addToList n model = 
+
+
+addToList : Member -> Model -> Model 
+addToList member model = 
   let 
     clist = List.map .uname model.tList
-    isPresent = List.member n clist
-    camper = createCamper n 
+    isPresent = List.member member.uname clist
+    camper = createCamper member model.ts  
+    model' = {model| points = member.points, error = False}
   in 
     case isPresent of 
-      True -> model 
-      False -> {model | tList = camper :: model.tList} 
+      True -> model' 
+      False -> {model' | tList = camper :: model.tList} 
 
 
 makeRequest : String -> Cmd Msg
 makeRequest url =
-
-  Task.perform FetchFail FetchSucceed (Http.get decodePoints url)
+  --Task.perform FetchFail FetchSucceed (Http.get decodePoints url)
+  Task.perform FetchFail FetchSucceed (Http.get decodeData url)
 
 
 getData : String -> String -> Cmd Msg 
@@ -96,3 +100,27 @@ decodeTitle =
 decodePoints : Json.Decoder Int
 decodePoints = 
   Json.at ["about", "browniePoints"] Json.int 
+
+
+decodeData : Json.Decoder Member
+decodeData =
+  Json.at ["about"] 
+    (
+      Json.object2 Member
+        ("username" := Json.string)
+        ("browniePoints" := Json.int) 
+    )
+
+
+{-
+  https://api.myjson.com/bins/4j9e0?pretty=1 - for kgashok
+
+  {
+    "about": {
+      "username": "kgashok",
+      "browniePoints": 174,
+      "bio": ""
+    }
+  }
+
+-}

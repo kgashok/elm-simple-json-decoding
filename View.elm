@@ -38,7 +38,7 @@ view model =
         ] []
         , button [ onClick FetchData ] [ text "Fetch!" ]
         , h1 [rStyle]  [ text response ]
-        , div [] [ text (toString clist) ]
+        , div [] [ text (toString model) ]
         , footer [] 
           [a [href (gitRepo ++ "/issues/new"), 
               target "_blank", 

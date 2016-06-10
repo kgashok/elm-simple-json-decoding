@@ -2,18 +2,7 @@ module Model exposing (..) -- where
 
 import Time exposing (Time)
 
-{-
-  https://api.myjson.com/bins/4j9e0?pretty=1 - for kgashok
 
-  {
-    "about": {
-      "username": "kgashok",
-      "browniePoints": 174,
-      "bio": ""
-    }
-  }
-
--}
 
 url1 : String
 url1 = "https://api.myjson.com/bins/3fueo"
@@ -44,16 +33,24 @@ type alias Camper =
   , chist: List Cdata
   }
 
+type alias Member = 
+  { uname: String
+  , points: Int  
+  }
+
 type alias Cdata = 
   { points: Int 
   , ts : Time
   }
 
-createCamper : String -> Camper 
-createCamper name = 
-  { uname = name
-  , chist = []
-  }
+createCamper : Member -> Time -> Camper 
+createCamper member ts = 
+  let 
+    data = pointsData member.points ts
+  in
+    { uname = member.uname
+    , chist = [data]
+    }
 
 pointsData : Int -> Time -> Cdata 
 pointsData p time = 
@@ -70,6 +67,6 @@ initialModel =
   , error = False
   , points = -1
   , ts = 0
-  , tList = [] 
+  , tList = []
   , tPoints = 0
   }
