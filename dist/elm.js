@@ -8065,7 +8065,7 @@ var _user$project$Model$Cdata = F2(
 	});
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v1.0-beta-10-g2b03b8e';
+var _user$project$Version$version = 'v1.0-beta-13-g11a4d61';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -8155,10 +8155,9 @@ var _user$project$Update$update = F2(
 		var _p1 = action;
 		switch (_p1.ctor) {
 			case 'FetchData':
-				var model_ = _elm_lang$core$Native_Utils.update(
+				var model$ = _elm_lang$core$Native_Utils.update(
 					model,
 					{uname: model.name});
-				var model$ = A2(_user$project$Update$addToList, model_.name, model_);
 				return {
 					ctor: '_Tuple2',
 					_0: model$,
@@ -8166,9 +8165,10 @@ var _user$project$Update$update = F2(
 						A2(_elm_lang$core$Basics_ops['++'], model$.url, model$.uname))
 				};
 			case 'FetchSucceed':
-				var model$ = _elm_lang$core$Native_Utils.update(
+				var model_ = _elm_lang$core$Native_Utils.update(
 					model,
 					{points: _p1._0, error: false});
+				var model$ = A2(_user$project$Update$addToList, model_.name, model_);
 				return {
 					ctor: '_Tuple2',
 					_0: model$,
@@ -8329,7 +8329,7 @@ var _user$project$View$view = function (model) {
 };
 
 var _user$project$Subscriptions$subscriptions = function (model) {
-	return A2(_elm_lang$core$Time$every, _elm_lang$core$Time$minute, _user$project$Update$Tick);
+	return A2(_elm_lang$core$Time$every, 45 * _elm_lang$core$Time$second, _user$project$Update$Tick);
 };
 
 var _user$project$Fcc$init = function (savedModel) {

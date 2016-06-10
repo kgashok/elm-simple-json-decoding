@@ -26,15 +26,15 @@ update action model =
   case action of
     FetchData ->
       let
-        model_ = {model|uname = model.name}
-        model' =  addToList model_.name model_
+        model' = {model|uname = model.name}
       in 
         (model', 
          makeRequest (model'.url ++ model'.uname) )
 
     FetchSucceed val ->
       let 
-        model' = {model | points = val, error = False}
+        model_ = {model | points = val, error = False}
+        model' =  addToList model_.name model_
       in 
         (model', Ports.modelChange model')
 
