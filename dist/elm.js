@@ -8072,7 +8072,7 @@ var _user$project$Model$Cdata = F2(
 	});
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v2.0-beta-0-gdc080ba';
+var _user$project$Version$version = 'v2.0-beta-2-g3b4f826';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
