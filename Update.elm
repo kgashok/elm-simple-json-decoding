@@ -16,6 +16,7 @@ import Ports
 type Msg
   = FetchData
   | FetchSucceed Member
+  | UpdateSucceed Member
   | StoreURL String
   | FetchFail Http.Error
   | Tick Time 
@@ -35,7 +36,7 @@ update action model =
 
     FetchSucceed member ->
       let 
-        model' =  addToList member model
+        model' = addToList member model
       in 
         (model', Ports.modelChange model')
 
@@ -54,11 +55,42 @@ update action model =
         clist  = List.map .uname model'.tList
 
       in  
-        (model', 
-         makeRequest (model'.url ++ model'.uname) )
+        ( model', 
+          tickRequest (model'.url ++ model'.uname)
+         )    
 
+    UpdateSucceed member -> 
+      let
+        camper = List.head (List.filter (\x -> x.uname == member.uname)
+                   model.tList)
+      in
+        case camper of
+          Nothing -> (model, Cmd.none) 
+          Just (camper) -> 
+            ( {model |tList = updateCHistory member camper model}
+              , Ports.modelChange model
+            )
+  
 
 -- HTTP
+
+tickRequest : String -> Cmd Msg
+tickRequest url =
+  --Task.perform FetchFail FetchSucceed (Http.get decodePoints url)
+  Task.perform FetchFail UpdateSucceed (Http.get decodeData url)
+
+
+updateCHistory : Member -> Camper -> Model -> List Camper   
+updateCHistory member camper model = 
+  let 
+    data = pointsData member.points model.ts
+    camper' = {camper| chist = data :: camper.chist}
+    model' = {model |tList = 
+        List.filter (\x -> x.uname /= member.uname) 
+          model.tList
+    }
+  in
+    camper' :: model'.tList
 
 
 
@@ -67,11 +99,11 @@ addToList member model =
   let 
     clist = List.map .uname model.tList
     isPresent = List.member member.uname clist
-    camper = createCamper member model.ts  
-    model' = {model| points = member.points, error = False}
+    camper  = createCamper member model.ts
+    model'  = {model| points = member.points, error = False}
   in 
     case isPresent of 
-      True -> model' 
+      True ->  model
       False -> {model' | tList = camper :: model.tList} 
 
 

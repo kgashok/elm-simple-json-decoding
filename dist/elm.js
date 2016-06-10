@@ -8071,7 +8071,7 @@ var _user$project$Model$Cdata = F2(
 	});
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v1.0-beta-14-g0aed613';
+var _user$project$Version$version = 'v1.0-beta-16-ge80a7ac';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -8140,7 +8140,7 @@ var _user$project$Update$addToList = F2(
 		var isPresent = A2(_elm_lang$core$List$member, member.uname, clist);
 		var _p0 = isPresent;
 		if (_p0 === true) {
-			return model$;
+			return model;
 		} else {
 			return _elm_lang$core$Native_Utils.update(
 				model$,
@@ -8148,6 +8148,26 @@ var _user$project$Update$addToList = F2(
 					tList: A2(_elm_lang$core$List_ops['::'], camper, model.tList)
 				});
 		}
+	});
+var _user$project$Update$updateCHistory = F3(
+	function (member, camper, model) {
+		var model$ = _elm_lang$core$Native_Utils.update(
+			model,
+			{
+				tList: A2(
+					_elm_lang$core$List$filter,
+					function (x) {
+						return !_elm_lang$core$Native_Utils.eq(x.uname, member.uname);
+					},
+					model.tList)
+			});
+		var data = A2(_user$project$Model$pointsData, member.points, model.ts);
+		var camper$ = _elm_lang$core$Native_Utils.update(
+			camper,
+			{
+				chist: A2(_elm_lang$core$List_ops['::'], data, camper.chist)
+			});
+		return A2(_elm_lang$core$List_ops['::'], camper$, model$.tList);
 	});
 var _user$project$Update$Tick = function (a) {
 	return {ctor: 'Tick', _0: a};
@@ -8157,6 +8177,16 @@ var _user$project$Update$FetchFail = function (a) {
 };
 var _user$project$Update$StoreURL = function (a) {
 	return {ctor: 'StoreURL', _0: a};
+};
+var _user$project$Update$UpdateSucceed = function (a) {
+	return {ctor: 'UpdateSucceed', _0: a};
+};
+var _user$project$Update$tickRequest = function (url) {
+	return A3(
+		_elm_lang$core$Task$perform,
+		_user$project$Update$FetchFail,
+		_user$project$Update$UpdateSucceed,
+		A2(_evancz$elm_http$Http$get, _user$project$Update$decodeData, url));
 };
 var _user$project$Update$FetchSucceed = function (a) {
 	return {ctor: 'FetchSucceed', _0: a};
@@ -8211,7 +8241,7 @@ var _user$project$Update$update = F2(
 						{error: true, points: -1, uname: ''}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
-			default:
+			case 'Tick':
 				var model$ = _elm_lang$core$Native_Utils.update(
 					model,
 					{ts: _p1._0, uname: model.name});
@@ -8224,9 +8254,32 @@ var _user$project$Update$update = F2(
 				return {
 					ctor: '_Tuple2',
 					_0: model$,
-					_1: _user$project$Update$makeRequest(
+					_1: _user$project$Update$tickRequest(
 						A2(_elm_lang$core$Basics_ops['++'], model$.url, model$.uname))
 				};
+			default:
+				var _p3 = _p1._0;
+				var camper = _elm_lang$core$List$head(
+					A2(
+						_elm_lang$core$List$filter,
+						function (x) {
+							return _elm_lang$core$Native_Utils.eq(x.uname, _p3.uname);
+						},
+						model.tList));
+				var _p2 = camper;
+				if (_p2.ctor === 'Nothing') {
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				} else {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								tList: A3(_user$project$Update$updateCHistory, _p3, _p2._0, model)
+							}),
+						_1: _user$project$Ports$modelChange(model)
+					};
+				}
 		}
 	});
 var _user$project$Update$FetchData = {ctor: 'FetchData'};
@@ -8343,7 +8396,7 @@ var _user$project$View$view = function (model) {
 };
 
 var _user$project$Subscriptions$subscriptions = function (model) {
-	return A2(_elm_lang$core$Time$every, 45 * _elm_lang$core$Time$second, _user$project$Update$Tick);
+	return A2(_elm_lang$core$Time$every, 10 * _elm_lang$core$Time$second, _user$project$Update$Tick);
 };
 
 var _user$project$Fcc$init = function (savedModel) {
