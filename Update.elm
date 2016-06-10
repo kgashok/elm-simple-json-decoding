@@ -67,12 +67,23 @@ update action model =
         case camper of
           Nothing -> (model, Cmd.none) 
           Just (camper) -> 
-            ( {model |tList = updateCHistory member camper model}
+            ( {model |tList = updateCHistory member camper model,
+                tPoints = calculateTotal model.tList  
+              }
               , Ports.modelChange model
             )
   
 
 -- HTTP
+
+calculateTotal : List Camper -> Int 
+calculateTotal tlist = 
+  tlist 
+    |> List.filterMap (.chist >> List.head) 
+    |> List.map .points 
+    |> List.sum
+
+
 
 tickRequest : String -> Cmd Msg
 tickRequest url =
@@ -84,11 +95,13 @@ updateCHistory : Member -> Camper -> Model -> List Camper
 updateCHistory member camper model = 
   let 
     data = pointsData member.points model.ts
-    camper' = {camper| chist = data :: camper.chist}
+    camper' = {camper| chist = data :: camper.chist, 
+                       last  = data 
+              }
     model' = {model |tList = 
-        List.filter (\x -> x.uname /= member.uname) 
-          model.tList
+      List.filter (\x -> x.uname /= member.uname) model.tList
     }
+
   in
     camper' :: model'.tList
 
@@ -100,7 +113,8 @@ addToList member model =
     clist = List.map .uname model.tList
     isPresent = List.member member.uname clist
     camper  = createCamper member model.ts
-    model'  = {model| points = member.points, error = False}
+    model'  = {model| points = member.points,
+               tPoints = calculateTotal model.tList, error = False}
   in 
     case isPresent of 
       True ->  model

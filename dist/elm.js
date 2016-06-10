@@ -8036,7 +8036,8 @@ var _user$project$Model$createCamper = F2(
 		return {
 			uname: member.uname,
 			chist: _elm_lang$core$Native_List.fromArray(
-				[data])
+				[data]),
+			last: data
 		};
 	});
 var _user$project$Model$fccAPI = 'https://www.freecodecamp.com/api/users/about?username=';
@@ -8057,9 +8058,9 @@ var _user$project$Model$Model = F8(
 	function (a, b, c, d, e, f, g, h) {
 		return {url: a, name: b, uname: c, error: d, points: e, ts: f, tList: g, tPoints: h};
 	});
-var _user$project$Model$Camper = F2(
-	function (a, b) {
-		return {uname: a, chist: b};
+var _user$project$Model$Camper = F3(
+	function (a, b, c) {
+		return {uname: a, chist: b, last: c};
 	});
 var _user$project$Model$Member = F2(
 	function (a, b) {
@@ -8090,7 +8091,8 @@ var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPor
 						chist: _elm_lang$core$Native_List.toArray(v.chist).map(
 							function (v) {
 								return {points: v.points, ts: v.ts};
-							})
+							}),
+						last: {points: v.last.points, ts: v.last.ts}
 					};
 				}),
 			tPoints: v.tPoints
@@ -8125,30 +8127,6 @@ var _user$project$Update$decodeTitle = A2(
 	_elm_lang$core$Native_List.fromArray(
 		['title']),
 	_elm_lang$core$Json_Decode$string);
-var _user$project$Update$addToList = F2(
-	function (member, model) {
-		var model$ = _elm_lang$core$Native_Utils.update(
-			model,
-			{points: member.points, error: false});
-		var camper = A2(_user$project$Model$createCamper, member, model.ts);
-		var clist = A2(
-			_elm_lang$core$List$map,
-			function (_) {
-				return _.uname;
-			},
-			model.tList);
-		var isPresent = A2(_elm_lang$core$List$member, member.uname, clist);
-		var _p0 = isPresent;
-		if (_p0 === true) {
-			return model;
-		} else {
-			return _elm_lang$core$Native_Utils.update(
-				model$,
-				{
-					tList: A2(_elm_lang$core$List_ops['::'], camper, model.tList)
-				});
-		}
-	});
 var _user$project$Update$updateCHistory = F3(
 	function (member, camper, model) {
 		var model$ = _elm_lang$core$Native_Utils.update(
@@ -8165,9 +8143,55 @@ var _user$project$Update$updateCHistory = F3(
 		var camper$ = _elm_lang$core$Native_Utils.update(
 			camper,
 			{
-				chist: A2(_elm_lang$core$List_ops['::'], data, camper.chist)
+				chist: A2(_elm_lang$core$List_ops['::'], data, camper.chist),
+				last: data
 			});
 		return A2(_elm_lang$core$List_ops['::'], camper$, model$.tList);
+	});
+var _user$project$Update$calculateTotal = function (tlist) {
+	return _elm_lang$core$List$sum(
+		A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.points;
+			},
+			A2(
+				_elm_lang$core$List$filterMap,
+				function (_p0) {
+					return _elm_lang$core$List$head(
+						function (_) {
+							return _.chist;
+						}(_p0));
+				},
+				tlist)));
+};
+var _user$project$Update$addToList = F2(
+	function (member, model) {
+		var model$ = _elm_lang$core$Native_Utils.update(
+			model,
+			{
+				points: member.points,
+				tPoints: _user$project$Update$calculateTotal(model.tList),
+				error: false
+			});
+		var camper = A2(_user$project$Model$createCamper, member, model.ts);
+		var clist = A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.uname;
+			},
+			model.tList);
+		var isPresent = A2(_elm_lang$core$List$member, member.uname, clist);
+		var _p1 = isPresent;
+		if (_p1 === true) {
+			return model;
+		} else {
+			return _elm_lang$core$Native_Utils.update(
+				model$,
+				{
+					tList: A2(_elm_lang$core$List_ops['::'], camper, model.tList)
+				});
+		}
 	});
 var _user$project$Update$Tick = function (a) {
 	return {ctor: 'Tick', _0: a};
@@ -8205,8 +8229,8 @@ var _user$project$Update$getData = F2(
 	});
 var _user$project$Update$update = F2(
 	function (action, model) {
-		var _p1 = action;
-		switch (_p1.ctor) {
+		var _p2 = action;
+		switch (_p2.ctor) {
 			case 'FetchData':
 				var model$ = _elm_lang$core$Native_Utils.update(
 					model,
@@ -8217,7 +8241,7 @@ var _user$project$Update$update = F2(
 					_1: A2(_user$project$Update$getData, model$.url, model$.uname)
 				};
 			case 'FetchSucceed':
-				var model$ = A2(_user$project$Update$addToList, _p1._0, model);
+				var model$ = A2(_user$project$Update$addToList, _p2._0, model);
 				return {
 					ctor: '_Tuple2',
 					_0: model$,
@@ -8229,7 +8253,7 @@ var _user$project$Update$update = F2(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							name: _elm_lang$core$String$toLower(_p1._0)
+							name: _elm_lang$core$String$toLower(_p2._0)
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
@@ -8244,7 +8268,7 @@ var _user$project$Update$update = F2(
 			case 'Tick':
 				var model$ = _elm_lang$core$Native_Utils.update(
 					model,
-					{ts: _p1._0, uname: model.name});
+					{ts: _p2._0, uname: model.name});
 				var clist = A2(
 					_elm_lang$core$List$map,
 					function (_) {
@@ -8258,16 +8282,16 @@ var _user$project$Update$update = F2(
 						A2(_elm_lang$core$Basics_ops['++'], model$.url, model$.uname))
 				};
 			default:
-				var _p3 = _p1._0;
+				var _p4 = _p2._0;
 				var camper = _elm_lang$core$List$head(
 					A2(
 						_elm_lang$core$List$filter,
 						function (x) {
-							return _elm_lang$core$Native_Utils.eq(x.uname, _p3.uname);
+							return _elm_lang$core$Native_Utils.eq(x.uname, _p4.uname);
 						},
 						model.tList));
-				var _p2 = camper;
-				if (_p2.ctor === 'Nothing') {
+				var _p3 = camper;
+				if (_p3.ctor === 'Nothing') {
 					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 				} else {
 					return {
@@ -8275,7 +8299,8 @@ var _user$project$Update$update = F2(
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
 							{
-								tList: A3(_user$project$Update$updateCHistory, _p3, _p2._0, model)
+								tList: A3(_user$project$Update$updateCHistory, _p4, _p3._0, model),
+								tPoints: _user$project$Update$calculateTotal(model.tList)
 							}),
 						_1: _user$project$Ports$modelChange(model)
 					};
@@ -8367,7 +8392,7 @@ var _user$project$View$buildResponse = function (model) {
 	return _elm_lang$core$Native_Utils.eq(model.error, true) ? 'There was an error' : ((!_elm_lang$core$Native_Utils.eq(model.points, -1)) ? A2(
 		_elm_lang$core$Basics_ops['++'],
 		'Challenges completed: ',
-		_elm_lang$core$Basics$toString(model.points)) : '');
+		_elm_lang$core$Basics$toString(model.tPoints)) : '');
 };
 var _user$project$View$view = function (model) {
 	var clist = A2(
@@ -8516,10 +8541,29 @@ var _user$project$Fcc$main = {
 														function (chist) {
 															return A2(
 																_elm_lang$core$Json_Decode$andThen,
-																A2(_elm_lang$core$Json_Decode_ops[':='], 'uname', _elm_lang$core$Json_Decode$string),
-																function (uname) {
-																	return _elm_lang$core$Json_Decode$succeed(
-																		{chist: chist, uname: uname});
+																A2(
+																	_elm_lang$core$Json_Decode_ops[':='],
+																	'last',
+																	A2(
+																		_elm_lang$core$Json_Decode$andThen,
+																		A2(_elm_lang$core$Json_Decode_ops[':='], 'points', _elm_lang$core$Json_Decode$int),
+																		function (points) {
+																			return A2(
+																				_elm_lang$core$Json_Decode$andThen,
+																				A2(_elm_lang$core$Json_Decode_ops[':='], 'ts', _elm_lang$core$Json_Decode$float),
+																				function (ts) {
+																					return _elm_lang$core$Json_Decode$succeed(
+																						{points: points, ts: ts});
+																				});
+																		})),
+																function (last) {
+																	return A2(
+																		_elm_lang$core$Json_Decode$andThen,
+																		A2(_elm_lang$core$Json_Decode_ops[':='], 'uname', _elm_lang$core$Json_Decode$string),
+																		function (uname) {
+																			return _elm_lang$core$Json_Decode$succeed(
+																				{chist: chist, last: last, uname: uname});
+																		});
 																});
 														}))),
 											function (tList) {

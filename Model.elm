@@ -31,6 +31,7 @@ type alias Model =
 type alias Camper = 
   { uname: String
   , chist: List Cdata
+  , last: Cdata
   }
 
 type alias Member = 
@@ -50,6 +51,7 @@ createCamper member ts =
   in
     { uname = member.uname
     , chist = [data]
+    , last  = data 
     }
 
 pointsData : Int -> Time -> Cdata 

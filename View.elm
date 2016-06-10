@@ -13,13 +13,13 @@ import Model exposing (..)
 
 buildResponse : Model -> String 
 buildResponse model = 
-    if model.error == True
-    then "There was an error"
-    --else if model.result /= ""
-    --then "I just found: " ++ model.result
-    else if model.points /= -1
-    then "Challenges completed: " ++ (toString model.points)
-    else "" 
+  if model.error == True
+  then "There was an error"
+  --else if model.result /= ""
+  --then "I just found: " ++ model.result
+  else if model.points /= -1
+  then "Challenges completed: " ++ (toString model.tPoints)
+  else "" 
 
 
 
