@@ -61,20 +61,28 @@ update action model =
 
     UpdateSucceed member -> 
       let
-        camper = List.head (List.filter (\x -> x.uname == member.uname)
-                   model.tList)
+        camper = 
+          List.filterMap (getCamper member.uname) model.tList
+            |> List.head
       in
-        case camper of
-          Nothing -> (model, Cmd.none) 
-          Just (camper) -> 
-            ( {model |tList = updateCHistory member camper model,
-                tPoints = calculateTotal model.tList  
-              }
-              , Ports.modelChange model
+        case camper of 
+          Nothing -> (model, Cmd.none)
+          Just(camper) ->
+            ({ model |tList = updateCHistory member camper model,
+                    tPoints = calculateTotal model.tList  
+             }
+             , Ports.modelChange model
             )
-  
+    
 
 -- HTTP
+
+getCamper : String -> Camper -> Maybe Camper
+getCamper name camper = 
+  if name == camper.uname then
+      Just camper 
+  else
+      Nothing
 
 calculateTotal : List Camper -> Int 
 calculateTotal tlist = 

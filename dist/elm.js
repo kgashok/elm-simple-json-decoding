@@ -8193,6 +8193,10 @@ var _user$project$Update$addToList = F2(
 				});
 		}
 	});
+var _user$project$Update$getCamper = F2(
+	function (name, camper) {
+		return _elm_lang$core$Native_Utils.eq(name, camper.uname) ? _elm_lang$core$Maybe$Just(camper) : _elm_lang$core$Maybe$Nothing;
+	});
 var _user$project$Update$Tick = function (a) {
 	return {ctor: 'Tick', _0: a};
 };
@@ -8285,10 +8289,8 @@ var _user$project$Update$update = F2(
 				var _p4 = _p2._0;
 				var camper = _elm_lang$core$List$head(
 					A2(
-						_elm_lang$core$List$filter,
-						function (x) {
-							return _elm_lang$core$Native_Utils.eq(x.uname, _p4.uname);
-						},
+						_elm_lang$core$List$filterMap,
+						_user$project$Update$getCamper(_p4.uname),
 						model.tList));
 				var _p3 = camper;
 				if (_p3.ctor === 'Nothing') {
