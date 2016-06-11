@@ -57,7 +57,7 @@ update action model =
       in  
         ( model', 
           tickRequest (model'.url ++ model'.uname)
-         )    
+        )    
 
     UpdateSucceed member -> 
       let
@@ -73,7 +73,7 @@ update action model =
              }
              , Ports.modelChange model
             )
-    
+
 
 -- HTTP
 

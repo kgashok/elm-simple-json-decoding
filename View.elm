@@ -22,8 +22,6 @@ buildResponse model =
   else "" 
 
 
-
-
 view : Model -> Html Msg
 view model =
   let
