@@ -8843,7 +8843,7 @@ var _user$project$Model$Cdata = F2(
 	});
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v2.0-beta-12-g931af63';
+var _user$project$Version$version = 'v2.0-beta-14-g417a48e';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -9306,7 +9306,7 @@ var _user$project$View$view = function (model) {
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html$text('Fetch!')
+						_elm_lang$html$Html$text('Fetch and Add!')
 					])),
 				A2(
 				_elm_lang$html$Html$h1,
@@ -9322,7 +9322,7 @@ var _user$project$View$view = function (model) {
 };
 
 var _user$project$Subscriptions$subscriptions = function (model) {
-	return A2(_elm_lang$core$Time$every, 15 * _elm_lang$core$Time$second, _user$project$Update$Tick);
+	return A2(_elm_lang$core$Time$every, 6 * _elm_lang$core$Time$hour, _user$project$Update$Tick);
 };
 
 var _user$project$Fcc$init = function (savedModel) {
