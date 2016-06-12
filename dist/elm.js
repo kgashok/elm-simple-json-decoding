@@ -8072,7 +8072,7 @@ var _user$project$Model$Cdata = F2(
 	});
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v2.0-beta-4-gc8bdec5';
+var _user$project$Version$version = 'v2.0-beta-6-gf0ca7ef';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -8331,20 +8331,32 @@ var _user$project$View$footer = A2(
 					_elm_lang$html$Html$text(_user$project$Version$version)
 				]))
 		]));
+var _user$project$View$formatData = F2(
+	function (nowTime, cdata) {
+		var timeLapsed = _elm_lang$core$Basics$round(
+			_elm_lang$core$Time$inMinutes(nowTime - cdata.ts));
+		return {
+			ctor: '_Tuple2',
+			_0: cdata.points,
+			_1: A2(
+				_elm_lang$core$Basics_ops['++'],
+				'-',
+				A2(
+					_elm_lang$core$String$left,
+					4,
+					_elm_lang$core$Basics$toString(timeLapsed)))
+		};
+	});
 var _user$project$View$camperItem = function (camper) {
-	var history = A2(_elm_lang$core$List$take, 20, camper.chist);
+	var history = A2(_elm_lang$core$List$take, 10, camper.chist);
 	var points = A2(
 		_elm_lang$core$List$map,
-		function (_) {
-			return _.points;
-		},
+		_user$project$View$formatData(camper.last.ts),
 		history);
 	return A2(
 		_elm_lang$html$Html$li,
 		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html_Attributes$class('#list')
-			]),
+			[]),
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
@@ -8471,7 +8483,7 @@ var _user$project$View$view = function (model) {
 };
 
 var _user$project$Subscriptions$subscriptions = function (model) {
-	return A2(_elm_lang$core$Time$every, 40 * _elm_lang$core$Time$second, _user$project$Update$Tick);
+	return A2(_elm_lang$core$Time$every, 45 * _elm_lang$core$Time$second, _user$project$Update$Tick);
 };
 
 var _user$project$Fcc$init = function (savedModel) {
