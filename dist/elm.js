@@ -9039,20 +9039,24 @@ var _user$project$View$footer = A2(
 var _user$project$View$formatData = F2(
 	function (nowTime, cdata) {
 		var timeLapsed = _elm_lang$core$Time$inMinutes(cdata.ts - nowTime);
-		var _p0 = timeLapsed;
-		if (_p0 === 0) {
+		var _p0 = {ctor: '_Tuple2', _0: cdata.ts, _1: timeLapsed};
+		if (_p0._0 === 0) {
 			return _elm_lang$core$Basics$toString(cdata.points);
 		} else {
-			return A2(
-				_elm_lang$core$Basics_ops['++'],
-				_elm_lang$core$Basics$toString(cdata.points),
-				A2(
+			if (_p0._1 === 0) {
+				return _elm_lang$core$Basics$toString(cdata.points);
+			} else {
+				return A2(
 					_elm_lang$core$Basics_ops['++'],
-					'(',
+					_elm_lang$core$Basics$toString(cdata.points),
 					A2(
 						_elm_lang$core$Basics_ops['++'],
-						A2(_ggb$numeral_elm$Numeral$format, '00.0', timeLapsed),
-						')')));
+						'(',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							A2(_ggb$numeral_elm$Numeral$format, '00.0', timeLapsed),
+							')')));
+			}
 		}
 	});
 var _user$project$View$camperItem = function (camper) {
