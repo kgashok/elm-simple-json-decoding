@@ -9255,13 +9255,13 @@ var _user$project$View$buildResponse = function (model) {
 									'-',
 									_elm_lang$core$Basics$toString(
 										_elm_lang$core$Date$year(now))))))))));
-	return _elm_lang$core$Native_Utils.eq(model.error, true) ? 'There was an error' : ((!_elm_lang$core$Native_Utils.eq(model.points, -1)) ? A2(
+	return _elm_lang$core$Native_Utils.eq(model.error, true) ? 'Error: userID not valid?' : ((!_elm_lang$core$Native_Utils.eq(model.points, -1)) ? A2(
 		_elm_lang$core$Basics_ops['++'],
 		'Challenges completed: ',
 		A2(
 			_elm_lang$core$Basics_ops['++'],
 			_elm_lang$core$Basics$toString(model.tPoints),
-			A2(_elm_lang$core$Basics_ops['++'], ' @ ', dateString))) : '');
+			A2(_elm_lang$core$Basics_ops['++'], ' ; last tick @ ', dateString))) : '');
 };
 var _user$project$View$view = function (model) {
 	var clist = A2(

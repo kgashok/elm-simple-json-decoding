@@ -33,7 +33,7 @@ buildResponse model =
     then "Error: userID not valid?"
     else if model.points /= -1
     then "Challenges completed: " ++ (toString model.tPoints)
-          ++ " @ " ++ dateString 
+          ++ " ; last tick @ " ++ dateString 
     else "" 
 
 
