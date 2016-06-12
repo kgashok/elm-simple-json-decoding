@@ -8332,16 +8332,19 @@ var _user$project$View$footer = A2(
 				]))
 		]));
 var _user$project$View$camperItem = function (camper) {
+	var history = A2(_elm_lang$core$List$take, 20, camper.chist);
 	var points = A2(
 		_elm_lang$core$List$map,
 		function (_) {
 			return _.points;
 		},
-		camper.chist);
+		history);
 	return A2(
 		_elm_lang$html$Html$li,
 		_elm_lang$core$Native_List.fromArray(
-			[]),
+			[
+				_elm_lang$html$Html_Attributes$class('#list')
+			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
@@ -8468,7 +8471,7 @@ var _user$project$View$view = function (model) {
 };
 
 var _user$project$Subscriptions$subscriptions = function (model) {
-	return A2(_elm_lang$core$Time$every, 45 * _elm_lang$core$Time$second, _user$project$Update$Tick);
+	return A2(_elm_lang$core$Time$every, 40 * _elm_lang$core$Time$second, _user$project$Update$Tick);
 };
 
 var _user$project$Fcc$init = function (savedModel) {

@@ -8,6 +8,7 @@ import Version exposing (version, gitRepo)
 import Update exposing (Msg(..)) 
 import Model exposing (..)
 
+
 -- VIEW
 
 
@@ -55,7 +56,8 @@ rStyle =
 camperItem : Camper -> Html Msg
 camperItem camper = 
   let 
-    points = List.map .points camper.chist
+    history = List.take 20 camper.chist
+    points  = List.map .points history
   in 
     li []
       [ span [ class "uname" ] [ text camper.uname ],
