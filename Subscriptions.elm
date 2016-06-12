@@ -1,6 +1,6 @@
 module Subscriptions exposing (..) --where 
 
-import Time exposing (Time, second, minute)
+import Time exposing (Time, second, minute, hour)
 
 import Model exposing (Model)
 import Update exposing (Msg(..))

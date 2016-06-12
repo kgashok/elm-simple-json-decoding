@@ -8914,13 +8914,17 @@ var _user$project$Update$StoreURL = function (a) {
 var _user$project$Update$UpdateSucceed = function (a) {
 	return {ctor: 'UpdateSucceed', _0: a};
 };
-var _user$project$Update$tickRequest = function (url) {
-	return A3(
-		_elm_lang$core$Task$perform,
-		_user$project$Update$FetchFail,
-		_user$project$Update$UpdateSucceed,
-		A2(_evancz$elm_http$Http$get, _user$project$Update$decodeData, url));
-};
+var _user$project$Update$tickRequest = F2(
+	function (url, name) {
+		return A3(
+			_elm_lang$core$Task$perform,
+			_user$project$Update$FetchFail,
+			_user$project$Update$UpdateSucceed,
+			A2(
+				_evancz$elm_http$Http$get,
+				_user$project$Update$decodeData,
+				A2(_elm_lang$core$Basics_ops['++'], url, name)));
+	});
 var _user$project$Update$FetchSucceed = function (a) {
 	return {ctor: 'FetchSucceed', _0: a};
 };
@@ -8987,8 +8991,11 @@ var _user$project$Update$update = F2(
 				return {
 					ctor: '_Tuple2',
 					_0: model$,
-					_1: _user$project$Update$tickRequest(
-						A2(_elm_lang$core$Basics_ops['++'], model$.url, model$.uname))
+					_1: _elm_lang$core$Platform_Cmd$batch(
+						A2(
+							_elm_lang$core$List$map,
+							_user$project$Update$tickRequest(model$.url),
+							clist))
 				};
 			default:
 				var _p4 = _p2._0;

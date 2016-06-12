@@ -56,8 +56,9 @@ update action model =
 
       in  
         ( model', 
-          tickRequest (model'.url ++ model'.uname)
-        )    
+          -- tickRequest (model'.url ++ model'.uname)
+          Cmd.batch (List.map (tickRequest model'.url) clist)
+        )
 
     UpdateSucceed member -> 
       let
@@ -93,10 +94,10 @@ calculateTotal tlist =
 
 
 
-tickRequest : String -> Cmd Msg
-tickRequest url =
+tickRequest : String -> String -> Cmd Msg
+tickRequest url name =
   --Task.perform FetchFail FetchSucceed (Http.get decodePoints url)
-  Task.perform FetchFail UpdateSucceed (Http.get decodeData url)
+  Task.perform FetchFail UpdateSucceed (Http.get decodeData (url ++ name))
 
 
 updateCHistory : Member -> Camper -> Model -> List Camper   
