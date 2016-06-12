@@ -4,13 +4,14 @@ import Time exposing (Time, second, minute, hour)
 
 import Model exposing (Model)
 import Update exposing (Msg(..))
+-- import Version exposing (interval)
 
 -- SUBSCRIPTIONS
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
   --Time.every minute Tick
-  Time.every (6 * hour) Tick
+  Time.every (15 * second) Tick
 
 
 
