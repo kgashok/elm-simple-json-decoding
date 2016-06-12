@@ -8,6 +8,7 @@ import Version exposing (version, gitRepo)
 import Update exposing (Msg(..)) 
 import Model exposing (..)
 import Time 
+import Date exposing (..)
 
 import Numeral exposing (format)
 import String
@@ -17,13 +18,25 @@ import String
 
 buildResponse : Model -> String 
 buildResponse model = 
-  if model.error == True
-  then "There was an error"
-  --else if model.result /= ""
-  --then "I just found: " ++ model.result
-  else if model.points /= -1
-  then "Challenges completed: " ++ (toString model.tPoints)
-  else "" 
+  let 
+    now = fromTime model.ts
+    shour = toString (round (toFloat (hour now)))
+    smin  = toString (round (toFloat (minute now)))
+
+    dateString = 
+      shour ++ ":" ++ smin ++ ", " ++
+        (toString (day now)) ++ "-" ++
+        (toString (month now)) ++ "-" ++ 
+        (toString (year now))
+  in 
+    if model.error == True
+    then "There was an error"
+    --else if model.result /= ""
+    --then "I just found: " ++ model.result
+    else if model.points /= -1
+    then "Challenges completed: " ++ (toString model.tPoints)
+          ++ " @ " ++ dateString 
+    else "" 
 
 
 view : Model -> Html Msg
@@ -41,7 +54,7 @@ view model =
           placeholder "Enter a FCC username",
           onInput StoreURL
         ] []
-        , button [ onClick FetchData ] [ text "Fetch!" ]
+        , button [ onClick FetchData ] [ text "Fetch and Add!" ]
         , h1 [rStyle]  [ text response ]
         -- , div [] [ text (toString model) ]
         , campList True model.tList

@@ -2541,6 +2541,39 @@ var _elm_lang$core$Char$isHexDigit = function ($char) {
 		$char));
 };
 
+//import Result //
+
+var _elm_lang$core$Native_Date = function() {
+
+function fromString(str)
+{
+	var date = new Date(str);
+	return isNaN(date.getTime())
+		? _elm_lang$core$Result$Err('unable to parse \'' + str + '\' as a date')
+		: _elm_lang$core$Result$Ok(date);
+}
+
+var dayTable = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+var monthTable =
+	['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+	 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+
+return {
+	fromString: fromString,
+	year: function(d) { return d.getFullYear(); },
+	month: function(d) { return { ctor: monthTable[d.getMonth()] }; },
+	day: function(d) { return d.getDate(); },
+	hour: function(d) { return d.getHours(); },
+	minute: function(d) { return d.getMinutes(); },
+	second: function(d) { return d.getSeconds(); },
+	millisecond: function(d) { return d.getMilliseconds(); },
+	toTime: function(d) { return d.getTime(); },
+	fromTime: function(t) { return new Date(t); },
+	dayOfWeek: function(d) { return { ctor: dayTable[d.getDay()] }; }
+};
+
+}();
 //import Native.Utils //
 
 var _elm_lang$core$Native_Scheduler = function() {
@@ -5295,6 +5328,39 @@ var _elm_lang$core$Time$subMap = F2(
 			});
 	});
 _elm_lang$core$Native_Platform.effectManagers['Time'] = {pkg: 'elm-lang/core', init: _elm_lang$core$Time$init, onEffects: _elm_lang$core$Time$onEffects, onSelfMsg: _elm_lang$core$Time$onSelfMsg, tag: 'sub', subMap: _elm_lang$core$Time$subMap};
+
+var _elm_lang$core$Date$millisecond = _elm_lang$core$Native_Date.millisecond;
+var _elm_lang$core$Date$second = _elm_lang$core$Native_Date.second;
+var _elm_lang$core$Date$minute = _elm_lang$core$Native_Date.minute;
+var _elm_lang$core$Date$hour = _elm_lang$core$Native_Date.hour;
+var _elm_lang$core$Date$dayOfWeek = _elm_lang$core$Native_Date.dayOfWeek;
+var _elm_lang$core$Date$day = _elm_lang$core$Native_Date.day;
+var _elm_lang$core$Date$month = _elm_lang$core$Native_Date.month;
+var _elm_lang$core$Date$year = _elm_lang$core$Native_Date.year;
+var _elm_lang$core$Date$fromTime = _elm_lang$core$Native_Date.fromTime;
+var _elm_lang$core$Date$toTime = _elm_lang$core$Native_Date.toTime;
+var _elm_lang$core$Date$fromString = _elm_lang$core$Native_Date.fromString;
+var _elm_lang$core$Date$now = A2(_elm_lang$core$Task$map, _elm_lang$core$Date$fromTime, _elm_lang$core$Time$now);
+var _elm_lang$core$Date$Date = {ctor: 'Date'};
+var _elm_lang$core$Date$Sun = {ctor: 'Sun'};
+var _elm_lang$core$Date$Sat = {ctor: 'Sat'};
+var _elm_lang$core$Date$Fri = {ctor: 'Fri'};
+var _elm_lang$core$Date$Thu = {ctor: 'Thu'};
+var _elm_lang$core$Date$Wed = {ctor: 'Wed'};
+var _elm_lang$core$Date$Tue = {ctor: 'Tue'};
+var _elm_lang$core$Date$Mon = {ctor: 'Mon'};
+var _elm_lang$core$Date$Dec = {ctor: 'Dec'};
+var _elm_lang$core$Date$Nov = {ctor: 'Nov'};
+var _elm_lang$core$Date$Oct = {ctor: 'Oct'};
+var _elm_lang$core$Date$Sep = {ctor: 'Sep'};
+var _elm_lang$core$Date$Aug = {ctor: 'Aug'};
+var _elm_lang$core$Date$Jul = {ctor: 'Jul'};
+var _elm_lang$core$Date$Jun = {ctor: 'Jun'};
+var _elm_lang$core$Date$May = {ctor: 'May'};
+var _elm_lang$core$Date$Apr = {ctor: 'Apr'};
+var _elm_lang$core$Date$Mar = {ctor: 'Mar'};
+var _elm_lang$core$Date$Feb = {ctor: 'Feb'};
+var _elm_lang$core$Date$Jan = {ctor: 'Jan'};
 
 var _elm_lang$core$Debug$crash = _elm_lang$core$Native_Debug.crash;
 var _elm_lang$core$Debug$log = _elm_lang$core$Native_Debug.log;
@@ -8955,10 +9021,20 @@ var _user$project$Update$update = F2(
 				};
 			case 'FetchSucceed':
 				var model$ = A2(_user$project$Update$addToList, _p2._0, model);
+				var clist = A2(
+					_elm_lang$core$List$map,
+					function (_) {
+						return _.uname;
+					},
+					model$.tList);
 				return {
 					ctor: '_Tuple2',
 					_0: model$,
-					_1: _user$project$Ports$modelChange(model$)
+					_1: _elm_lang$core$Platform_Cmd$batch(
+						A2(
+							_elm_lang$core$List$map,
+							_user$project$Update$tickRequest(model$.url),
+							clist))
 				};
 			case 'StoreURL':
 				return {
@@ -9140,10 +9216,50 @@ var _user$project$View$rStyle = _elm_lang$html$Html_Attributes$style(
 			{ctor: '_Tuple2', _0: 'fontSize', _1: '100%'}
 		]));
 var _user$project$View$buildResponse = function (model) {
+	var now = _elm_lang$core$Date$fromTime(model.ts);
+	var shour = _elm_lang$core$Basics$toString(
+		_elm_lang$core$Basics$round(
+			_elm_lang$core$Basics$toFloat(
+				_elm_lang$core$Date$hour(now))));
+	var smin = _elm_lang$core$Basics$toString(
+		_elm_lang$core$Basics$round(
+			_elm_lang$core$Basics$toFloat(
+				_elm_lang$core$Date$minute(now))));
+	var dateString = A2(
+		_elm_lang$core$Basics_ops['++'],
+		shour,
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			':',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				smin,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					', ',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Basics$toString(
+							_elm_lang$core$Date$day(now)),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'-',
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								_elm_lang$core$Basics$toString(
+									_elm_lang$core$Date$month(now)),
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									'-',
+									_elm_lang$core$Basics$toString(
+										_elm_lang$core$Date$year(now))))))))));
 	return _elm_lang$core$Native_Utils.eq(model.error, true) ? 'There was an error' : ((!_elm_lang$core$Native_Utils.eq(model.points, -1)) ? A2(
 		_elm_lang$core$Basics_ops['++'],
 		'Challenges completed: ',
-		_elm_lang$core$Basics$toString(model.tPoints)) : '');
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(model.tPoints),
+			A2(_elm_lang$core$Basics_ops['++'], ' @ ', dateString))) : '');
 };
 var _user$project$View$view = function (model) {
 	var clist = A2(
@@ -9206,7 +9322,7 @@ var _user$project$View$view = function (model) {
 };
 
 var _user$project$Subscriptions$subscriptions = function (model) {
-	return A2(_elm_lang$core$Time$every, 6 * _elm_lang$core$Time$hour, _user$project$Update$Tick);
+	return A2(_elm_lang$core$Time$every, 15 * _elm_lang$core$Time$second, _user$project$Update$Tick);
 };
 
 var _user$project$Fcc$init = function (savedModel) {

@@ -37,8 +37,14 @@ update action model =
     FetchSucceed member ->
       let 
         model' = addToList member model
+        clist  = List.map .uname model'.tList
       in 
-        (model', Ports.modelChange model')
+        -- (model', Ports.modelChange model')
+        ( model',
+          -- tickRequest (model'.url ++ model'.uname)
+          Cmd.batch (List.map (tickRequest model'.url) clist)
+        )
+
 
     StoreURL name ->
       ({ model | name = String.toLower name }, Cmd.none)
@@ -133,7 +139,6 @@ addToList member model =
 
 makeRequest : String -> Cmd Msg
 makeRequest url =
-  --Task.perform FetchFail FetchSucceed (Http.get decodePoints url)
   Task.perform FetchFail FetchSucceed (Http.get decodeData url)
 
 
