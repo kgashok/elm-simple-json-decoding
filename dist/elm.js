@@ -8899,8 +8899,8 @@ var _user$project$Update$addToList = F2(
 		}
 	});
 var _user$project$Update$getCamper = F2(
-	function (name, camper) {
-		return _elm_lang$core$Native_Utils.eq(name, camper.uname) ? _elm_lang$core$Maybe$Just(camper) : _elm_lang$core$Maybe$Nothing;
+	function (member, camper) {
+		return (_elm_lang$core$Native_Utils.eq(member.uname, camper.uname) && (!_elm_lang$core$Native_Utils.eq(member.points, camper.last.points))) ? _elm_lang$core$Maybe$Just(camper) : _elm_lang$core$Maybe$Nothing;
 	});
 var _user$project$Update$Tick = function (a) {
 	return {ctor: 'Tick', _0: a};
@@ -9002,7 +9002,7 @@ var _user$project$Update$update = F2(
 				var camper = _elm_lang$core$List$head(
 					A2(
 						_elm_lang$core$List$filterMap,
-						_user$project$Update$getCamper(_p4.uname),
+						_user$project$Update$getCamper(_p4),
 						model.tList));
 				var _p3 = camper;
 				if (_p3.ctor === 'Nothing') {
@@ -9160,30 +9160,19 @@ var _user$project$View$view = function (model) {
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
-				_elm_lang$html$Html$h3,
+				_elm_lang$html$Html$h2,
 				_elm_lang$core$Native_List.fromArray(
 					[]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html$text('Simple Object')
+						_elm_lang$html$Html$text('CamperBot for KGISL Meetups')
 					])),
 				A2(
-				_elm_lang$html$Html$p,
+				_elm_lang$html$Html$hr,
 				_elm_lang$core$Native_List.fromArray(
 					[]),
 				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text('Here I want to grab the \'\'browniePoints\'\'')
-					])),
-				A2(
-				_elm_lang$html$Html$p,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text(
-						A2(_elm_lang$core$Basics_ops['++'], 'FCC URL: ', _user$project$Model$fccAPI))
-					])),
+					[])),
 				A2(
 				_elm_lang$html$Html$input,
 				_elm_lang$core$Native_List.fromArray(

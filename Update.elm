@@ -63,7 +63,7 @@ update action model =
     UpdateSucceed member -> 
       let
         camper = 
-          List.filterMap (getCamper member.uname) model.tList
+          List.filterMap (getCamper member) model.tList
             |> List.head
       in
         case camper of 
@@ -78,9 +78,10 @@ update action model =
 
 -- HTTP
 
-getCamper : String -> Camper -> Maybe Camper
-getCamper name camper = 
-  if name == camper.uname then
+getCamper : Member -> Camper -> Maybe Camper
+getCamper member camper = 
+  if member.uname == camper.uname && 
+     member.points /= camper.last.points then
       Just camper 
   else
       Nothing

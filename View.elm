@@ -33,9 +33,10 @@ view model =
     clist    = List.map .uname model.tList
   in
     div []
-      [ h3 [] [ text "Simple Object"]
-      , p [] [ text "Here I want to grab the ''browniePoints''"]
-      , p [] [ text ("FCC URL: " ++ fccAPI) ]
+      [ h2 [] [ text "CamperBot for KGISL Meetups"]
+      , hr [] [ ]
+      --, p [] [ text "Here I want to grab the ''browniePoints''"]
+      --, p [] [ text ("FCC URL: " ++ fccAPI) ]
       , input [
           placeholder "Enter a FCC username",
           onInput StoreURL
