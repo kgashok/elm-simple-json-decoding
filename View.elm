@@ -47,6 +47,7 @@ view model =
   in
     div []
       [ h2 [] [ text "CamperBot for KGISL Meetups"]
+      , footer
       , hr [] [ ]
       --, p [] [ text "Here I want to grab the ''browniePoints''"]
       --, p [] [ text ("FCC URL: " ++ fccAPI) ]
@@ -58,7 +59,6 @@ view model =
         , h1 [rStyle]  [ text response ]
         -- , div [] [ text (toString model) ]
         , campList True model.tList
-        , footer
       ]
           
 
@@ -116,7 +116,7 @@ flippedComparison a b =
 
 footer : Html Msg
 footer = 
-  div []
+  div [id "footer"]
   [a [href (gitRepo ++ "/issues/new"), 
               target "_blank", 
               rel "noopener noreferrer"] 

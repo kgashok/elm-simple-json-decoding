@@ -9299,7 +9299,9 @@ var _user$project$Update$FetchData = {ctor: 'FetchData'};
 var _user$project$View$footer = A2(
 	_elm_lang$html$Html$div,
 	_elm_lang$core$Native_List.fromArray(
-		[]),
+		[
+			_elm_lang$html$Html_Attributes$id('footer')
+		]),
 	_elm_lang$core$Native_List.fromArray(
 		[
 			A2(
@@ -9455,6 +9457,7 @@ var _user$project$View$view = function (model) {
 					[
 						_elm_lang$html$Html$text('CamperBot for KGISL Meetups')
 					])),
+				_user$project$View$footer,
 				A2(
 				_elm_lang$html$Html$hr,
 				_elm_lang$core$Native_List.fromArray(
@@ -9488,8 +9491,7 @@ var _user$project$View$view = function (model) {
 					[
 						_elm_lang$html$Html$text(response)
 					])),
-				A2(_user$project$View$campList, true, model.tList),
-				_user$project$View$footer
+				A2(_user$project$View$campList, true, model.tList)
 			]));
 };
 
