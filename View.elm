@@ -9,6 +9,7 @@ import Update exposing (Msg(..))
 import Model exposing (..)
 import Time 
 import Date exposing (..)
+import Date.Format exposing (formatISO8601)
 
 import Numeral exposing (format)
 import String
@@ -23,17 +24,18 @@ buildResponse model =
     shour = format "00" (toFloat (hour now))
     smin  = format "00" (toFloat (minute now))
 
-    dateString = 
+    {-dateString = 
       shour ++ ":" ++ smin ++ ", " ++
         (toString (day now)) ++ "-" ++
         (toString (month now)) ++ "-" ++ 
-        (toString (year now))
+        (toString (year now)) -}
+    dateString = formatISO8601 now 
   in 
     if model.error == True
     then "Error: userID not valid?"
     else if model.points /= -1
     then "Challenges completed: " ++ (toString model.tPoints)
-          ++ " ; last tick @ " ++ dateString 
+          ++ " ; last auto update @ " ++ dateString 
     else "" 
 
 
