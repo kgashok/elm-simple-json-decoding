@@ -83,13 +83,21 @@ camperItem camper =
 campList : Bool -> List Camper -> Html Msg
 campList display campers = 
   let
-    items = List.map camperItem campers
+    sortedCampers = List.sortWith flippedComparison campers
+    items  = List.map camperItem sortedCampers
 
   in
     div [] 
       [ 
         ul [] items 
       ]
+
+flippedComparison : Camper -> Camper -> Order
+flippedComparison a b =
+    case compare a.last.points b.last.points of
+      LT -> GT
+      EQ -> EQ
+      GT -> LT
 
 
 footer : Html Msg

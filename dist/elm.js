@@ -8777,7 +8777,7 @@ var _user$project$Model$Cdata = F2(
 	});
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v2.0-beta-7-ge223af8';
+var _user$project$Version$version = 'v2.0-beta-10-g8dae99d';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -9043,14 +9043,26 @@ var _user$project$View$footer = A2(
 					_elm_lang$html$Html$text(_user$project$Version$version)
 				]))
 		]));
+var _user$project$View$flippedComparison = F2(
+	function (a, b) {
+		var _p0 = A2(_elm_lang$core$Basics$compare, a.last.points, b.last.points);
+		switch (_p0.ctor) {
+			case 'LT':
+				return _elm_lang$core$Basics$GT;
+			case 'EQ':
+				return _elm_lang$core$Basics$EQ;
+			default:
+				return _elm_lang$core$Basics$LT;
+		}
+	});
 var _user$project$View$formatData = F2(
 	function (nowTime, cdata) {
 		var timeLapsed = _elm_lang$core$Time$inMinutes(cdata.ts - nowTime);
-		var _p0 = {ctor: '_Tuple2', _0: cdata.ts, _1: timeLapsed};
-		if (_p0._0 === 0) {
+		var _p1 = {ctor: '_Tuple2', _0: cdata.ts, _1: timeLapsed};
+		if (_p1._0 === 0) {
 			return _elm_lang$core$Basics$toString(cdata.points);
 		} else {
-			if (_p0._1 === 0) {
+			if (_p1._1 === 0) {
 				return _elm_lang$core$Basics$toString(cdata.points);
 			} else {
 				return A2(
@@ -9105,7 +9117,8 @@ var _user$project$View$camperItem = function (camper) {
 };
 var _user$project$View$campList = F2(
 	function (display, campers) {
-		var items = A2(_elm_lang$core$List$map, _user$project$View$camperItem, campers);
+		var sortedCampers = A2(_elm_lang$core$List$sortWith, _user$project$View$flippedComparison, campers);
+		var items = A2(_elm_lang$core$List$map, _user$project$View$camperItem, sortedCampers);
 		return A2(
 			_elm_lang$html$Html$div,
 			_elm_lang$core$Native_List.fromArray(
