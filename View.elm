@@ -8,6 +8,8 @@ import Version exposing (version, gitRepo)
 import Update exposing (Msg(..)) 
 import Model exposing (..)
 import Time 
+
+import Numeral exposing (format)
 import String
 
 -- VIEW
@@ -54,22 +56,26 @@ rStyle =
       ("fontSize", "100%")
     ]
 
-formatData : Time.Time -> Cdata -> (Int, String)
+formatData : Time.Time -> Cdata -> String -- (Int, String)
 formatData nowTime cdata = 
   let 
-    timeLapsed = round (Time.inMinutes (nowTime - cdata.ts))
+    timeLapsed = Time.inMinutes (cdata.ts - nowTime)    
   in 
-    (cdata.points, ("-" ++ String.left 4 (toString timeLapsed ) ) )
+    case timeLapsed of
+      0 -> toString cdata.points 
+      _ -> (toString cdata.points) ++ 
+          "(" ++ format "00.0" timeLapsed ++ ")"
+
 
 camperItem : Camper -> Html Msg
 camperItem camper = 
   let 
     history = List.take 10 camper.chist
-    points  = List.map (formatData camper.last.ts) history
+    points  = String.join ", " (List.map (formatData camper.last.ts) history )
   in 
     li []
       [ span [ class "uname" ] [ text camper.uname ],
-        span [ class "points" ] [ text (toString points) ]
+        span [ class "points" ] [ text points ]
       ]
 
 
