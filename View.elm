@@ -30,9 +30,7 @@ buildResponse model =
         (toString (year now))
   in 
     if model.error == True
-    then "There was an error"
-    --else if model.result /= ""
-    --then "I just found: " ++ model.result
+    then "Error: userID not valid?"
     else if model.points /= -1
     then "Challenges completed: " ++ (toString model.tPoints)
           ++ " @ " ++ dateString 
