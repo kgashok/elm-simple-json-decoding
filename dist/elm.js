@@ -9217,14 +9217,16 @@ var _user$project$View$rStyle = _elm_lang$html$Html_Attributes$style(
 		]));
 var _user$project$View$buildResponse = function (model) {
 	var now = _elm_lang$core$Date$fromTime(model.ts);
-	var shour = _elm_lang$core$Basics$toString(
-		_elm_lang$core$Basics$round(
-			_elm_lang$core$Basics$toFloat(
-				_elm_lang$core$Date$hour(now))));
-	var smin = _elm_lang$core$Basics$toString(
-		_elm_lang$core$Basics$round(
-			_elm_lang$core$Basics$toFloat(
-				_elm_lang$core$Date$minute(now))));
+	var shour = A2(
+		_ggb$numeral_elm$Numeral$format,
+		'00',
+		_elm_lang$core$Basics$toFloat(
+			_elm_lang$core$Date$hour(now)));
+	var smin = A2(
+		_ggb$numeral_elm$Numeral$format,
+		'0.0',
+		_elm_lang$core$Basics$toFloat(
+			_elm_lang$core$Date$minute(now)));
 	var dateString = A2(
 		_elm_lang$core$Basics_ops['++'],
 		shour,

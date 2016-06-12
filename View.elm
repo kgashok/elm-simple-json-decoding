@@ -20,8 +20,8 @@ buildResponse : Model -> String
 buildResponse model = 
   let 
     now = fromTime model.ts
-    shour = toString (round (toFloat (hour now)))
-    smin  = toString (round (toFloat (minute now)))
+    shour = format "00" (toFloat (hour now))
+    smin  = format "00" (toFloat (minute now))
 
     dateString = 
       shour ++ ":" ++ smin ++ ", " ++
