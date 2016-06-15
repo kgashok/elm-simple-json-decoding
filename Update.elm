@@ -76,7 +76,7 @@ update action model =
           Nothing -> (model, Cmd.none)
           Just(camper) ->
             ({ model |tList = updateCHistory member camper model,
-                    tPoints = calculateTotal model.tList  
+                    tPoints = calculateTotal model.tList
              }
              , Ports.modelChange model
             )
@@ -110,7 +110,7 @@ tickRequest url name =
 updateCHistory : Member -> Camper -> Model -> List Camper   
 updateCHistory member camper model = 
   let 
-    data = pointsData member.points model.ts
+    data = pointsData member.points model.ts camper.last.points
     camper' = {camper| chist = data :: camper.chist, 
                        last  = data 
               }

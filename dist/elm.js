@@ -8994,13 +8994,13 @@ var _mgold$elm_date_format$Date_Format$format = F2(
 	});
 var _mgold$elm_date_format$Date_Format$formatISO8601 = _mgold$elm_date_format$Date_Format$format('%Y-%m-%dT%H:%M:%SZ');
 
-var _user$project$Model$pointsData = F2(
-	function (p, time) {
-		return {points: p, ts: time};
+var _user$project$Model$pointsData = F3(
+	function (p, time, prev) {
+		return {points: p, ts: time, delta: p - prev};
 	});
 var _user$project$Model$createCamper = F2(
 	function (member, ts) {
-		var data = A2(_user$project$Model$pointsData, member.points, ts);
+		var data = A3(_user$project$Model$pointsData, member.points, ts, 0);
 		return {
 			uname: member.uname,
 			chist: _elm_lang$core$Native_List.fromArray(
@@ -9034,9 +9034,9 @@ var _user$project$Model$Member = F2(
 	function (a, b) {
 		return {uname: a, points: b};
 	});
-var _user$project$Model$Cdata = F2(
-	function (a, b) {
-		return {points: a, ts: b};
+var _user$project$Model$Cdata = F3(
+	function (a, b, c) {
+		return {points: a, ts: b, delta: c};
 	});
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
@@ -9107,7 +9107,7 @@ var _user$project$Update$updateCHistory = F3(
 					},
 					model.tList)
 			});
-		var data = A2(_user$project$Model$pointsData, member.points, model.ts);
+		var data = A3(_user$project$Model$pointsData, member.points, model.ts, camper.last.points);
 		var camper$ = _elm_lang$core$Native_Utils.update(
 			camper,
 			{
@@ -9332,7 +9332,7 @@ var _user$project$View$flippedComparison = F2(
 	});
 var _user$project$View$formatData = F2(
 	function (nowTime, cdata) {
-		var timeLapsed = _elm_lang$core$Time$inMinutes(cdata.ts - nowTime);
+		var timeLapsed = _elm_lang$core$Time$inHours(cdata.ts - nowTime);
 		var _p1 = {ctor: '_Tuple2', _0: cdata.ts, _1: timeLapsed};
 		if (_p1._0 === 0) {
 			return _elm_lang$core$Basics$toString(cdata.points);
@@ -9342,13 +9342,13 @@ var _user$project$View$formatData = F2(
 			} else {
 				return A2(
 					_elm_lang$core$Basics_ops['++'],
-					_elm_lang$core$Basics$toString(cdata.points),
+					_elm_lang$core$Basics$toString(cdata.delta),
 					A2(
 						_elm_lang$core$Basics_ops['++'],
 						'(',
 						A2(
 							_elm_lang$core$Basics_ops['++'],
-							A2(_ggb$numeral_elm$Numeral$format, '00.0', timeLapsed),
+							A2(_ggb$numeral_elm$Numeral$format, '0.00', timeLapsed),
 							')')));
 			}
 		}
@@ -9496,7 +9496,7 @@ var _user$project$View$view = function (model) {
 };
 
 var _user$project$Subscriptions$subscriptions = function (model) {
-	return A2(_elm_lang$core$Time$every, 6 * _elm_lang$core$Time$hour, _user$project$Update$Tick);
+	return A2(_elm_lang$core$Time$every, 15 * _elm_lang$core$Time$minute, _user$project$Update$Tick);
 };
 
 var _user$project$Fcc$init = function (savedModel) {
@@ -9558,14 +9558,19 @@ var _user$project$Fcc$main = {
 															_elm_lang$core$Json_Decode$list(
 																A2(
 																	_elm_lang$core$Json_Decode$andThen,
-																	A2(_elm_lang$core$Json_Decode_ops[':='], 'points', _elm_lang$core$Json_Decode$int),
-																	function (points) {
+																	A2(_elm_lang$core$Json_Decode_ops[':='], 'delta', _elm_lang$core$Json_Decode$int),
+																	function (delta) {
 																		return A2(
 																			_elm_lang$core$Json_Decode$andThen,
-																			A2(_elm_lang$core$Json_Decode_ops[':='], 'ts', _elm_lang$core$Json_Decode$float),
-																			function (ts) {
-																				return _elm_lang$core$Json_Decode$succeed(
-																					{points: points, ts: ts});
+																			A2(_elm_lang$core$Json_Decode_ops[':='], 'points', _elm_lang$core$Json_Decode$int),
+																			function (points) {
+																				return A2(
+																					_elm_lang$core$Json_Decode$andThen,
+																					A2(_elm_lang$core$Json_Decode_ops[':='], 'ts', _elm_lang$core$Json_Decode$float),
+																					function (ts) {
+																						return _elm_lang$core$Json_Decode$succeed(
+																							{delta: delta, points: points, ts: ts});
+																					});
 																			});
 																	}))),
 														function (chist) {
@@ -9576,14 +9581,19 @@ var _user$project$Fcc$main = {
 																	'last',
 																	A2(
 																		_elm_lang$core$Json_Decode$andThen,
-																		A2(_elm_lang$core$Json_Decode_ops[':='], 'points', _elm_lang$core$Json_Decode$int),
-																		function (points) {
+																		A2(_elm_lang$core$Json_Decode_ops[':='], 'delta', _elm_lang$core$Json_Decode$int),
+																		function (delta) {
 																			return A2(
 																				_elm_lang$core$Json_Decode$andThen,
-																				A2(_elm_lang$core$Json_Decode_ops[':='], 'ts', _elm_lang$core$Json_Decode$float),
-																				function (ts) {
-																					return _elm_lang$core$Json_Decode$succeed(
-																						{points: points, ts: ts});
+																				A2(_elm_lang$core$Json_Decode_ops[':='], 'points', _elm_lang$core$Json_Decode$int),
+																				function (points) {
+																					return A2(
+																						_elm_lang$core$Json_Decode$andThen,
+																						A2(_elm_lang$core$Json_Decode_ops[':='], 'ts', _elm_lang$core$Json_Decode$float),
+																						function (ts) {
+																							return _elm_lang$core$Json_Decode$succeed(
+																								{delta: delta, points: points, ts: ts});
+																						});
 																				});
 																		})),
 																function (last) {

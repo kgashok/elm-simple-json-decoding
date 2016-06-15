@@ -42,23 +42,23 @@ type alias Member =
 type alias Cdata = 
   { points: Int 
   , ts : Time
+  , delta : Int
   }
 
 createCamper : Member -> Time -> Camper 
 createCamper member ts = 
   let 
-    data = pointsData member.points ts
+    data = pointsData member.points ts 0
   in
     { uname = member.uname
     , chist = [data]
     , last  = data 
     }
 
-pointsData : Int -> Time -> Cdata 
-pointsData p time = 
-  { points = p
-  , ts = time
-  }
+pointsData : Int -> Time -> Int -> Cdata 
+pointsData p time prev = 
+  {points = p, ts = time, delta = p - prev }
+
 
 
 initialModel : Model

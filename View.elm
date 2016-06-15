@@ -73,13 +73,13 @@ rStyle =
 formatData : Time.Time -> Cdata -> String -- (Int, String)
 formatData nowTime cdata = 
   let
-    timeLapsed = Time.inMinutes (cdata.ts - nowTime)    
+    timeLapsed = Time.inHours (cdata.ts - nowTime)    
   in 
     case (cdata.ts, timeLapsed) of
       (0,_) -> toString cdata.points
       (_,0) -> toString cdata.points 
-      (_,_)-> (toString cdata.points) ++ 
-              "(" ++ format "00.0" timeLapsed ++ ")"
+      (_,_)-> (toString cdata.delta) ++ 
+              "(" ++ format "0.00" timeLapsed ++ ")"
 
 
 camperItem : Camper -> Html Msg
