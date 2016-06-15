@@ -48,11 +48,11 @@ type alias Cdata =
 createCamper : Member -> Time -> Camper 
 createCamper member ts = 
   let 
-    data = pointsData member.points ts 0
+    data = pointsData member.points ts member.points
   in
     { uname = member.uname
     , chist = [data]
-    , last  = data 
+    , last  = data
     }
 
 pointsData : Int -> Time -> Int -> Cdata 

@@ -11,7 +11,7 @@ import Update exposing (Msg(..))
 subscriptions : Model -> Sub Msg
 subscriptions model =
   --Time.every minute Tick
-  Time.every (15 * minute) Tick
+  Time.every (15 * second) Tick
 
 
 

@@ -31,7 +31,6 @@ update action model =
         model' = {model|uname = model.name}
       in 
         (model', 
-         --makeRequest (model'.url ++ model'.uname) )
          getData model'.url model'.uname)
 
     FetchSucceed member ->

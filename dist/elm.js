@@ -9000,7 +9000,7 @@ var _user$project$Model$pointsData = F3(
 	});
 var _user$project$Model$createCamper = F2(
 	function (member, ts) {
-		var data = A3(_user$project$Model$pointsData, member.points, ts, 0);
+		var data = A3(_user$project$Model$pointsData, member.points, ts, member.points);
 		return {
 			uname: member.uname,
 			chist: _elm_lang$core$Native_List.fromArray(
@@ -9058,9 +9058,9 @@ var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPor
 						uname: v.uname,
 						chist: _elm_lang$core$Native_List.toArray(v.chist).map(
 							function (v) {
-								return {points: v.points, ts: v.ts};
+								return {points: v.points, ts: v.ts, delta: v.delta};
 							}),
-						last: {points: v.last.points, ts: v.last.ts}
+						last: {points: v.last.points, ts: v.last.ts, delta: v.last.delta}
 					};
 				}),
 			tPoints: v.tPoints
@@ -9496,7 +9496,7 @@ var _user$project$View$view = function (model) {
 };
 
 var _user$project$Subscriptions$subscriptions = function (model) {
-	return A2(_elm_lang$core$Time$every, 15 * _elm_lang$core$Time$minute, _user$project$Update$Tick);
+	return A2(_elm_lang$core$Time$every, 15 * _elm_lang$core$Time$second, _user$project$Update$Tick);
 };
 
 var _user$project$Fcc$init = function (savedModel) {
