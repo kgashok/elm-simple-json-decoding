@@ -9743,7 +9743,7 @@ var _user$project$View$view = function (model) {
 };
 
 var _user$project$Subscriptions$subscriptions = function (model) {
-	return A2(_elm_lang$core$Time$every, 1 * _elm_lang$core$Time$minute, _user$project$Update$Tick);
+	return A2(_elm_lang$core$Time$every, 10 * _elm_lang$core$Time$minute, _user$project$Update$Tick);
 };
 
 var _user$project$Fcc$init = function (savedModel) {
