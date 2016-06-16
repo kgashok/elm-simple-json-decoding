@@ -9458,6 +9458,12 @@ var _user$project$Update$update = F2(
 				}
 			case 'GitterIDSuccess':
 				var camperList = A2(_elm_lang$core$List$map, _user$project$Model$createCamperFromGid, _p2._0);
+				var cList = A2(
+					_elm_lang$core$List$map,
+					function (_) {
+						return _.uname;
+					},
+					camperList);
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
@@ -9466,7 +9472,11 @@ var _user$project$Update$update = F2(
 							gList: camperList,
 							tList: A2(_elm_lang$core$Basics_ops['++'], camperList, model.tList)
 						}),
-					_1: _elm_lang$core$Platform_Cmd$none
+					_1: _elm_lang$core$Platform_Cmd$batch(
+						A2(
+							_elm_lang$core$List$map,
+							_user$project$Update$tickRequest(model.url),
+							cList))
 				};
 			default:
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};

@@ -115,9 +115,11 @@ update action model =
     GitterIDSuccess gids -> 
       let 
         camperList = List.map createCamperFromGid gids 
+        cList  = List.map .uname camperList
       in 
         ( { model| gList = camperList, tList = camperList ++ model.tList } -- ::tList }
-          , Cmd.none
+          -- , Cmd.none
+          , Cmd.batch (List.map (tickRequest model.url) cList)
         )
 
     GitterFail _ ->
