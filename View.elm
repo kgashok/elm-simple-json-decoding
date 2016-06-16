@@ -65,7 +65,7 @@ rStyle =
   style 
     [ ("backgroundColor", "#ff6600"),
       ("color", "white"),
-      ("fontSize", "100%")
+      ("fontSize", "150%")
     ]
 
 formatData : Time.Time -> Cdata -> String -- (Int, String)
@@ -95,9 +95,9 @@ camperItem camper =
 campList : Bool -> List Camper -> Html Msg
 campList display campers = 
   let
-    campers_ = List.sortWith flippedComparison2 campers
-    campers' = List.sortWith flippedComparison campers_
-    items  = List.map camperItem campers'
+    campers_ = List.sortWith flippedComparison campers
+    campers' = List.sortWith  flippedComparison2 campers_
+    items    = List.map camperItem campers'
 
   in
     div [] 
@@ -125,7 +125,6 @@ flippedComparison a b =
     deltaB = Maybe.withDefault 0 (List.minimum bhist)
               - Maybe.withDefault 0 (List.minimum bhist)
 
-
   in
     case compare deltaA deltaB of
       GT -> LT
@@ -141,12 +140,3 @@ footer =
               rel "noopener noreferrer"] 
               [text version]]
 
-
-
-{-renderCamper : Camper -> Html Msg
-renderCamper member =
-  div [ class "member" ] [
-    img [ classNames ["profile", "u-mr-sml"], src member.avatar_lrg ] []
-    , span [ class "username" ] [ text ("@" ++ member.name) ]
-  ]
--}

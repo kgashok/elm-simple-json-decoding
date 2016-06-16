@@ -100,8 +100,6 @@ update action model =
     GitterSuccess grooms ->
       let
         gRoom' = List.head (List.filter (\x -> x.name == model.gRoom.name) grooms)
-        -- range  = gRoom'.userCount / 30
-        sList = List.map (\x -> x* 30) [0..9]
       in
         case gRoom' of 
           Nothing -> (model, Cmd.none) 
@@ -109,7 +107,8 @@ update action model =
             ( { model |gRoom = gRoom'}
               --, gitterIDRequest gRoom'
               -- Cmd.batch [map (range) gitterIDRequest gRoom' skip value)]
-              , Cmd.batch (List.map (gitterIDRequest gRoom') sList)
+              , Cmd.batch (List.map (gitterIDRequest gRoom') 
+                  (skipList gRoom'.userCount))
             )
 
     GitterIDSuccess gids -> 
@@ -127,6 +126,9 @@ update action model =
 
 -- HTTP
 
+skipList : Int -> List Int
+skipList userCount = 
+  List.map (\x -> x *30) [0..(round ((toFloat userCount)/30)) ]
 
 
 gitterIDRequest : GRoom -> Int -> Cmd Msg  

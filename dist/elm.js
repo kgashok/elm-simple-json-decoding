@@ -9264,6 +9264,17 @@ var _user$project$Update$decodeIDData = A2(
 	_elm_lang$core$Native_List.fromArray(
 		[]),
 	_elm_lang$core$Json_Decode$list(_user$project$Update$nestedListGID));
+var _user$project$Update$skipList = function (userCount) {
+	return A2(
+		_elm_lang$core$List$map,
+		function (x) {
+			return x * 30;
+		},
+		_elm_lang$core$Native_List.range(
+			0,
+			_elm_lang$core$Basics$round(
+				_elm_lang$core$Basics$toFloat(userCount) / 30)));
+};
 var _user$project$Update$GitterIDSuccess = function (a) {
 	return {ctor: 'GitterIDSuccess', _0: a};
 };
@@ -9426,12 +9437,6 @@ var _user$project$Update$update = F2(
 			case 'FetchGitter':
 				return {ctor: '_Tuple2', _0: model, _1: _user$project$Update$refreshGitterIDs};
 			case 'GitterSuccess':
-				var sList = A2(
-					_elm_lang$core$List$map,
-					function (x) {
-						return x * 30;
-					},
-					_elm_lang$core$Native_List.range(0, 8));
 				var gRoom$ = _elm_lang$core$List$head(
 					A2(
 						_elm_lang$core$List$filter,
@@ -9453,7 +9458,7 @@ var _user$project$Update$update = F2(
 							A2(
 								_elm_lang$core$List$map,
 								_user$project$Update$gitterIDRequest(_p6),
-								sList))
+								_user$project$Update$skipList(_p6.userCount)))
 					};
 				}
 			case 'GitterIDSuccess':
@@ -9618,8 +9623,8 @@ var _user$project$View$camperItem = function (camper) {
 };
 var _user$project$View$campList = F2(
 	function (display, campers) {
-		var campers_ = A2(_elm_lang$core$List$sortWith, _user$project$View$flippedComparison2, campers);
-		var campers$ = A2(_elm_lang$core$List$sortWith, _user$project$View$flippedComparison, campers_);
+		var campers_ = A2(_elm_lang$core$List$sortWith, _user$project$View$flippedComparison, campers);
+		var campers$ = A2(_elm_lang$core$List$sortWith, _user$project$View$flippedComparison2, campers_);
 		var items = A2(_elm_lang$core$List$map, _user$project$View$camperItem, campers$);
 		return A2(
 			_elm_lang$html$Html$div,
@@ -9639,7 +9644,7 @@ var _user$project$View$rStyle = _elm_lang$html$Html_Attributes$style(
 		[
 			{ctor: '_Tuple2', _0: 'backgroundColor', _1: '#ff6600'},
 			{ctor: '_Tuple2', _0: 'color', _1: 'white'},
-			{ctor: '_Tuple2', _0: 'fontSize', _1: '100%'}
+			{ctor: '_Tuple2', _0: 'fontSize', _1: '150%'}
 		]));
 var _user$project$View$buildResponse = function (model) {
 	var now = _elm_lang$core$Date$fromTime(model.ts);
