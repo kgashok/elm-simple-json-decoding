@@ -101,7 +101,7 @@ update action model =
       let
         gRoom' = List.head (List.filter (\x -> x.name == model.gRoom.name) grooms)
         -- range  = gRoom'.userCount / 30
-        sList = List.map (\x -> x* 30) [0..8]
+        sList = List.map (\x -> x* 30) [0..9]
       in
         case gRoom' of 
           Nothing -> (model, Cmd.none) 
