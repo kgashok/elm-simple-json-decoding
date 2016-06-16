@@ -9508,10 +9508,46 @@ var _user$project$View$footer = A2(
 		]));
 var _user$project$View$flippedComparison = F2(
 	function (a, b) {
-		var stampsB = _elm_lang$core$List$length(b.chist);
-		var stampsA = _elm_lang$core$List$length(a.chist);
-		var _p0 = A2(_elm_lang$core$Basics$compare, a.last.delta, b.last.delta);
+		var bhist = A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.points;
+			},
+			b.chist);
+		var deltaB = A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			_elm_lang$core$List$minimum(bhist)) - A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			_elm_lang$core$List$minimum(bhist));
+		var ahist = A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.points;
+			},
+			a.chist);
+		var deltaA = A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			_elm_lang$core$List$maximum(ahist)) - A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			_elm_lang$core$List$minimum(ahist));
+		var _p0 = A2(_elm_lang$core$Basics$compare, deltaA, deltaB);
 		switch (_p0.ctor) {
+			case 'GT':
+				return _elm_lang$core$Basics$LT;
+			case 'EQ':
+				return _elm_lang$core$Basics$EQ;
+			default:
+				return _elm_lang$core$Basics$GT;
+		}
+	});
+var _user$project$View$flippedComparison2 = F2(
+	function (a, b) {
+		var _p1 = A2(_elm_lang$core$Basics$compare, a.last.points, b.last.points);
+		switch (_p1.ctor) {
 			case 'GT':
 				return _elm_lang$core$Basics$LT;
 			case 'EQ':
@@ -9523,11 +9559,11 @@ var _user$project$View$flippedComparison = F2(
 var _user$project$View$formatData = F2(
 	function (nowTime, cdata) {
 		var timeLapsed = _elm_lang$core$Time$inHours(cdata.ts - nowTime);
-		var _p1 = {ctor: '_Tuple2', _0: cdata.ts, _1: timeLapsed};
-		if (_p1._0 === 0) {
+		var _p2 = {ctor: '_Tuple2', _0: cdata.ts, _1: timeLapsed};
+		if (_p2._0 === 0) {
 			return _elm_lang$core$Basics$toString(cdata.points);
 		} else {
-			if (_p1._1 === 0) {
+			if (_p2._1 === 0) {
 				return _elm_lang$core$Basics$toString(cdata.points);
 			} else {
 				return A2(
@@ -9582,8 +9618,9 @@ var _user$project$View$camperItem = function (camper) {
 };
 var _user$project$View$campList = F2(
 	function (display, campers) {
-		var sortedCampers = A2(_elm_lang$core$List$sortWith, _user$project$View$flippedComparison, campers);
-		var items = A2(_elm_lang$core$List$map, _user$project$View$camperItem, sortedCampers);
+		var campers_ = A2(_elm_lang$core$List$sortWith, _user$project$View$flippedComparison2, campers);
+		var campers$ = A2(_elm_lang$core$List$sortWith, _user$project$View$flippedComparison, campers_);
+		var items = A2(_elm_lang$core$List$map, _user$project$View$camperItem, campers$);
 		return A2(
 			_elm_lang$html$Html$div,
 			_elm_lang$core$Native_List.fromArray(

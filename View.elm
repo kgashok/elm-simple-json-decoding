@@ -95,8 +95,9 @@ camperItem camper =
 campList : Bool -> List Camper -> Html Msg
 campList display campers = 
   let
-    sortedCampers = List.sortWith flippedComparison campers
-    items  = List.map camperItem sortedCampers
+    campers_ = List.sortWith flippedComparison2 campers
+    campers' = List.sortWith flippedComparison campers_
+    items  = List.map camperItem campers'
 
   in
     div [] 
@@ -104,15 +105,29 @@ campList display campers =
         ul [] items 
       ]
 
+flippedComparison2: Camper -> Camper -> Order
+flippedComparison2 a b = 
+  case compare a.last.points b.last.points of 
+      GT -> LT
+      EQ -> EQ
+      LT -> GT
+
+
 
 flippedComparison : Camper -> Camper -> Order
 flippedComparison a b =
   let 
-    stampsA = List.length a.chist
-    stampsB = List.length b.chist
+    ahist = List.map .points a.chist 
+    bhist = List.map .points b.chist 
+
+    deltaA = Maybe.withDefault 0 (List.maximum ahist) 
+              - Maybe.withDefault 0 (List.minimum ahist)
+    deltaB = Maybe.withDefault 0 (List.minimum bhist)
+              - Maybe.withDefault 0 (List.minimum bhist)
+
 
   in
-    case compare a.last.delta b.last.delta of
+    case compare deltaA deltaB of
       GT -> LT
       EQ -> EQ
       LT -> GT
