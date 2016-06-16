@@ -9623,8 +9623,8 @@ var _user$project$View$camperItem = function (camper) {
 };
 var _user$project$View$campList = F2(
 	function (display, campers) {
-		var campers_ = A2(_elm_lang$core$List$sortWith, _user$project$View$flippedComparison, campers);
-		var campers$ = A2(_elm_lang$core$List$sortWith, _user$project$View$flippedComparison2, campers_);
+		var campers_ = A2(_elm_lang$core$List$sortWith, _user$project$View$flippedComparison2, campers);
+		var campers$ = A2(_elm_lang$core$List$sortWith, _user$project$View$flippedComparison, campers_);
 		var items = A2(_elm_lang$core$List$map, _user$project$View$camperItem, campers$);
 		return A2(
 			_elm_lang$html$Html$div,

@@ -95,8 +95,8 @@ camperItem camper =
 campList : Bool -> List Camper -> Html Msg
 campList display campers = 
   let
-    campers_ = List.sortWith flippedComparison campers
-    campers' = List.sortWith  flippedComparison2 campers_
+    campers_ = List.sortWith  flippedComparison2 campers
+    campers' = List.sortWith flippedComparison campers_
     items    = List.map camperItem campers'
 
   in
