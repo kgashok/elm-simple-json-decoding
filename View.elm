@@ -24,18 +24,14 @@ buildResponse model =
     shour = format "00" (toFloat (hour now))
     smin  = format "00" (toFloat (minute now))
 
-    {-dateString = 
-      shour ++ ":" ++ smin ++ ", " ++
-        (toString (day now)) ++ "-" ++
-        (toString (month now)) ++ "-" ++ 
-        (toString (year now)) -}
     dateString = formatISO8601 now 
   in 
-    if model.error == True
-    then "Error: userID not valid?"
-    else if model.points /= -1
-    then "Challenges completed: " ++ (toString model.tPoints)
-          ++ " ; last auto update @ " ++ dateString 
+    --if model.error == True
+    --then "Error: userID not valid? " ++ model.message 
+    if model.tPoints /= -1
+    then "Challenges completed: " ++ (toString model.tPoints) ++
+          " by " ++ (toString (List.length model.tList)) ++ " campers; " ++
+          "last auto update @ " ++ dateString 
     else "" 
 
 
@@ -56,11 +52,13 @@ view model =
           onInput StoreURL
         ] []
         , button [ onClick FetchData ] [ text "Fetch and Add!" ]
+        , button [ onClick FetchGitter ] [text "Update from Gitter"]
         , h1 [rStyle]  [ text response ]
-        -- , div [] [ text (toString model) ]
+        --, div [] [ text (toString model.gRoom) ]
+        --, div [] [ text (toString model.gList) ]
         , campList True model.tList
       ]
-          
+
 
 rStyle : Attribute msg 
 rStyle = 
@@ -106,12 +104,18 @@ campList display campers =
         ul [] items 
       ]
 
+
 flippedComparison : Camper -> Camper -> Order
 flippedComparison a b =
-    case compare a.last.points b.last.points of
-      LT -> GT
-      EQ -> EQ
+  let 
+    stampsA = List.length a.chist
+    stampsB = List.length b.chist
+
+  in
+    case compare a.last.delta b.last.delta of
       GT -> LT
+      EQ -> EQ
+      LT -> GT
 
 
 footer : Html Msg

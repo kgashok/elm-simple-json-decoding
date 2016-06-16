@@ -7,7 +7,7 @@ import String
 import Time exposing (Time, second, minute)
 
 import Model exposing (..)
-import Ports
+import Ports exposing (..)
 
 
 
@@ -20,6 +20,10 @@ type Msg
   | StoreURL String
   | FetchFail Http.Error
   | Tick Time 
+  | FetchGitter
+  | GitterSuccess (List GRoom) 
+  | GitterFail Http.Error
+  | GitterIDSuccess (List Gid)
   --| FetchPoints String
 
 
@@ -48,8 +52,15 @@ update action model =
     StoreURL name ->
       ({ model | name = String.toLower name }, Cmd.none)
 
-    FetchFail _ ->
-      ({ model | error = True, points = -1, uname="" }, Cmd.none)
+    
+    FetchFail err ->
+      ( { model | error = True 
+                , points = -1
+                , uname = ""
+                , message = toString err 
+        }
+        , Cmd.none
+      )
 
     --FetchPoints val -> 
     --  ({ model | points = val, error = False }, Cmd.none )
@@ -57,12 +68,13 @@ update action model =
     Tick newTime -> 
       let
         model' = {model | ts = newTime, uname = model.name}
-        clist  = List.map .uname model'.tList
+        --cList = updateList model.tList
+        cList = List.map .uname model.tList 
 
-      in  
+      in
         ( model', 
           -- tickRequest (model'.url ++ model'.uname)
-          Cmd.batch (List.map (tickRequest model'.url) clist)
+          Cmd.batch (List.map (tickRequest model'.url) cList)
         )
 
     UpdateSucceed member -> 
@@ -75,18 +87,79 @@ update action model =
           Nothing -> (model, Cmd.none)
           Just(camper) ->
             ({ model |tList = updateCHistory member camper model,
-                    tPoints = calculateTotal model.tList
+                    tPoints = calculateTotal model.tList, 
+                    message = ""
              }
              , Ports.modelChange model
+             -- , Cmd.none
             )
 
+    FetchGitter -> 
+      (model, refreshGitterIDs)
+
+    GitterSuccess grooms ->
+      let
+        gRoom' = List.head (List.filter (\x -> x.name == model.gRoom.name) grooms)
+        -- range  = gRoom'.userCount / 30
+        sList = List.map (\x -> x* 30) [0..8]
+      in
+        case gRoom' of 
+          Nothing -> (model, Cmd.none) 
+          Just(gRoom') ->
+            ( { model |gRoom = gRoom'}
+              --, gitterIDRequest gRoom'
+              -- Cmd.batch [map (range) gitterIDRequest gRoom' skip value)]
+              , Cmd.batch (List.map (gitterIDRequest gRoom') sList)
+            )
+
+    GitterIDSuccess gids -> 
+      let 
+        camperList = List.map createCamperFromGid gids 
+      in 
+        ( { model| gList = camperList, tList = camperList ++ model.tList } -- ::tList }
+          , Cmd.none
+        )
+
+    GitterFail _ ->
+      (model, Cmd.none)
 
 -- HTTP
+
+
+
+gitterIDRequest : GRoom -> Int -> Cmd Msg  
+gitterIDRequest groom skip = 
+  Task.perform GitterFail GitterIDSuccess 
+    (Http.get decodeIDData (gUserUrl groom.id gitterKey skip) )
+
+
+decodeIDData : Json.Decoder (List Gid) 
+decodeIDData = 
+  Json.at [] (Json.list nestedListGID)
+
+
+nestedListGID : Json.Decoder Gid  
+nestedListGID = 
+  Json.object3 Gid
+    ("username" := Json.string)
+    ("displayName" := Json.string)
+    ("avatarUrlSmall" := Json.string)
+
+
+tickRequest : String -> String -> Cmd Msg
+tickRequest url name =
+  --Task.perform FetchFail FetchSucceed (Http.get decodePoints url)
+  Task.perform FetchFail UpdateSucceed (Http.get decodeData (url ++ name))
+
+
+
+excluded = ["quincylarson"]
 
 getCamper : Member -> Camper -> Maybe Camper
 getCamper member camper = 
   if member.uname == camper.uname && 
-     member.points /= camper.last.points then
+     member.points /= camper.last.points &&
+     not (List.member member.uname excluded ) then
       Just camper 
   else
       Nothing
@@ -97,13 +170,6 @@ calculateTotal tlist =
     |> List.filterMap (.chist >> List.head) 
     |> List.map .points 
     |> List.sum
-
-
-
-tickRequest : String -> String -> Cmd Msg
-tickRequest url name =
-  --Task.perform FetchFail FetchSucceed (Http.get decodePoints url)
-  Task.perform FetchFail UpdateSucceed (Http.get decodeData (url ++ name))
 
 
 updateCHistory : Member -> Camper -> Model -> List Camper   
@@ -129,7 +195,8 @@ addToList member model =
     isPresent = List.member member.uname clist
     camper  = createCamper member model.ts
     model'  = {model| points = member.points,
-               tPoints = calculateTotal model.tList, error = False}
+               tPoints = calculateTotal model.tList, 
+               message ="", error = False}
   in 
     case isPresent of 
       True ->  model
@@ -147,6 +214,10 @@ getData api uname =
     url = api ++ uname
   in 
     makeRequest url 
+
+refreshGitterIDs : Cmd Msg 
+refreshGitterIDs = 
+  Task.perform GitterFail GitterSuccess (Http.get decodeGData gUrl)
 
 
 -- decodeTitle
@@ -170,6 +241,21 @@ decodeData =
         ("username" := Json.string)
         ("browniePoints" := Json.int) 
     )
+
+
+decodeGData : Json.Decoder (List GRoom) 
+decodeGData = 
+  Json.at [] (Json.list nestedListG)
+
+
+nestedListG : Json.Decoder GRoom 
+nestedListG = 
+  Json.object3 GRoom
+    ("id" := Json.string)
+    ("name" := Json.string)
+    ("userCount" := Json.int)
+
+
 
 
 {-

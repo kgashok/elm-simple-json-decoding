@@ -7,7 +7,7 @@ import View exposing (view)
 import Update exposing (update, Msg) 
 import Subscriptions exposing (subscriptions)
 
-import Ports
+import Ports exposing (..)
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
