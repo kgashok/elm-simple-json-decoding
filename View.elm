@@ -23,8 +23,8 @@ buildResponse model =
     now = fromTime model.ts
     shour = format "00" (toFloat (hour now))
     smin  = format "00" (toFloat (minute now))
-
     dateString = formatISO8601 now 
+    
   in 
     --if model.error == True
     --then "Error: userID not valid? " ++ model.message 

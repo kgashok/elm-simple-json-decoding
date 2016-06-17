@@ -89,17 +89,31 @@ createCamper member ts =
     , last  = data
     }
 
-createCamperFromGid : Gid -> Camper 
-createCamperFromGid gid = 
-  { uname = String.toLower gid.username
-  , chist = []
-  , last  = {points = 0, ts = 0, delta = 0}
-  }
+
+createCamperFromGid : List Camper -> Gid -> Maybe Camper  
+createCamperFromGid tList gid =
+  let
+    cList = List.map .uname tList
+    isPresent = List.member (String.toLower gid.username) cList
+  in
+    case isPresent of 
+      False -> 
+        Just { uname = String.toLower gid.username
+             , chist = []
+             , last  = {points = 0, ts = 0, delta = 0}
+             }
+      True ->
+        Nothing
+
 
 pointsData : Int -> Time -> Int -> Cdata 
 pointsData p time prev = 
   {points = p, ts = time, delta = p - prev }
 
+
+skipList : Int -> List Int
+skipList userCount = 
+  List.map (\x -> x *30) [0..(round ((toFloat userCount)/30)) ]
 
 
 initialModel : Model

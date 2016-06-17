@@ -9,7 +9,8 @@ import Time exposing (Time, second, minute)
 import Model exposing (..)
 import Ports exposing (..)
 
-
+--import Set
+--import List.Extra exposing (dropDuplicates)
 
 -- UPDATE
 
@@ -95,7 +96,7 @@ update action model =
             )
 
     FetchGitter -> 
-      (model, refreshGitterIDs)
+      (model, refreshGitterIDs gUrl)
 
     GitterSuccess grooms ->
       let
@@ -105,19 +106,17 @@ update action model =
           Nothing -> (model, Cmd.none) 
           Just(gRoom') ->
             ( { model |gRoom = gRoom'}
-              --, gitterIDRequest gRoom'
-              -- Cmd.batch [map (range) gitterIDRequest gRoom' skip value)]
               , Cmd.batch (List.map (gitterIDRequest gRoom') 
                   (skipList gRoom'.userCount))
             )
 
     GitterIDSuccess gids -> 
       let 
-        camperList = List.map createCamperFromGid gids 
-        cList  = List.map .uname camperList
-      in 
-        ( { model| gList = camperList, tList = camperList ++ model.tList } -- ::tList }
-          -- , Cmd.none
+        camperList = List.filterMap (createCamperFromGid model.tList) gids 
+        model' = { model|tList = model.tList ++ camperList}
+        cList  = List.map .uname camperList 
+      in
+        ( model' 
           , Cmd.batch (List.map (tickRequest model.url) cList)
         )
 
@@ -126,9 +125,6 @@ update action model =
 
 -- HTTP
 
-skipList : Int -> List Int
-skipList userCount = 
-  List.map (\x -> x *30) [0..(round ((toFloat userCount)/30)) ]
 
 
 gitterIDRequest : GRoom -> Int -> Cmd Msg  
@@ -156,8 +152,9 @@ tickRequest url name =
   Task.perform FetchFail UpdateSucceed (Http.get decodeData (url ++ name))
 
 
-
+excluded : List String 
 excluded = ["quincylarson"]
+
 
 getCamper : Member -> Camper -> Maybe Camper
 getCamper member camper = 
@@ -219,9 +216,24 @@ getData api uname =
   in 
     makeRequest url 
 
-refreshGitterIDs : Cmd Msg 
-refreshGitterIDs = 
-  Task.perform GitterFail GitterSuccess (Http.get decodeGData gUrl)
+
+refreshGitterIDs : String -> Cmd Msg 
+refreshGitterIDs url = 
+  Task.perform GitterFail GitterSuccess (Http.get decodeGData url)
+
+
+decodeGData : Json.Decoder (List GRoom) 
+decodeGData = 
+  Json.at [] (Json.list nestedListG)
+
+
+nestedListG : Json.Decoder GRoom 
+nestedListG = 
+  Json.object3 GRoom
+    ("id" := Json.string)
+    ("name" := Json.string)
+    ("userCount" := Json.int)
+
 
 
 -- decodeTitle
@@ -245,20 +257,6 @@ decodeData =
         ("username" := Json.string)
         ("browniePoints" := Json.int) 
     )
-
-
-decodeGData : Json.Decoder (List GRoom) 
-decodeGData = 
-  Json.at [] (Json.list nestedListG)
-
-
-nestedListG : Json.Decoder GRoom 
-nestedListG = 
-  Json.object3 GRoom
-    ("id" := Json.string)
-    ("name" := Json.string)
-    ("userCount" := Json.int)
-
 
 
 
