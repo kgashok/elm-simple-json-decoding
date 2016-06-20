@@ -141,7 +141,7 @@ flippedComparison a b =
 
     deltaA = Maybe.withDefault 0 (List.maximum ahist) 
               - Maybe.withDefault 0 (List.minimum ahist)
-    deltaB = Maybe.withDefault 0 (List.minimum bhist)
+    deltaB = Maybe.withDefault 0 (List.maximum bhist)
               - Maybe.withDefault 0 (List.minimum bhist)
 
   in

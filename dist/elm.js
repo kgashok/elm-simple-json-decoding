@@ -9548,7 +9548,7 @@ var _user$project$View$flippedComparison = F2(
 		var deltaB = A2(
 			_elm_lang$core$Maybe$withDefault,
 			0,
-			_elm_lang$core$List$minimum(bhist)) - A2(
+			_elm_lang$core$List$maximum(bhist)) - A2(
 			_elm_lang$core$Maybe$withDefault,
 			0,
 			_elm_lang$core$List$minimum(bhist));
