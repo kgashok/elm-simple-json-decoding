@@ -122,7 +122,7 @@ sortBasedOnHistory : Time -> Time -> List Camper -> List Camper
 sortBasedOnHistory now cutOff campers = 
   -- campers_ = List.sortWith flippedComparison2 campers
   campers 
-    |> List.map (truncateHistory now cutOff)
+    -- |> List.map (truncateHistory now cutOff)
     |> List.sortWith flippedComparison 
 
 
@@ -143,7 +143,7 @@ truncateHistory now cutOff camper =
 
 isWithinCutOff : Time -> Time -> Cdata -> Maybe Cdata
 isWithinCutOff now cutOff data =
-  case ((now - cutOff) <= data.ts) of
+  case (data.ts >= (now - cutOff)) of
     True -> Just data
     False -> Nothing
 
@@ -169,8 +169,8 @@ flippedComparison a b =
 {- Both the below needed to be included in the model-}
 {-In Elm repl inHours 2592000000 = 720 hours  or 30 days-}
 cutOff : Float
---cutOff = inHours 2592000000 -- 720 hours
-cutOff = inHours 5000000 
+cutOff = inHours 2592000000 -- 720 hours
+-- cutOff = inHours 5000000 
 
 
 excluded : List String 
