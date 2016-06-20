@@ -8994,6 +8994,9 @@ var _mgold$elm_date_format$Date_Format$format = F2(
 	});
 var _mgold$elm_date_format$Date_Format$formatISO8601 = _mgold$elm_date_format$Date_Format$format('%Y-%m-%dT%H:%M:%SZ');
 
+var _user$project$Model$excluded = _elm_lang$core$Native_List.fromArray(
+	['quincylarson']);
+var _user$project$Model$cutOff = _elm_lang$core$Time$inHours(2592000000);
 var _user$project$Model$flippedComparison = F2(
 	function (a, b) {
 		var bhist = A2(
@@ -9032,10 +9035,30 @@ var _user$project$Model$flippedComparison = F2(
 				return _elm_lang$core$Basics$GT;
 		}
 	});
+var _user$project$Model$isWithinCutOff = F3(
+	function (now, cutOff, data) {
+		var _p1 = _elm_lang$core$Native_Utils.cmp(now - cutOff, data.ts) < 1;
+		if (_p1 === true) {
+			return _elm_lang$core$Maybe$Just(data);
+		} else {
+			return _elm_lang$core$Maybe$Nothing;
+		}
+	});
+var _user$project$Model$truncateHistory = F3(
+	function (now, cutOff, camper) {
+		return _elm_lang$core$Native_Utils.update(
+			camper,
+			{
+				chist: A2(
+					_elm_lang$core$List$filterMap,
+					A2(_user$project$Model$isWithinCutOff, now, cutOff),
+					camper.chist)
+			});
+	});
 var _user$project$Model$flippedComparison2 = F2(
 	function (a, b) {
-		var _p1 = A2(_elm_lang$core$Basics$compare, a.last.points, b.last.points);
-		switch (_p1.ctor) {
+		var _p2 = A2(_elm_lang$core$Basics$compare, a.last.points, b.last.points);
+		switch (_p2.ctor) {
 			case 'GT':
 				return _elm_lang$core$Basics$LT;
 			case 'EQ':
@@ -9044,9 +9067,16 @@ var _user$project$Model$flippedComparison2 = F2(
 				return _elm_lang$core$Basics$GT;
 		}
 	});
-var _user$project$Model$sortHistory = function (campers) {
-	return A2(_elm_lang$core$List$sortWith, _user$project$Model$flippedComparison, campers);
-};
+var _user$project$Model$sortBasedOnHistory = F3(
+	function (now, cutOff, campers) {
+		return A2(
+			_elm_lang$core$List$sortWith,
+			_user$project$Model$flippedComparison,
+			A2(
+				_elm_lang$core$List$map,
+				A2(_user$project$Model$truncateHistory, now, cutOff),
+				campers));
+	});
 var _user$project$Model$skipList = function (userCount) {
 	return A2(
 		_elm_lang$core$List$map,
@@ -9074,8 +9104,8 @@ var _user$project$Model$createCamperFromGid = F2(
 			_elm_lang$core$List$member,
 			_elm_lang$core$String$toLower(gid.username),
 			cList);
-		var _p2 = isPresent;
-		if (_p2 === false) {
+		var _p3 = isPresent;
+		if (_p3 === false) {
 			return _elm_lang$core$Maybe$Just(
 				{
 					uname: _elm_lang$core$String$toLower(gid.username),
@@ -9181,7 +9211,7 @@ var _user$project$Model$Gid = F3(
 	});
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.0-beta-39-gf067bcf';
+var _user$project$Version$version = 'v3.0-beta-49-gd85b91c';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -9327,12 +9357,10 @@ var _user$project$Update$addToList = F2(
 				});
 		}
 	});
-var _user$project$Update$excluded = _elm_lang$core$Native_List.fromArray(
-	['quincylarson']);
 var _user$project$Update$getCamper = F2(
 	function (member, camper) {
 		return (_elm_lang$core$Native_Utils.eq(member.uname, camper.uname) && ((!_elm_lang$core$Native_Utils.eq(member.points, camper.last.points)) && _elm_lang$core$Basics$not(
-			A2(_elm_lang$core$List$member, member.uname, _user$project$Update$excluded)))) ? _elm_lang$core$Maybe$Just(camper) : _elm_lang$core$Maybe$Nothing;
+			A2(_elm_lang$core$List$member, member.uname, _user$project$Model$excluded)))) ? _elm_lang$core$Maybe$Just(camper) : _elm_lang$core$Maybe$Nothing;
 	});
 var _user$project$Update$nestedListGID = A4(
 	_elm_lang$core$Json_Decode$object3,
@@ -9668,9 +9696,9 @@ var _user$project$View$camperItem = function (camper) {
 					]))
 			]));
 };
-var _user$project$View$campList = F2(
-	function (display, campers) {
-		var campers$ = _user$project$Model$sortHistory(campers);
+var _user$project$View$campList = F3(
+	function (display, now, campers) {
+		var campers$ = A3(_user$project$Model$sortBasedOnHistory, now, _user$project$Model$cutOff, campers);
 		var items = A2(_elm_lang$core$List$map, _user$project$View$camperItem, campers$);
 		return A2(
 			_elm_lang$html$Html$div,
@@ -9789,7 +9817,7 @@ var _user$project$View$view = function (model) {
 					[
 						_elm_lang$html$Html$text(response)
 					])),
-				A2(_user$project$View$campList, true, model.tList)
+				A3(_user$project$View$campList, true, model.ts, model.tList)
 			]));
 };
 

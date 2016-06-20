@@ -4,7 +4,7 @@ import Http
 import Json.Decode as Json exposing ((:=))
 import Task
 import String
-import Time exposing (Time, second, minute)
+import Time exposing (Time)
 
 import Model exposing (..)
 import Ports exposing (..)
@@ -13,6 +13,8 @@ import Ports exposing (..)
 --import List.Extra exposing (dropDuplicates)
 
 -- UPDATE
+
+
 
 type Msg
   = FetchData
@@ -150,10 +152,6 @@ tickRequest : String -> String -> Cmd Msg
 tickRequest url name =
   --Task.perform FetchFail FetchSucceed (Http.get decodePoints url)
   Task.perform FetchFail UpdateSucceed (Http.get decodeData (url ++ name))
-
-
-excluded : List String 
-excluded = ["quincylarson"]
 
 
 getCamper : Member -> Camper -> Maybe Camper

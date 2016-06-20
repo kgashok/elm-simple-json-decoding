@@ -49,6 +49,13 @@ historyA =
     , pointsData 229 11000 10000
     ]
 
+
+{- Both the below needed to be included in the model-}
+{-In Elm repl inHours 2592000000 = 720 hours  or 30 days-}
+cutOff : Float
+cutOff = 10000 
+
+
 assignHistory : List Cdata -> Camper -> Camper 
 assignHistory data camper = 
     {camper| chist = data} 
@@ -70,10 +77,11 @@ dinfo {uname, last} =
 tests : List Test
 tests =
   let 
-    clist = createCampersFromMembers memberList
-    dummy = createCamper 0 {uname = "NA", points = 0}
-    first = List.head clist |> Maybe.withDefault dummy 
-    sortOut = List.map dinfo (sortHistory clist)
+    clist         = createCampersFromMembers memberList
+    dummy         = createCamper 0 {uname = "NA", points = 0}
+    first         = List.head clist |> Maybe.withDefault dummy 
+    sortOut       = List.map dinfo (sortBasedOnHistory 20000 20000 clist )
+    sortOutWithCO = List.map dinfo (sortBasedOnHistory 20000 cutOff clist)
   in 
     [ 0 `equals` 0
     , test "pass" <| assert True
@@ -83,6 +91,8 @@ tests =
     ]
     ++
     (List.map defaultTest <| assertionList ["ramya 150", "sudhar 100", "kgashok 200"] sortOut)
+    ++
+    (List.map defaultTest <| assertionList ["ramya 150", "kgashok 200", "sudhar 100"] sortOutWithCO)
     -- ++
     -- (List.map defaultTest <| assertionList [1..10] [1..10])
 

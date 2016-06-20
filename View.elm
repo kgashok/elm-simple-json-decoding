@@ -7,7 +7,7 @@ import Html.Events exposing (..)
 import Version exposing (version, gitRepo)
 import Update exposing (Msg(..)) 
 import Model exposing (..)
-import Time 
+import Time exposing (Time)
 import Date exposing (..)
 import Date.Format exposing (formatISO8601)
 
@@ -56,7 +56,7 @@ view model =
         , h1 [rStyle]  [ text response ]
         --, div [] [ text (toString model.gRoom) ]
         --, div [] [ text (toString model.gList) ]
-        , campList True model.tList
+        , campList True model.ts model.tList
       ]
 
 
@@ -111,11 +111,11 @@ camperItem camper =
       ]
 
 
-campList : Bool -> List Camper -> Html Msg
-campList display campers = 
+campList : Bool -> Time -> List Camper -> Html Msg
+campList display now campers = 
   let
     -- campers_ = List.sortWith flippedComparison2 campers
-    campers' = sortHistory campers
+    campers' = sortBasedOnHistory now cutOff campers
     items    = List.map camperItem campers'
 
   in

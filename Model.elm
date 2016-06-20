@@ -1,6 +1,6 @@
 module Model exposing (..) -- where 
 
-import Time exposing (Time)
+import Time exposing (Time, inHours)
 import String
 
 
@@ -79,6 +79,7 @@ type alias Gid =
   , avatarUrlSmall : String
   }
 
+
 createCamper : Time -> Member -> Camper 
 createCamper ts member = 
   let 
@@ -116,10 +117,13 @@ skipList userCount =
   List.map (\x -> x *30) [0..(round ((toFloat userCount)/30)) ]
 
 
-sortHistory : List Camper -> List Camper
-sortHistory campers = 
+
+sortBasedOnHistory : Time -> Time -> List Camper -> List Camper
+sortBasedOnHistory now cutOff campers = 
   -- campers_ = List.sortWith flippedComparison2 campers
-  List.sortWith flippedComparison campers
+  campers 
+    |> List.map (truncateHistory now cutOff)
+    |> List.sortWith flippedComparison 
 
 
 
@@ -129,6 +133,19 @@ flippedComparison2 a b =
       GT -> LT
       EQ -> EQ
       LT -> GT
+
+
+truncateHistory : Time -> Time -> Camper -> Camper
+truncateHistory now cutOff camper = 
+  {camper | chist = List.filterMap (isWithinCutOff now cutOff) camper.chist}
+
+
+
+isWithinCutOff : Time -> Time -> Cdata -> Maybe Cdata
+isWithinCutOff now cutOff data =
+  case ((now - cutOff) <= data.ts) of
+    True -> Just data
+    False -> Nothing
 
 
 
@@ -149,6 +166,14 @@ flippedComparison a b =
       EQ -> EQ
       LT -> GT
 
+{- Both the below needed to be included in the model-}
+{-In Elm repl inHours 2592000000 = 720 hours  or 30 days-}
+cutOff : Float
+cutOff = inHours 2592000000 -- 720 hours
+
+
+excluded : List String 
+excluded = ["quincylarson"]
 
 
 initialModel : Model
