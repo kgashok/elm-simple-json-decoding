@@ -5,3 +5,8 @@ install:
 before_script: 
   - elm-make --yes --output test.js test/Tests.elm
 script: node test.js
+
+# whitelist
+branches: 
+  only: 
+    - gh-pages
