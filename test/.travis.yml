@@ -10,3 +10,4 @@ script: node test.js
 branches: 
   only: 
     - gh-pages
+
