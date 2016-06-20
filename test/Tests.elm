@@ -104,3 +104,4 @@ consoleTests =
 main : Program Never
 main =
     runSuite consoleTests
+    --runSuiteHtml consoleTests

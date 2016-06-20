@@ -169,7 +169,8 @@ flippedComparison a b =
 {- Both the below needed to be included in the model-}
 {-In Elm repl inHours 2592000000 = 720 hours  or 30 days-}
 cutOff : Float
-cutOff = inHours 2592000000 -- 720 hours
+--cutOff = inHours 2592000000 -- 720 hours
+cutOff = inHours 5000000 
 
 
 excluded : List String 
