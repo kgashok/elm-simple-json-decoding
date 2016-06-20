@@ -115,7 +115,7 @@ campList : Bool -> List Camper -> Html Msg
 campList display campers = 
   let
     -- campers_ = List.sortWith flippedComparison2 campers
-    campers' = List.sortWith flippedComparison campers
+    campers' = sortHistory campers
     items    = List.map camperItem campers'
 
   in
@@ -123,6 +123,14 @@ campList display campers =
       [ 
         ul [] items 
       ]
+
+
+sortHistory : List Camper -> List Camper
+sortHistory campers = 
+  -- campers_ = List.sortWith flippedComparison2 campers
+  List.sortWith flippedComparison campers
+
+
 
 flippedComparison2: Camper -> Camper -> Order
 flippedComparison2 a b = 
