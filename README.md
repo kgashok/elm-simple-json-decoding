@@ -1,5 +1,7 @@
 # Elm Simple JSON Decoding
 
+[![Build Status](https://travis-ci.org/kgashok/elm-simple-json-decoding.svg?branch=gh-pages)](https://travis-ci.org/kgashok/elm-simple-json-decoding)
+
 A playground of basic examples decoding a JSON object.
 
 * [Simple string](http://chrisbuttery.github.io/elm-simple-json-decoding/simple_string.html)
