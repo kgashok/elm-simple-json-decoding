@@ -9128,7 +9128,7 @@ var _user$project$Model$Gid = F3(
 	});
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.0-beta-21-gfa1328b';
+var _user$project$Version$version = 'v3.0-beta-22-gf03600a';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -9588,36 +9588,54 @@ var _user$project$View$flippedComparison2 = F2(
 		}
 	});
 var _user$project$View$formatData = F2(
-	function (nowTime, cdata) {
-		var timeLapsed = _elm_lang$core$Time$inHours(cdata.ts - nowTime);
-		var _p2 = {ctor: '_Tuple2', _0: cdata.ts, _1: timeLapsed};
-		if (_p2._0 === 0) {
+	function (prevEntry, cdata) {
+		var _p2 = prevEntry;
+		if (_p2.ctor === 'Nothing') {
 			return _elm_lang$core$Basics$toString(cdata.points);
 		} else {
-			if (_p2._1 === 0) {
-				return _elm_lang$core$Basics$toString(cdata.points);
-			} else {
-				return A2(
-					_elm_lang$core$Basics_ops['++'],
-					_elm_lang$core$Basics$toString(cdata.delta),
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						'(',
-						A2(
+			var timeLapsed = _elm_lang$core$Time$inHours(cdata.ts - _p2._0.ts);
+			var _p3 = {
+				ctor: '_Tuple2',
+				_0: cdata.ts,
+				_1: !_elm_lang$core$Native_Utils.eq(timeLapsed, 0)
+			};
+			_v3_0:
+			do {
+				if (_p3._1 === false) {
+					if (_p3._0 === 0) {
+						break _v3_0;
+					} else {
+						return _elm_lang$core$Basics$toString(cdata.points);
+					}
+				} else {
+					if (_p3._0 === 0) {
+						break _v3_0;
+					} else {
+						return A2(
 							_elm_lang$core$Basics_ops['++'],
-							A2(_ggb$numeral_elm$Numeral$format, '0.00', timeLapsed),
-							')')));
-			}
+							_elm_lang$core$Basics$toString(cdata.delta),
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								'(',
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									A2(_ggb$numeral_elm$Numeral$format, '+0.00', timeLapsed),
+									')')));
+					}
+				}
+			} while(false);
+			return _elm_lang$core$Basics$toString(cdata.points);
 		}
 	});
 var _user$project$View$camperItem = function (camper) {
 	var history = A2(_elm_lang$core$List$take, 10, camper.chist);
+	var prev = _elm_lang$core$List$head(history);
 	var points = A2(
 		_elm_lang$core$String$join,
 		', ',
 		A2(
 			_elm_lang$core$List$map,
-			_user$project$View$formatData(camper.last.ts),
+			_user$project$View$formatData(prev),
 			history));
 	return A2(
 		_elm_lang$html$Html$li,
@@ -9773,7 +9791,7 @@ var _user$project$View$view = function (model) {
 };
 
 var _user$project$Subscriptions$subscriptions = function (model) {
-	return A2(_elm_lang$core$Time$every, 10 * _elm_lang$core$Time$minute, _user$project$Update$Tick);
+	return A2(_elm_lang$core$Time$every, 15 * _elm_lang$core$Time$second, _user$project$Update$Tick);
 };
 
 var _user$project$Fcc$init = function (savedModel) {

@@ -68,23 +68,42 @@ rStyle =
       ("fontSize", "150%")
     ]
 
-formatData : Time.Time -> Cdata -> String -- (Int, String)
-formatData nowTime cdata = 
+{-formatData : Time.Time -> Cdata -> String -- (Int, String)
+formatData firstEntry cdata = 
   let
-    timeLapsed = Time.inHours (cdata.ts - nowTime)    
+    timeLapsed = Time.inHours (cdata.ts - firstEntry.ts)
   in 
     case (cdata.ts, timeLapsed) of
       (0,_) -> toString cdata.points
       (_,0) -> toString cdata.points 
       (_,_)-> (toString cdata.delta) ++ 
               "(" ++ format "0.00" timeLapsed ++ ")"
+-}
+
+formatData : Maybe Cdata -> Cdata -> String -- (Int, String)
+formatData prevEntry cdata = 
+  case (prevEntry) of
+    Nothing -> 
+      toString cdata.points 
+    Just(prevEntry) ->
+      let
+        timeLapsed = Time.inHours (cdata.ts - prevEntry.ts)
+      in 
+        case (cdata.ts, timeLapsed /=0) of
+          (0,_) -> toString cdata.points
+          (_,False) -> toString cdata.points 
+          (_,True)-> (toString cdata.delta) ++ 
+                  "(" ++ format "+0.00" timeLapsed ++ ")"
+
 
 
 camperItem : Camper -> Html Msg
 camperItem camper = 
   let 
     history = List.take 10 camper.chist
-    points  = String.join ", " (List.map (formatData camper.last.ts) history )
+    prev = List.head history
+    --points  = String.join ", " (List.map (formatData camper.last.ts) history )
+    points  = String.join ", " (List.map (formatData prev) history )
   in 
     li []
       [ span [ class "uname" ] [ text camper.uname ],

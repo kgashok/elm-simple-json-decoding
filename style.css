@@ -213,6 +213,9 @@ li .points {
   top: 18px;
   right: 60px;
   float: left;
+  font-weight: lighter;
+  font-size: smaller; 
+
 }
 
 li .index {
