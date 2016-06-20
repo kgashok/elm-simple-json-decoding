@@ -8994,6 +8994,59 @@ var _mgold$elm_date_format$Date_Format$format = F2(
 	});
 var _mgold$elm_date_format$Date_Format$formatISO8601 = _mgold$elm_date_format$Date_Format$format('%Y-%m-%dT%H:%M:%SZ');
 
+var _user$project$Model$flippedComparison = F2(
+	function (a, b) {
+		var bhist = A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.points;
+			},
+			b.chist);
+		var deltaB = A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			_elm_lang$core$List$maximum(bhist)) - A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			_elm_lang$core$List$minimum(bhist));
+		var ahist = A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.points;
+			},
+			a.chist);
+		var deltaA = A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			_elm_lang$core$List$maximum(ahist)) - A2(
+			_elm_lang$core$Maybe$withDefault,
+			0,
+			_elm_lang$core$List$minimum(ahist));
+		var _p0 = A2(_elm_lang$core$Basics$compare, deltaA, deltaB);
+		switch (_p0.ctor) {
+			case 'GT':
+				return _elm_lang$core$Basics$LT;
+			case 'EQ':
+				return _elm_lang$core$Basics$EQ;
+			default:
+				return _elm_lang$core$Basics$GT;
+		}
+	});
+var _user$project$Model$flippedComparison2 = F2(
+	function (a, b) {
+		var _p1 = A2(_elm_lang$core$Basics$compare, a.last.points, b.last.points);
+		switch (_p1.ctor) {
+			case 'GT':
+				return _elm_lang$core$Basics$LT;
+			case 'EQ':
+				return _elm_lang$core$Basics$EQ;
+			default:
+				return _elm_lang$core$Basics$GT;
+		}
+	});
+var _user$project$Model$sortHistory = function (campers) {
+	return A2(_elm_lang$core$List$sortWith, _user$project$Model$flippedComparison, campers);
+};
 var _user$project$Model$skipList = function (userCount) {
 	return A2(
 		_elm_lang$core$List$map,
@@ -9021,8 +9074,8 @@ var _user$project$Model$createCamperFromGid = F2(
 			_elm_lang$core$List$member,
 			_elm_lang$core$String$toLower(gid.username),
 			cList);
-		var _p0 = isPresent;
-		if (_p0 === false) {
+		var _p2 = isPresent;
+		if (_p2 === false) {
 			return _elm_lang$core$Maybe$Just(
 				{
 					uname: _elm_lang$core$String$toLower(gid.username),
@@ -9035,7 +9088,7 @@ var _user$project$Model$createCamperFromGid = F2(
 		}
 	});
 var _user$project$Model$createCamper = F2(
-	function (member, ts) {
+	function (ts, member) {
 		var data = A3(_user$project$Model$pointsData, member.points, ts, member.points);
 		return {
 			uname: _elm_lang$core$String$toLower(member.uname),
@@ -9128,7 +9181,7 @@ var _user$project$Model$Gid = F3(
 	});
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.0-beta-33-gca62335';
+var _user$project$Version$version = 'v3.0-beta-35-g2684e1f';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -9255,7 +9308,7 @@ var _user$project$Update$addToList = F2(
 				message: '',
 				error: false
 			});
-		var camper = A2(_user$project$Model$createCamper, member, model.ts);
+		var camper = A2(_user$project$Model$createCamper, model.ts, member);
 		var clist = A2(
 			_elm_lang$core$List$map,
 			function (_) {
@@ -9537,82 +9590,29 @@ var _user$project$View$footer = A2(
 					_elm_lang$html$Html$text(_user$project$Version$version)
 				]))
 		]));
-var _user$project$View$flippedComparison = F2(
-	function (a, b) {
-		var bhist = A2(
-			_elm_lang$core$List$map,
-			function (_) {
-				return _.points;
-			},
-			b.chist);
-		var deltaB = A2(
-			_elm_lang$core$Maybe$withDefault,
-			0,
-			_elm_lang$core$List$maximum(bhist)) - A2(
-			_elm_lang$core$Maybe$withDefault,
-			0,
-			_elm_lang$core$List$minimum(bhist));
-		var ahist = A2(
-			_elm_lang$core$List$map,
-			function (_) {
-				return _.points;
-			},
-			a.chist);
-		var deltaA = A2(
-			_elm_lang$core$Maybe$withDefault,
-			0,
-			_elm_lang$core$List$maximum(ahist)) - A2(
-			_elm_lang$core$Maybe$withDefault,
-			0,
-			_elm_lang$core$List$minimum(ahist));
-		var _p0 = A2(_elm_lang$core$Basics$compare, deltaA, deltaB);
-		switch (_p0.ctor) {
-			case 'GT':
-				return _elm_lang$core$Basics$LT;
-			case 'EQ':
-				return _elm_lang$core$Basics$EQ;
-			default:
-				return _elm_lang$core$Basics$GT;
-		}
-	});
-var _user$project$View$flippedComparison2 = F2(
-	function (a, b) {
-		var _p1 = A2(_elm_lang$core$Basics$compare, a.last.points, b.last.points);
-		switch (_p1.ctor) {
-			case 'GT':
-				return _elm_lang$core$Basics$LT;
-			case 'EQ':
-				return _elm_lang$core$Basics$EQ;
-			default:
-				return _elm_lang$core$Basics$GT;
-		}
-	});
-var _user$project$View$sortHistory = function (campers) {
-	return A2(_elm_lang$core$List$sortWith, _user$project$View$flippedComparison, campers);
-};
 var _user$project$View$formatData = F2(
 	function (prevEntry, cdata) {
-		var _p2 = prevEntry;
-		if (_p2.ctor === 'Nothing') {
+		var _p0 = prevEntry;
+		if (_p0.ctor === 'Nothing') {
 			return _elm_lang$core$Basics$toString(cdata.points);
 		} else {
-			var timeLapsed = _elm_lang$core$Time$inHours(cdata.ts - _p2._0.ts);
-			var _p3 = {
+			var timeLapsed = _elm_lang$core$Time$inHours(cdata.ts - _p0._0.ts);
+			var _p1 = {
 				ctor: '_Tuple2',
 				_0: cdata.ts,
 				_1: (!_elm_lang$core$Native_Utils.eq(timeLapsed, 0)) && (_elm_lang$core$Native_Utils.cmp(timeLapsed, -720) > -1)
 			};
-			_v3_0:
+			_v1_0:
 			do {
-				if (_p3._1 === false) {
-					if (_p3._0 === 0) {
-						break _v3_0;
+				if (_p1._1 === false) {
+					if (_p1._0 === 0) {
+						break _v1_0;
 					} else {
 						return _elm_lang$core$Basics$toString(cdata.points);
 					}
 				} else {
-					if (_p3._0 === 0) {
-						break _v3_0;
+					if (_p1._0 === 0) {
+						break _v1_0;
 					} else {
 						return A2(
 							_elm_lang$core$Basics_ops['++'],
@@ -9670,7 +9670,7 @@ var _user$project$View$camperItem = function (camper) {
 };
 var _user$project$View$campList = F2(
 	function (display, campers) {
-		var campers$ = _user$project$View$sortHistory(campers);
+		var campers$ = _user$project$Model$sortHistory(campers);
 		var items = A2(_elm_lang$core$List$map, _user$project$View$camperItem, campers$);
 		return A2(
 			_elm_lang$html$Html$div,
