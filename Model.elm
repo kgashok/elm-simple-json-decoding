@@ -122,7 +122,7 @@ sortBasedOnHistory : Time -> Time -> List Camper -> List Camper
 sortBasedOnHistory now cutOff campers = 
   -- campers_ = List.sortWith flippedComparison2 campers
   campers 
-    -- |> List.map (truncateHistory now cutOff)
+    --|> List.map (truncateHistory now cutOff)
     |> List.sortWith flippedComparison 
 
 
@@ -186,6 +186,7 @@ initialModel =
   , error = False
   , points = -1
   , ts = 0
+  -- , ts = 1466438517981
   , tList = []
   , tPoints = 0
   , gList = []
