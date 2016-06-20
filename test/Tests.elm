@@ -82,7 +82,7 @@ tests =
     , test "pass" <| assertEqual historyA first.chist
     ]
     ++
-    (List.map defaultTest <| assertionList ["ramya", "sudhar", "kgashok"] sortOut)
+    (List.map defaultTest <| assertionList ["ramya 150", "sudhar 100", "kgashok 200"] sortOut)
     -- ++
     -- (List.map defaultTest <| assertionList [1..10] [1..10])
 
