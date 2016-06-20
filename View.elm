@@ -89,7 +89,7 @@ formatData prevEntry cdata =
       let
         timeLapsed = Time.inHours (cdata.ts - prevEntry.ts)
       in 
-        case (cdata.ts, timeLapsed /=0) of
+        case (cdata.ts, timeLapsed /=0 && timeLapsed >= -720) of
           (0,_) -> toString cdata.points
           (_,False) -> toString cdata.points 
           (_,True)-> (toString cdata.delta) ++ 
