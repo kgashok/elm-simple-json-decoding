@@ -9567,12 +9567,12 @@ var _user$project$View$flippedComparison = F2(
 			_elm_lang$core$List$minimum(ahist));
 		var _p0 = A2(_elm_lang$core$Basics$compare, deltaA, deltaB);
 		switch (_p0.ctor) {
-			case 'LT':
-				return _elm_lang$core$Basics$GT;
+			case 'GT':
+				return _elm_lang$core$Basics$LT;
 			case 'EQ':
 				return _elm_lang$core$Basics$EQ;
 			default:
-				return _elm_lang$core$Basics$LT;
+				return _elm_lang$core$Basics$GT;
 		}
 	});
 var _user$project$View$flippedComparison2 = F2(
@@ -9791,7 +9791,7 @@ var _user$project$View$view = function (model) {
 };
 
 var _user$project$Subscriptions$subscriptions = function (model) {
-	return A2(_elm_lang$core$Time$every, 15 * _elm_lang$core$Time$second, _user$project$Update$Tick);
+	return A2(_elm_lang$core$Time$every, 15 * _elm_lang$core$Time$minute, _user$project$Update$Tick);
 };
 
 var _user$project$Fcc$init = function (savedModel) {
