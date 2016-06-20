@@ -146,9 +146,9 @@ flippedComparison a b =
 
   in
     case compare deltaA deltaB of
-      GT -> LT
-      EQ -> EQ
       LT -> GT
+      EQ -> EQ
+      GT -> LT
 
 
 footer : Html Msg

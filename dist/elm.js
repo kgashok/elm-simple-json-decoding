@@ -9567,12 +9567,12 @@ var _user$project$View$flippedComparison = F2(
 			_elm_lang$core$List$minimum(ahist));
 		var _p0 = A2(_elm_lang$core$Basics$compare, deltaA, deltaB);
 		switch (_p0.ctor) {
-			case 'GT':
-				return _elm_lang$core$Basics$LT;
+			case 'LT':
+				return _elm_lang$core$Basics$GT;
 			case 'EQ':
 				return _elm_lang$core$Basics$EQ;
 			default:
-				return _elm_lang$core$Basics$GT;
+				return _elm_lang$core$Basics$LT;
 		}
 	});
 var _user$project$View$flippedComparison2 = F2(
