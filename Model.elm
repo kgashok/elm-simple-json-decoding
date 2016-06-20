@@ -79,8 +79,8 @@ type alias Gid =
   , avatarUrlSmall : String
   }
 
-createCamper : Member -> Time -> Camper 
-createCamper member ts = 
+createCamper : Time -> Member -> Camper 
+createCamper ts member = 
   let 
     data = pointsData member.points ts member.points
   in
@@ -114,6 +114,41 @@ pointsData p time prev =
 skipList : Int -> List Int
 skipList userCount = 
   List.map (\x -> x *30) [0..(round ((toFloat userCount)/30)) ]
+
+
+sortHistory : List Camper -> List Camper
+sortHistory campers = 
+  -- campers_ = List.sortWith flippedComparison2 campers
+  List.sortWith flippedComparison campers
+
+
+
+flippedComparison2: Camper -> Camper -> Order
+flippedComparison2 a b = 
+  case compare a.last.points b.last.points of 
+      GT -> LT
+      EQ -> EQ
+      LT -> GT
+
+
+
+flippedComparison : Camper -> Camper -> Order
+flippedComparison a b =
+  let 
+    ahist = List.map .points a.chist 
+    bhist = List.map .points b.chist 
+
+    deltaA = Maybe.withDefault 0 (List.maximum ahist) 
+              - Maybe.withDefault 0 (List.minimum ahist)
+    deltaB = Maybe.withDefault 0 (List.maximum bhist)
+              - Maybe.withDefault 0 (List.minimum bhist)
+
+  in
+    case compare deltaA deltaB of
+      GT -> LT
+      EQ -> EQ
+      LT -> GT
+
 
 
 initialModel : Model

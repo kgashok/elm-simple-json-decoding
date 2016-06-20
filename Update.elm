@@ -194,7 +194,7 @@ addToList member model =
   let 
     clist = List.map .uname model.tList
     isPresent = List.member member.uname clist
-    camper  = createCamper member model.ts
+    camper  = createCamper model.ts member 
     model'  = {model| points = member.points,
                tPoints = calculateTotal model.tList, 
                message ="", error = False}
