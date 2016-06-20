@@ -62,6 +62,10 @@ createCampersFromMembers mList =
     List.map2 assignHistory [historyA, historyS, historyR] cList
 
 
+dinfo : { c | last : { b | points : a }, uname : String } -> String
+dinfo {uname, last} = 
+    uname ++ " " ++ (toString last.points)
+
 
 tests : List Test
 tests =
@@ -69,6 +73,7 @@ tests =
     clist = createCampersFromMembers memberList
     dummy = createCamper 0 {uname = "NA", points = 0}
     first = List.head clist |> Maybe.withDefault dummy 
+    sortOut = List.map dinfo (sortHistory clist)
   in 
     [ 0 `equals` 0
     , test "pass" <| assert True
@@ -77,7 +82,7 @@ tests =
     , test "pass" <| assertEqual historyA first.chist
     ]
     ++
-    (List.map defaultTest <| assertionList historyA first.chist)
+    (List.map defaultTest <| assertionList ["ramya", "sudhar", "kgashok"] sortOut)
     -- ++
     -- (List.map defaultTest <| assertionList [1..10] [1..10])
 
