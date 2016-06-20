@@ -9128,7 +9128,7 @@ var _user$project$Model$Gid = F3(
 	});
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.0-beta-23-ge3ad9af';
+var _user$project$Version$version = 'v3.0-beta-25-g1ff4a0e';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -9791,7 +9791,7 @@ var _user$project$View$view = function (model) {
 };
 
 var _user$project$Subscriptions$subscriptions = function (model) {
-	return A2(_elm_lang$core$Time$every, 15 * _elm_lang$core$Time$minute, _user$project$Update$Tick);
+	return A2(_elm_lang$core$Time$every, 15 * _elm_lang$core$Time$second, _user$project$Update$Tick);
 };
 
 var _user$project$Fcc$init = function (savedModel) {
