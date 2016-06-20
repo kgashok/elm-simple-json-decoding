@@ -9128,7 +9128,7 @@ var _user$project$Model$Gid = F3(
 	});
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.0-beta-30-g310ef1e';
+var _user$project$Version$version = 'v3.0-beta-33-gca62335';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -9587,6 +9587,9 @@ var _user$project$View$flippedComparison2 = F2(
 				return _elm_lang$core$Basics$GT;
 		}
 	});
+var _user$project$View$sortHistory = function (campers) {
+	return A2(_elm_lang$core$List$sortWith, _user$project$View$flippedComparison, campers);
+};
 var _user$project$View$formatData = F2(
 	function (prevEntry, cdata) {
 		var _p2 = prevEntry;
@@ -9667,7 +9670,7 @@ var _user$project$View$camperItem = function (camper) {
 };
 var _user$project$View$campList = F2(
 	function (display, campers) {
-		var campers$ = A2(_elm_lang$core$List$sortWith, _user$project$View$flippedComparison, campers);
+		var campers$ = _user$project$View$sortHistory(campers);
 		var items = A2(_elm_lang$core$List$map, _user$project$View$camperItem, campers$);
 		return A2(
 			_elm_lang$html$Html$div,
