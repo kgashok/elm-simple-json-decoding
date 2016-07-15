@@ -9121,6 +9121,21 @@ var _user$project$Model$createCamper = F2(
 			last: data
 		};
 	});
+var _user$project$Model$difference = F2(
+	function (current, previous) {
+		var _p4 = current - previous;
+		if (_p4 === 0) {
+			return '';
+		} else {
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				'(',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(current - previous),
+					')'));
+		}
+	});
 var _user$project$Model$gUserUrl = F3(
 	function (roomID, key, index) {
 		return A2(
@@ -9154,6 +9169,7 @@ var _user$project$Model$initialModel = {
 	tList: _elm_lang$core$Native_List.fromArray(
 		[]),
 	tPoints: 0,
+	tPoints_prev: 0,
 	gList: _elm_lang$core$Native_List.fromArray(
 		[]),
 	gRoom: {id: '', name: 'kgisl/campsite', userCount: 0}
@@ -9175,7 +9191,9 @@ var _user$project$Model$Model = function (a) {
 								return function (i) {
 									return function (j) {
 										return function (k) {
-											return {url: a, name: b, uname: c, message: d, error: e, points: f, ts: g, tList: h, tPoints: i, gList: j, gRoom: k};
+											return function (l) {
+												return {url: a, name: b, uname: c, message: d, error: e, points: f, ts: g, tList: h, tPoints: i, tPoints_prev: j, gList: k, gRoom: l};
+											};
 										};
 									};
 								};
@@ -9205,7 +9223,7 @@ var _user$project$Model$Gid = F3(
 	});
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.0-beta-51-g9ddb1d3';
+var _user$project$Version$version = 'v3.0-beta-54-ga868544';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -9230,6 +9248,7 @@ var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPor
 					};
 				}),
 			tPoints: v.tPoints,
+			tPoints_prev: v.tPoints_prev,
 			gList: _elm_lang$core$Native_List.toArray(v.gList).map(
 				function (v) {
 					return {
@@ -9495,7 +9514,7 @@ var _user$project$Update$update = F2(
 					model.tList);
 				var model$ = _elm_lang$core$Native_Utils.update(
 					model,
-					{ts: _p2._0, uname: model.name});
+					{ts: _p2._0, uname: model.name, tPoints_prev: model.tPoints});
 				return {
 					ctor: '_Tuple2',
 					_0: model$,
@@ -9735,15 +9754,18 @@ var _user$project$View$buildResponse = function (model) {
 			_elm_lang$core$Basics$toString(model.tPoints),
 			A2(
 				_elm_lang$core$Basics_ops['++'],
-				' by ',
+				A2(_user$project$Model$difference, model.tPoints, model.tPoints_prev),
 				A2(
 					_elm_lang$core$Basics_ops['++'],
-					_elm_lang$core$Basics$toString(
-						_elm_lang$core$List$length(model.tList)),
+					' by ',
 					A2(
 						_elm_lang$core$Basics_ops['++'],
-						' campers; ',
-						A2(_elm_lang$core$Basics_ops['++'], 'last auto update @ ', dateString)))))) : '';
+						_elm_lang$core$Basics$toString(
+							_elm_lang$core$List$length(model.tList)),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							' campers; ',
+							A2(_elm_lang$core$Basics_ops['++'], 'last auto update @ ', dateString))))))) : '';
 };
 var _user$project$View$view = function (model) {
 	var clist = A2(
@@ -9816,7 +9838,7 @@ var _user$project$View$view = function (model) {
 };
 
 var _user$project$Subscriptions$subscriptions = function (model) {
-	return A2(_elm_lang$core$Time$every, 15 * _elm_lang$core$Time$minute, _user$project$Update$Tick);
+	return A2(_elm_lang$core$Time$every, 15 * _elm_lang$core$Time$second, _user$project$Update$Tick);
 };
 
 var _user$project$Fcc$init = function (savedModel) {
@@ -10023,18 +10045,23 @@ var _user$project$Fcc$main = {
 																			function (tPoints) {
 																				return A2(
 																					_elm_lang$core$Json_Decode$andThen,
-																					A2(_elm_lang$core$Json_Decode_ops[':='], 'ts', _elm_lang$core$Json_Decode$float),
-																					function (ts) {
+																					A2(_elm_lang$core$Json_Decode_ops[':='], 'tPoints_prev', _elm_lang$core$Json_Decode$int),
+																					function (tPoints_prev) {
 																						return A2(
 																							_elm_lang$core$Json_Decode$andThen,
-																							A2(_elm_lang$core$Json_Decode_ops[':='], 'uname', _elm_lang$core$Json_Decode$string),
-																							function (uname) {
+																							A2(_elm_lang$core$Json_Decode_ops[':='], 'ts', _elm_lang$core$Json_Decode$float),
+																							function (ts) {
 																								return A2(
 																									_elm_lang$core$Json_Decode$andThen,
-																									A2(_elm_lang$core$Json_Decode_ops[':='], 'url', _elm_lang$core$Json_Decode$string),
-																									function (url) {
-																										return _elm_lang$core$Json_Decode$succeed(
-																											{error: error, gList: gList, gRoom: gRoom, message: message, name: name, points: points, tList: tList, tPoints: tPoints, ts: ts, uname: uname, url: url});
+																									A2(_elm_lang$core$Json_Decode_ops[':='], 'uname', _elm_lang$core$Json_Decode$string),
+																									function (uname) {
+																										return A2(
+																											_elm_lang$core$Json_Decode$andThen,
+																											A2(_elm_lang$core$Json_Decode_ops[':='], 'url', _elm_lang$core$Json_Decode$string),
+																											function (url) {
+																												return _elm_lang$core$Json_Decode$succeed(
+																													{error: error, gList: gList, gRoom: gRoom, message: message, name: name, points: points, tList: tList, tPoints: tPoints, tPoints_prev: tPoints_prev, ts: ts, uname: uname, url: url});
+																											});
 																									});
 																							});
 																					});
