@@ -70,7 +70,7 @@ update action model =
 
     Tick newTime -> 
       let
-        model' = {model | ts = newTime, uname = model.name}
+        model' = {model | ts = newTime, uname = model.name, tPoints_prev = model.tPoints}
         --cList = updateList model.tList
         cList = List.map .uname model.tList 
 

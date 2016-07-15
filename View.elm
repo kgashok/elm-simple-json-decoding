@@ -30,7 +30,8 @@ buildResponse model =
     --then "Error: userID not valid? " ++ model.message 
     if model.tPoints /= -1
     then "Challenges completed: " ++ (toString model.tPoints) ++
-          " by " ++ (toString (List.length model.tList)) ++ " campers; " ++
+          (difference model.tPoints model.tPoints_prev)       ++
+          " by " ++ (toString (List.length model.tList))      ++ " campers; " ++
           "last auto update @ " ++ dateString 
     else "" 
 

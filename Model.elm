@@ -1,4 +1,4 @@
-module Model exposing (..) -- where 
+module Model exposing (..)
 
 import Time exposing (Time, inHours)
 import String
@@ -51,7 +51,8 @@ type alias Model =
   , points : Int 
   , ts  : Time
   , tList : List Camper
-  , tPoints : Int 
+  , tPoints : Int
+  , tPoints_prev : Int 
   , gList : List Camper  -- from Gitter room /kgisl/campsite
   , gRoom : GRoom
   }
@@ -79,6 +80,11 @@ type alias Gid =
   , avatarUrlSmall : String
   }
 
+difference : Int -> Int -> String 
+difference current previous = 
+  case (current - previous) of 
+    0 -> "" 
+    _ -> "(" ++ toString (current - previous) ++ ")"
 
 createCamper : Time -> Member -> Camper 
 createCamper ts member = 
@@ -189,6 +195,7 @@ initialModel =
   -- , ts = 1466438517981
   , tList = []
   , tPoints = 0
+  , tPoints_prev = 0
   , gList = []
   , gRoom = {id="", name="kgisl/campsite", userCount=0}
   }
