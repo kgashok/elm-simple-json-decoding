@@ -129,14 +129,17 @@ sortBasedOnHistory now cutOff campers =
   -- campers_ = List.sortWith flippedComparison2 campers
   campers 
     --|> List.map (truncateHistory now cutOff)
+    |> List.map (calDiff now)  
     |> List.sortWith flippedComparison2 
 
-
+calDiff : Time -> Camper -> Camper 
+calDiff now camper = 
+  {camper | last.ts = last.ts - now} 
 
 flippedComparison2: Camper -> Camper -> Order
 flippedComparison2 a b = 
 --  case compare a.last.points b.last.points of 
-  case compare a.last.ts b.last.ts of 
+  case compare b.last.ts a.last.ts of 
       GT -> LT
       EQ -> EQ
       LT -> GT
