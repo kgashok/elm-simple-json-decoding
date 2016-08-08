@@ -136,7 +136,7 @@ sortBasedOnHistory now cutOff campers =
 flippedComparison2: Camper -> Camper -> Order
 flippedComparison2 a b = 
 --  case compare a.last.points b.last.points of 
-  case compare a.last.delta b.last.delta of 
+  case compare a.last.ts b.last.ts of 
       GT -> LT
       EQ -> EQ
       LT -> GT
