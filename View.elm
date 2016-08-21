@@ -50,9 +50,13 @@ view model =
       --, p [] [ text ("FCC URL: " ++ fccAPI) ]
       , input [
           placeholder "Enter a FCC username",
-          onInput StoreURL
+          onInput StoreID
         ] []
         , button [ onClick FetchData ] [ text "Fetch and Add!" ]
+        , input [
+          placeholder model.gRoom.name, 
+          onInput StoreRoom
+        ] []
         , button [ onClick FetchGitter ] [text "Update from Gitter"]
         , h1 [rStyle]  [ text response ]
         --, div [] [ text (toString model.gRoom) ]

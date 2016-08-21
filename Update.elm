@@ -20,7 +20,8 @@ type Msg
   = FetchData
   | FetchSucceed Member
   | UpdateSucceed Member
-  | StoreURL String
+  | StoreID String
+  | StoreRoom String 
   | FetchFail Http.Error
   | Tick Time 
   | FetchGitter
@@ -52,9 +53,14 @@ update action model =
         )
 
 
-    StoreURL name ->
+    StoreID name ->
       ({ model | name = String.toLower name }, Cmd.none)
 
+    StoreRoom gname ->
+      let
+        room = {id="", name= String.toLower gname, userCount=0}
+      in 
+        ({ model | gRoom = room }, Cmd.none)
     
     FetchFail err ->
       ( { model | error = True 

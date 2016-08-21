@@ -9420,8 +9420,11 @@ var _user$project$Update$Tick = function (a) {
 var _user$project$Update$FetchFail = function (a) {
 	return {ctor: 'FetchFail', _0: a};
 };
-var _user$project$Update$StoreURL = function (a) {
-	return {ctor: 'StoreURL', _0: a};
+var _user$project$Update$StoreRoom = function (a) {
+	return {ctor: 'StoreRoom', _0: a};
+};
+var _user$project$Update$StoreID = function (a) {
+	return {ctor: 'StoreID', _0: a};
 };
 var _user$project$Update$UpdateSucceed = function (a) {
 	return {ctor: 'UpdateSucceed', _0: a};
@@ -9482,7 +9485,7 @@ var _user$project$Update$update = F2(
 							_user$project$Update$tickRequest(model$.url),
 							clist))
 				};
-			case 'StoreURL':
+			case 'StoreID':
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
@@ -9490,6 +9493,19 @@ var _user$project$Update$update = F2(
 						{
 							name: _elm_lang$core$String$toLower(_p2._0)
 						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'StoreRoom':
+				var room = {
+					id: '',
+					name: _elm_lang$core$String$toLower(_p2._0),
+					userCount: 0
+				};
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{gRoom: room}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'FetchFail':
@@ -9801,7 +9817,7 @@ var _user$project$View$view = function (model) {
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_elm_lang$html$Html_Attributes$placeholder('Enter a FCC username'),
-						_elm_lang$html$Html_Events$onInput(_user$project$Update$StoreURL)
+						_elm_lang$html$Html_Events$onInput(_user$project$Update$StoreID)
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[])),
@@ -9815,6 +9831,15 @@ var _user$project$View$view = function (model) {
 					[
 						_elm_lang$html$Html$text('Fetch and Add!')
 					])),
+				A2(
+				_elm_lang$html$Html$input,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$placeholder(model.gRoom.name),
+						_elm_lang$html$Html_Events$onInput(_user$project$Update$StoreRoom)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[])),
 				A2(
 				_elm_lang$html$Html$button,
 				_elm_lang$core$Native_List.fromArray(
