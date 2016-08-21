@@ -9057,7 +9057,7 @@ var _user$project$Model$truncateHistory = F3(
 	});
 var _user$project$Model$flippedComparison2 = F2(
 	function (a, b) {
-		var _p2 = A2(_elm_lang$core$Basics$compare, a.last.points, b.last.points);
+		var _p2 = A2(_elm_lang$core$Basics$compare, a.last.ts, b.last.ts);
 		switch (_p2.ctor) {
 			case 'GT':
 				return _elm_lang$core$Basics$LT;
@@ -9069,7 +9069,7 @@ var _user$project$Model$flippedComparison2 = F2(
 	});
 var _user$project$Model$sortBasedOnHistory = F3(
 	function (now, cutOff, campers) {
-		return A2(_elm_lang$core$List$sortWith, _user$project$Model$flippedComparison, campers);
+		return A2(_elm_lang$core$List$sortWith, _user$project$Model$flippedComparison2, campers);
 	});
 var _user$project$Model$skipList = function (userCount) {
 	return A2(
@@ -9838,7 +9838,7 @@ var _user$project$View$view = function (model) {
 };
 
 var _user$project$Subscriptions$subscriptions = function (model) {
-	return A2(_elm_lang$core$Time$every, 15 * _elm_lang$core$Time$minute, _user$project$Update$Tick);
+	return A2(_elm_lang$core$Time$every, 5 * _elm_lang$core$Time$minute, _user$project$Update$Tick);
 };
 
 var _user$project$Fcc$init = function (savedModel) {
