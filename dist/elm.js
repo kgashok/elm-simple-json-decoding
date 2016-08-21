@@ -9223,7 +9223,7 @@ var _user$project$Model$Gid = F3(
 	});
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.0-beta-88-g53db679';
+var _user$project$Version$version = 'v3.0-beta-89-g08ba1a6';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -9566,7 +9566,12 @@ var _user$project$Update$update = F2(
 			case 'FetchGitter':
 				return {
 					ctor: '_Tuple2',
-					_0: model,
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							tList: _elm_lang$core$Native_List.fromArray(
+								[])
+						}),
 					_1: _user$project$Update$refreshGitterIDs(_user$project$Model$gUrl)
 				};
 			case 'GitterSuccess':

@@ -104,7 +104,7 @@ update action model =
             )
 
     FetchGitter -> 
-      (model, refreshGitterIDs gUrl)
+      ({model|tList = []}, refreshGitterIDs gUrl)
 
     GitterSuccess grooms ->
       let
