@@ -48,6 +48,7 @@ type alias Model =
   , uname : String
   , message : String 
   , error : Bool
+  , roomChange : Bool
   , points : Int 
   , ts  : Time
   , tList : List Camper
@@ -198,4 +199,5 @@ initialModel =
   , tPoints_prev = 0
   , gList = []
   , gRoom = {id="", name="kgisl/campsite", userCount=0}
+  , roomChange = False
   }

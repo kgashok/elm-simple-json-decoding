@@ -58,9 +58,10 @@ update action model =
 
     StoreRoom gname ->
       let
+        change = (String.toLower gname) /= model.gRoom.name 
         room = {id="", name= String.toLower gname, userCount=0}
       in 
-        ({ model | gRoom = room }, Cmd.none)
+        ({ model | gRoom = room, roomChange = change }, Cmd.none)
     
     FetchFail err ->
       ( { model | error = True 
@@ -104,7 +105,11 @@ update action model =
             )
 
     FetchGitter -> 
-      ({model|tList = []}, refreshGitterIDs gUrl)
+      case model.roomChange of 
+        True -> 
+          ({model|tList = [], roomChange = False}, refreshGitterIDs gUrl)
+        False ->
+          (model, refreshGitterIDs gUrl)
 
     GitterSuccess grooms ->
       let
