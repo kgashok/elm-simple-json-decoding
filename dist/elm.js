@@ -9067,9 +9067,27 @@ var _user$project$Model$flippedComparison2 = F2(
 				return _elm_lang$core$Basics$GT;
 		}
 	});
+var _user$project$Model$flippedComparison3 = F2(
+	function (a, b) {
+		var _p3 = A2(_elm_lang$core$Basics$compare, a.last.points, b.last.points);
+		switch (_p3.ctor) {
+			case 'GT':
+				return _elm_lang$core$Basics$LT;
+			case 'EQ':
+				return _elm_lang$core$Basics$EQ;
+			default:
+				return _elm_lang$core$Basics$GT;
+		}
+	});
 var _user$project$Model$sortBasedOnHistory = F3(
 	function (now, cutOff, campers) {
-		return A2(_elm_lang$core$List$sortWith, _user$project$Model$flippedComparison2, campers);
+		return A2(
+			_elm_lang$core$List$sortWith,
+			_user$project$Model$flippedComparison2,
+			A2(
+				_elm_lang$core$List$sortWith,
+				_user$project$Model$flippedComparison,
+				A2(_elm_lang$core$List$sortWith, _user$project$Model$flippedComparison3, campers)));
 	});
 var _user$project$Model$skipList = function (userCount) {
 	return A2(
@@ -9098,8 +9116,8 @@ var _user$project$Model$createCamperFromGid = F2(
 			_elm_lang$core$List$member,
 			_elm_lang$core$String$toLower(gid.username),
 			cList);
-		var _p3 = isPresent;
-		if (_p3 === false) {
+		var _p4 = isPresent;
+		if (_p4 === false) {
 			return _elm_lang$core$Maybe$Just(
 				{
 					uname: _elm_lang$core$String$toLower(gid.username),
@@ -9123,8 +9141,8 @@ var _user$project$Model$createCamper = F2(
 	});
 var _user$project$Model$difference = F2(
 	function (current, previous) {
-		var _p4 = current - previous;
-		if (_p4 === 0) {
+		var _p5 = current - previous;
+		if (_p5 === 0) {
 			return '';
 		} else {
 			return A2(
@@ -9226,7 +9244,7 @@ var _user$project$Model$Gid = F3(
 	});
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.0-beta-90-gc9c02d9';
+var _user$project$Version$version = 'v3.0-beta-92-g57cc370';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',

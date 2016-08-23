@@ -130,7 +130,18 @@ sortBasedOnHistory now cutOff campers =
   -- campers_ = List.sortWith flippedComparison2 campers
   campers 
     --|> List.map (truncateHistory now cutOff)
-    |> List.sortWith flippedComparison2 
+    --|> List.sortWith flippedComparison2 
+    |> List.sortWith flippedComparison3
+    |> List.sortWith flippedComparison
+    |> List.sortWith flippedComparison2
+
+
+flippedComparison3: Camper -> Camper -> Order
+flippedComparison3 a b = 
+  case compare a.last.points b.last.points of 
+      GT -> LT
+      EQ -> EQ
+      LT -> GT
 
 
 
