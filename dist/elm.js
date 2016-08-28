@@ -9325,27 +9325,6 @@ var _user$project$Update$decodeGData = A2(
 	_elm_lang$core$Native_List.fromArray(
 		[]),
 	_elm_lang$core$Json_Decode$list(_user$project$Update$nestedListG));
-var _user$project$Update$updateCHistory = F3(
-	function (member, camper, model) {
-		var model$ = _elm_lang$core$Native_Utils.update(
-			model,
-			{
-				tList: A2(
-					_elm_lang$core$List$filter,
-					function (x) {
-						return !_elm_lang$core$Native_Utils.eq(x.uname, member.uname);
-					},
-					model.tList)
-			});
-		var data = A3(_user$project$Model$pointsData, member.points, model.ts, camper.last.points);
-		var camper$ = _elm_lang$core$Native_Utils.update(
-			camper,
-			{
-				chist: A2(_elm_lang$core$List_ops['::'], data, camper.chist),
-				last: data
-			});
-		return A2(_elm_lang$core$List_ops['::'], camper$, model$.tList);
-	});
 var _user$project$Update$calculateTotal = function (tlist) {
 	return _elm_lang$core$List$sum(
 		A2(
@@ -9396,6 +9375,38 @@ var _user$project$Update$getCamper = F2(
 	function (member, camper) {
 		return (_elm_lang$core$Native_Utils.eq(member.uname, camper.uname) && ((!_elm_lang$core$Native_Utils.eq(member.points, camper.last.points)) && _elm_lang$core$Basics$not(
 			A2(_elm_lang$core$List$member, member.uname, _user$project$Model$excluded)))) ? _elm_lang$core$Maybe$Just(camper) : _elm_lang$core$Maybe$Nothing;
+	});
+var _user$project$Update$updateCHistory = F2(
+	function (model, member) {
+		var camper = _elm_lang$core$List$head(
+			A2(
+				_elm_lang$core$List$filterMap,
+				_user$project$Update$getCamper(member),
+				model.tList));
+		var _p2 = camper;
+		if (_p2.ctor === 'Nothing') {
+			return model.tList;
+		} else {
+			var _p3 = _p2._0;
+			var model$ = _elm_lang$core$Native_Utils.update(
+				model,
+				{
+					tList: A2(
+						_elm_lang$core$List$filter,
+						function (x) {
+							return !_elm_lang$core$Native_Utils.eq(x.uname, member.uname);
+						},
+						model.tList)
+				});
+			var data = A3(_user$project$Model$pointsData, member.points, model.ts, _p3.last.points);
+			var camper$ = _elm_lang$core$Native_Utils.update(
+				_p3,
+				{
+					chist: A2(_elm_lang$core$List_ops['::'], data, _p3.chist),
+					last: data
+				});
+			return A2(_elm_lang$core$List_ops['::'], camper$, model$.tList);
+		}
 	});
 var _user$project$Update$nestedListGID = A4(
 	_elm_lang$core$Json_Decode$object3,
@@ -9479,8 +9490,8 @@ var _user$project$Update$getData = F2(
 	});
 var _user$project$Update$update = F2(
 	function (action, model) {
-		var _p2 = action;
-		switch (_p2.ctor) {
+		var _p4 = action;
+		switch (_p4.ctor) {
 			case 'FetchData':
 				var model$ = _elm_lang$core$Native_Utils.update(
 					model,
@@ -9491,7 +9502,7 @@ var _user$project$Update$update = F2(
 					_1: A2(_user$project$Update$getData, model$.url, model$.uname)
 				};
 			case 'FetchSucceed':
-				var model$ = A2(_user$project$Update$addToList, _p2._0, model);
+				var model$ = A2(_user$project$Update$addToList, _p4._0, model);
 				var clist = A2(
 					_elm_lang$core$List$map,
 					function (_) {
@@ -9513,19 +9524,19 @@ var _user$project$Update$update = F2(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							name: _elm_lang$core$String$toLower(_p2._0)
+							name: _elm_lang$core$String$toLower(_p4._0)
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'StoreRoom':
-				var _p3 = _p2._0;
+				var _p5 = _p4._0;
 				var room = {
 					id: '',
-					name: _elm_lang$core$String$toLower(_p3),
+					name: _elm_lang$core$String$toLower(_p5),
 					userCount: 0
 				};
 				var change = !_elm_lang$core$Native_Utils.eq(
-					_elm_lang$core$String$toLower(_p3),
+					_elm_lang$core$String$toLower(_p5),
 					model.gRoom.name);
 				return {
 					ctor: '_Tuple2',
@@ -9543,20 +9554,20 @@ var _user$project$Update$update = F2(
 							error: true,
 							points: -1,
 							uname: '',
-							message: _elm_lang$core$Basics$toString(_p2._0)
+							message: _elm_lang$core$Basics$toString(_p4._0)
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'Tick':
+				var model$ = _elm_lang$core$Native_Utils.update(
+					model,
+					{ts: _p4._0, uname: model.name, tPoints_prev: model.tPoints});
 				var cList = A2(
 					_elm_lang$core$List$map,
 					function (_) {
 						return _.uname;
 					},
-					model.tList);
-				var model$ = _elm_lang$core$Native_Utils.update(
-					model,
-					{ts: _p2._0, uname: model.name, tPoints_prev: model.tPoints});
+					model$.tList);
 				return {
 					ctor: '_Tuple2',
 					_0: model$,
@@ -9567,28 +9578,18 @@ var _user$project$Update$update = F2(
 							cList))
 				};
 			case 'UpdateSucceed':
-				var _p5 = _p2._0;
-				var camper = _elm_lang$core$List$head(
-					A2(
-						_elm_lang$core$List$filterMap,
-						_user$project$Update$getCamper(_p5),
-						model.tList));
-				var _p4 = camper;
-				if (_p4.ctor === 'Nothing') {
-					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-				} else {
-					return {
-						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							model,
-							{
-								tList: A3(_user$project$Update$updateCHistory, _p5, _p4._0, model),
-								tPoints: _user$project$Update$calculateTotal(model.tList),
-								message: ''
-							}),
-						_1: _user$project$Ports$modelChange(model)
-					};
-				}
+				var model$ = _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						tList: A2(_user$project$Update$updateCHistory, model, _p4._0),
+						tPoints: _user$project$Update$calculateTotal(model.tList),
+						message: ''
+					});
+				return {
+					ctor: '_Tuple2',
+					_0: model$,
+					_1: _user$project$Ports$modelChange(model$)
+				};
 			case 'FetchGitter':
 				var _p6 = model.roomChange;
 				if (_p6 === true) {
@@ -9617,7 +9618,7 @@ var _user$project$Update$update = F2(
 						function (x) {
 							return _elm_lang$core$Native_Utils.eq(x.name, model.gRoom.name);
 						},
-						_p2._0));
+						_p4._0));
 				var _p7 = gRoom$;
 				if (_p7.ctor === 'Nothing') {
 					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
@@ -9639,7 +9640,7 @@ var _user$project$Update$update = F2(
 				var camperList = A2(
 					_elm_lang$core$List$filterMap,
 					_user$project$Model$createCamperFromGid(model.tList),
-					_p2._0);
+					_p4._0);
 				var model$ = _elm_lang$core$Native_Utils.update(
 					model,
 					{

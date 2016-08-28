@@ -79,7 +79,7 @@ update action model =
       let
         model' = {model | ts = newTime, uname = model.name, tPoints_prev = model.tPoints}
         --cList = updateList model.tList
-        cList = List.map .uname model.tList 
+        cList = List.map .uname model'.tList 
 
       in
         ( model', 
@@ -89,20 +89,13 @@ update action model =
 
     UpdateSucceed member -> 
       let
-        camper = 
-          List.filterMap (getCamper member) model.tList
-            |> List.head
+        model' = 
+          { model|tList = updateCHistory model member,
+                  tPoints = calculateTotal model.tList, 
+                  message = ""
+          } 
       in
-        case camper of 
-          Nothing -> (model, Cmd.none)
-          Just(camper) ->
-            ({ model |tList = updateCHistory member camper model,
-                    tPoints = calculateTotal model.tList, 
-                    message = ""
-             }
-             , Ports.modelChange model
-             -- , Cmd.none
-            )
+        (model', Ports.modelChange model')
 
     FetchGitter -> 
       case model.roomChange of 
@@ -182,19 +175,26 @@ calculateTotal tlist =
     |> List.sum
 
 
-updateCHistory : Member -> Camper -> Model -> List Camper   
-updateCHistory member camper model = 
-  let 
-    data = pointsData member.points model.ts camper.last.points
-    camper' = {camper| chist = data :: camper.chist, 
-                       last  = data 
-              }
-    model' = {model |tList = 
-      List.filter (\x -> x.uname /= member.uname) model.tList
-    }
-
+updateCHistory : Model -> Member -> List Camper   
+updateCHistory model member = 
+  let
+    camper = 
+      List.filterMap (getCamper member) model.tList 
+        |> List.head
   in
-    camper' :: model'.tList
+    case (camper) of
+      Nothing -> model.tList
+      Just (camper) -> 
+        let 
+          data = pointsData member.points model.ts camper.last.points
+          camper' = {camper| chist = data :: camper.chist, 
+                         last  = data 
+                }
+          model' = {model |tList = 
+            List.filter (\x -> x.uname /= member.uname) model.tList
+          }
+        in
+          camper' :: model'.tList
 
 
 
