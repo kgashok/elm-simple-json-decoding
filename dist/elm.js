@@ -9244,7 +9244,7 @@ var _user$project$Model$Gid = F3(
 	});
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.0-beta-92-g57cc370';
+var _user$project$Version$version = 'v3.0-beta-94-g98d8d3a';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
