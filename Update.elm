@@ -74,9 +74,6 @@ update action model =
         , Cmd.none
       )
 
-    --FetchPoints val -> 
-    --  ({ model | points = val, error = False }, Cmd.none )
-
     Tick newTime -> 
       let
         model' = {model | ts = newTime, uname = model.name, tPoints_prev = model.tPoints}
@@ -94,6 +91,7 @@ update action model =
         model' = {model|min5 = bool, min15 = False}
       in 
         ( model', Ports.modelChange model')
+
     Set15min bool -> 
       let 
         model' = {model|min15 = bool, min5 = False}
@@ -175,8 +173,7 @@ tickRequest url name =
 getCamper : Member -> Camper -> Maybe Camper
 getCamper member camper = 
   if member.uname == camper.uname && 
-     member.points /= camper.last.points &&
-     not (List.member member.uname excluded ) then
+     member.points /= camper.last.points then 
       Just camper 
   else
       Nothing
@@ -192,12 +189,14 @@ calculateTotal tlist =
 updateCHistory : Model -> Member -> List Camper   
 updateCHistory model member = 
   let
-    camper = 
-      List.filterMap (getCamper member) model.tList 
-        |> List.head
+    tList' = model.tList 
+      |> List.filter (\x -> not <| List.member x.uname model.exclude)
+    camper = tList'
+      |> List.filterMap (getCamper member)
+      |> List.head
   in
     case (camper) of
-      Nothing -> model.tList
+      Nothing -> tList' 
       Just (camper) -> 
         let 
           data = pointsData member.points model.ts camper.last.points
@@ -205,7 +204,7 @@ updateCHistory model member =
                          last  = data 
                 }
           model' = {model |tList = 
-            List.filter (\x -> x.uname /= member.uname) model.tList
+            List.filter (\x -> x.uname /= member.uname) tList'
           }
         in
           camper' :: model'.tList

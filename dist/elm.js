@@ -8995,7 +8995,7 @@ var _mgold$elm_date_format$Date_Format$format = F2(
 var _mgold$elm_date_format$Date_Format$formatISO8601 = _mgold$elm_date_format$Date_Format$format('%Y-%m-%dT%H:%M:%SZ');
 
 var _user$project$Model$excluded = _elm_lang$core$Native_List.fromArray(
-	['quincylarson']);
+	['quincylarson', 'ddd']);
 var _user$project$Model$cutOff = _elm_lang$core$Time$inHours(2592000000);
 var _user$project$Model$flippedComparison = F2(
 	function (a, b) {
@@ -9255,7 +9255,7 @@ var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
 var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.0-beta-98-g653f8ca';
+var _user$project$Version$version = 'v3.0-beta-99-g5fefc99';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -9390,19 +9390,25 @@ var _user$project$Update$addToList = F2(
 	});
 var _user$project$Update$getCamper = F2(
 	function (member, camper) {
-		return (_elm_lang$core$Native_Utils.eq(member.uname, camper.uname) && ((!_elm_lang$core$Native_Utils.eq(member.points, camper.last.points)) && _elm_lang$core$Basics$not(
-			A2(_elm_lang$core$List$member, member.uname, _user$project$Model$excluded)))) ? _elm_lang$core$Maybe$Just(camper) : _elm_lang$core$Maybe$Nothing;
+		return (_elm_lang$core$Native_Utils.eq(member.uname, camper.uname) && (!_elm_lang$core$Native_Utils.eq(member.points, camper.last.points))) ? _elm_lang$core$Maybe$Just(camper) : _elm_lang$core$Maybe$Nothing;
 	});
 var _user$project$Update$updateCHistory = F2(
 	function (model, member) {
+		var tList$ = A2(
+			_elm_lang$core$List$filter,
+			function (x) {
+				return _elm_lang$core$Basics$not(
+					A2(_elm_lang$core$List$member, x.uname, model.exclude));
+			},
+			model.tList);
 		var camper = _elm_lang$core$List$head(
 			A2(
 				_elm_lang$core$List$filterMap,
 				_user$project$Update$getCamper(member),
-				model.tList));
+				tList$));
 		var _p2 = camper;
 		if (_p2.ctor === 'Nothing') {
-			return model.tList;
+			return tList$;
 		} else {
 			var _p3 = _p2._0;
 			var model$ = _elm_lang$core$Native_Utils.update(
@@ -9413,7 +9419,7 @@ var _user$project$Update$updateCHistory = F2(
 						function (x) {
 							return !_elm_lang$core$Native_Utils.eq(x.uname, member.uname);
 						},
-						model.tList)
+						tList$)
 				});
 			var data = A3(_user$project$Model$pointsData, member.points, model.ts, _p3.last.points);
 			var camper$ = _elm_lang$core$Native_Utils.update(

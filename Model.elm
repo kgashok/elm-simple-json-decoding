@@ -199,7 +199,7 @@ cutOff = inHours 2592000000 -- 720 hours
 
 
 excluded : List String 
-excluded = ["quincylarson"]
+excluded = ["quincylarson", "ddd"]
 
 
 initialModel : Model
