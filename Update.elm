@@ -90,11 +90,15 @@ update action model =
         )
 
     Set5min bool -> 
-      ( {model|min5 = bool, min15 = False}
-      , Cmd.none)
+      let 
+        model' = {model|min5 = bool, min15 = False}
+      in 
+        ( model', Ports.modelChange model')
     Set15min bool -> 
-      ( {model|min15 = bool, min5 = False}
-      , Cmd.none)
+      let 
+        model' = {model|min15 = bool, min5 = False}
+      in 
+        ( model', Ports.modelChange model')
 
     UpdateSucceed member -> 
       let

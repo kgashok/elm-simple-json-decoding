@@ -218,7 +218,7 @@ initialModel =
   , gList = []
   , gRoom = {id="", name="kgisl/campsite", userCount=0}
   , roomChange = False
-  , min5 = True
-  , min15 = False
-  , exclude = excluded 
+  , min5 = False
+  , min15 = True
+  , exclude = excluded
   }

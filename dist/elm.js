@@ -9192,8 +9192,8 @@ var _user$project$Model$initialModel = {
 		[]),
 	gRoom: {id: '', name: 'kgisl/campsite', userCount: 0},
 	roomChange: false,
-	min5: true,
-	min15: false,
+	min5: false,
+	min15: true,
 	exclude: _user$project$Model$excluded
 };
 var _user$project$Model$url2 = 'https://api.myjson.com/bins/2kjv4';
@@ -9601,20 +9601,22 @@ var _user$project$Update$update = F2(
 							cList))
 				};
 			case 'Set5min':
+				var model$ = _elm_lang$core$Native_Utils.update(
+					model,
+					{min5: _p4._0, min15: false});
 				return {
 					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{min5: _p4._0, min15: false}),
-					_1: _elm_lang$core$Platform_Cmd$none
+					_0: model$,
+					_1: _user$project$Ports$modelChange(model$)
 				};
 			case 'Set15min':
+				var model$ = _elm_lang$core$Native_Utils.update(
+					model,
+					{min15: _p4._0, min5: false});
 				return {
 					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
-						model,
-						{min15: _p4._0, min5: false}),
-					_1: _elm_lang$core$Platform_Cmd$none
+					_0: model$,
+					_1: _user$project$Ports$modelChange(model$)
 				};
 			case 'UpdateSucceed':
 				var model$ = _elm_lang$core$Native_Utils.update(
