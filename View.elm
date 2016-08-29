@@ -58,6 +58,16 @@ view model =
           onInput StoreRoom
         ] []
         , button [ onClick FetchGitter ] [text "Update from Gitter"]
+        , label []
+          [ -- br [] []
+            input [ type' "radio", checked model.min5, onCheck Set5min ] []
+          , text "5 min" 
+          ]
+        , label []
+          [ input [ type' "radio", checked model.min15, onCheck Set15min ] []
+          , text "15 min" 
+          ]
+        -- , updateSettings model 
         , h1 [rStyle]  [ text response ]
         --, div [] [ text (toString model.gRoom) ]
         --, div [] [ text (toString model.gList) ]
@@ -130,6 +140,31 @@ campList display now campers =
       ]
 
 
+
+{--
+updateSettings: Model -> Html Msg  
+updateSettings model = 
+  div []
+    [ span [] [text "Hello, how are you?!"]
+    , radio Red "red" model
+    , radio Underline "underline" model
+    , radio Bold "bold" model
+    ]
+
+
+radio : Style -> String -> Model -> Html Msg
+radio style name model =
+  let
+    isSelected =
+      model.style == style
+  in
+    label []
+      [ br [] []
+      , input [ type' "radio", checked isSelected, onCheck (\_ -> Switch style) ] []
+      , text name
+      ]
+
+--}
 
 footer : Html Msg
 footer = 

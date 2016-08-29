@@ -9191,7 +9191,9 @@ var _user$project$Model$initialModel = {
 	gList: _elm_lang$core$Native_List.fromArray(
 		[]),
 	gRoom: {id: '', name: 'kgisl/campsite', userCount: 0},
-	roomChange: false
+	roomChange: false,
+	min5: true,
+	min15: false
 };
 var _user$project$Model$url2 = 'https://api.myjson.com/bins/2kjv4';
 var _user$project$Model$url1 = 'https://api.myjson.com/bins/3fueo';
@@ -9212,7 +9214,11 @@ var _user$project$Model$Model = function (a) {
 										return function (k) {
 											return function (l) {
 												return function (m) {
-													return {url: a, name: b, uname: c, message: d, error: e, roomChange: f, points: g, ts: h, tList: i, tPoints: j, tPoints_prev: k, gList: l, gRoom: m};
+													return function (n) {
+														return function (o) {
+															return {url: a, name: b, uname: c, message: d, error: e, roomChange: f, points: g, ts: h, tList: i, tPoints: j, tPoints_prev: k, gList: l, gRoom: m, min5: n, min15: o};
+														};
+													};
 												};
 											};
 										};
@@ -9242,6 +9248,8 @@ var _user$project$Model$Gid = F3(
 	function (a, b, c) {
 		return {username: a, displayName: b, avatarUrlSmall: c};
 	});
+var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
+var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
 var _user$project$Version$version = 'v3.0-beta-94-g98d8d3a';
@@ -9282,7 +9290,9 @@ var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPor
 						last: {points: v.last.points, ts: v.last.ts, delta: v.last.delta}
 					};
 				}),
-			gRoom: {id: v.gRoom.id, name: v.gRoom.name, userCount: v.gRoom.userCount}
+			gRoom: {id: v.gRoom.id, name: v.gRoom.name, userCount: v.gRoom.userCount},
+			min5: v.min5,
+			min15: v.min15
 		};
 	});
 var _user$project$Ports$logExternalOut = _elm_lang$core$Native_Platform.outgoingPort(
@@ -9419,6 +9429,12 @@ var _user$project$Update$decodeIDData = A2(
 	_elm_lang$core$Native_List.fromArray(
 		[]),
 	_elm_lang$core$Json_Decode$list(_user$project$Update$nestedListGID));
+var _user$project$Update$Set15min = function (a) {
+	return {ctor: 'Set15min', _0: a};
+};
+var _user$project$Update$Set5min = function (a) {
+	return {ctor: 'Set5min', _0: a};
+};
 var _user$project$Update$GitterIDSuccess = function (a) {
 	return {ctor: 'GitterIDSuccess', _0: a};
 };
@@ -9576,6 +9592,22 @@ var _user$project$Update$update = F2(
 							_elm_lang$core$List$map,
 							_user$project$Update$tickRequest(model$.url),
 							cList))
+				};
+			case 'Set5min':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{min5: _p4._0, min15: false}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'Set15min':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{min15: _p4._0, min5: false}),
+					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'UpdateSucceed':
 				var model$ = _elm_lang$core$Native_Utils.update(
@@ -9893,6 +9925,42 @@ var _user$project$View$view = function (model) {
 						_elm_lang$html$Html$text('Update from Gitter')
 					])),
 				A2(
+				_elm_lang$html$Html$label,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$input,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$type$('radio'),
+								_elm_lang$html$Html_Attributes$checked(model.min5),
+								_elm_lang$html$Html_Events$onCheck(_user$project$Update$Set5min)
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[])),
+						_elm_lang$html$Html$text('5 min')
+					])),
+				A2(
+				_elm_lang$html$Html$label,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$input,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html_Attributes$type$('radio'),
+								_elm_lang$html$Html_Attributes$checked(model.min15),
+								_elm_lang$html$Html_Events$onCheck(_user$project$Update$Set15min)
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[])),
+						_elm_lang$html$Html$text('15 min')
+					])),
+				A2(
 				_elm_lang$html$Html$h1,
 				_elm_lang$core$Native_List.fromArray(
 					[_user$project$View$rStyle]),
@@ -9905,7 +9973,12 @@ var _user$project$View$view = function (model) {
 };
 
 var _user$project$Subscriptions$subscriptions = function (model) {
-	return A2(_elm_lang$core$Time$every, 15 * _elm_lang$core$Time$minute, _user$project$Update$Tick);
+	var _p0 = model.min15;
+	if (_p0 === true) {
+		return A2(_elm_lang$core$Time$every, 15 * _elm_lang$core$Time$minute, _user$project$Update$Tick);
+	} else {
+		return A2(_elm_lang$core$Time$every, 5 * _elm_lang$core$Time$minute, _user$project$Update$Tick);
+	}
 };
 
 var _user$project$Fcc$init = function (savedModel) {
@@ -10037,101 +10110,111 @@ var _user$project$Fcc$main = {
 											function (message) {
 												return A2(
 													_elm_lang$core$Json_Decode$andThen,
-													A2(_elm_lang$core$Json_Decode_ops[':='], 'name', _elm_lang$core$Json_Decode$string),
-													function (name) {
+													A2(_elm_lang$core$Json_Decode_ops[':='], 'min15', _elm_lang$core$Json_Decode$bool),
+													function (min15) {
 														return A2(
 															_elm_lang$core$Json_Decode$andThen,
-															A2(_elm_lang$core$Json_Decode_ops[':='], 'points', _elm_lang$core$Json_Decode$int),
-															function (points) {
+															A2(_elm_lang$core$Json_Decode_ops[':='], 'min5', _elm_lang$core$Json_Decode$bool),
+															function (min5) {
 																return A2(
 																	_elm_lang$core$Json_Decode$andThen,
-																	A2(_elm_lang$core$Json_Decode_ops[':='], 'roomChange', _elm_lang$core$Json_Decode$bool),
-																	function (roomChange) {
+																	A2(_elm_lang$core$Json_Decode_ops[':='], 'name', _elm_lang$core$Json_Decode$string),
+																	function (name) {
 																		return A2(
 																			_elm_lang$core$Json_Decode$andThen,
-																			A2(
-																				_elm_lang$core$Json_Decode_ops[':='],
-																				'tList',
-																				_elm_lang$core$Json_Decode$list(
-																					A2(
-																						_elm_lang$core$Json_Decode$andThen,
-																						A2(
-																							_elm_lang$core$Json_Decode_ops[':='],
-																							'chist',
-																							_elm_lang$core$Json_Decode$list(
-																								A2(
+																			A2(_elm_lang$core$Json_Decode_ops[':='], 'points', _elm_lang$core$Json_Decode$int),
+																			function (points) {
+																				return A2(
+																					_elm_lang$core$Json_Decode$andThen,
+																					A2(_elm_lang$core$Json_Decode_ops[':='], 'roomChange', _elm_lang$core$Json_Decode$bool),
+																					function (roomChange) {
+																						return A2(
+																							_elm_lang$core$Json_Decode$andThen,
+																							A2(
+																								_elm_lang$core$Json_Decode_ops[':='],
+																								'tList',
+																								_elm_lang$core$Json_Decode$list(
+																									A2(
+																										_elm_lang$core$Json_Decode$andThen,
+																										A2(
+																											_elm_lang$core$Json_Decode_ops[':='],
+																											'chist',
+																											_elm_lang$core$Json_Decode$list(
+																												A2(
+																													_elm_lang$core$Json_Decode$andThen,
+																													A2(_elm_lang$core$Json_Decode_ops[':='], 'delta', _elm_lang$core$Json_Decode$int),
+																													function (delta) {
+																														return A2(
+																															_elm_lang$core$Json_Decode$andThen,
+																															A2(_elm_lang$core$Json_Decode_ops[':='], 'points', _elm_lang$core$Json_Decode$int),
+																															function (points) {
+																																return A2(
+																																	_elm_lang$core$Json_Decode$andThen,
+																																	A2(_elm_lang$core$Json_Decode_ops[':='], 'ts', _elm_lang$core$Json_Decode$float),
+																																	function (ts) {
+																																		return _elm_lang$core$Json_Decode$succeed(
+																																			{delta: delta, points: points, ts: ts});
+																																	});
+																															});
+																													}))),
+																										function (chist) {
+																											return A2(
+																												_elm_lang$core$Json_Decode$andThen,
+																												A2(
+																													_elm_lang$core$Json_Decode_ops[':='],
+																													'last',
+																													A2(
+																														_elm_lang$core$Json_Decode$andThen,
+																														A2(_elm_lang$core$Json_Decode_ops[':='], 'delta', _elm_lang$core$Json_Decode$int),
+																														function (delta) {
+																															return A2(
+																																_elm_lang$core$Json_Decode$andThen,
+																																A2(_elm_lang$core$Json_Decode_ops[':='], 'points', _elm_lang$core$Json_Decode$int),
+																																function (points) {
+																																	return A2(
+																																		_elm_lang$core$Json_Decode$andThen,
+																																		A2(_elm_lang$core$Json_Decode_ops[':='], 'ts', _elm_lang$core$Json_Decode$float),
+																																		function (ts) {
+																																			return _elm_lang$core$Json_Decode$succeed(
+																																				{delta: delta, points: points, ts: ts});
+																																		});
+																																});
+																														})),
+																												function (last) {
+																													return A2(
+																														_elm_lang$core$Json_Decode$andThen,
+																														A2(_elm_lang$core$Json_Decode_ops[':='], 'uname', _elm_lang$core$Json_Decode$string),
+																														function (uname) {
+																															return _elm_lang$core$Json_Decode$succeed(
+																																{chist: chist, last: last, uname: uname});
+																														});
+																												});
+																										}))),
+																							function (tList) {
+																								return A2(
 																									_elm_lang$core$Json_Decode$andThen,
-																									A2(_elm_lang$core$Json_Decode_ops[':='], 'delta', _elm_lang$core$Json_Decode$int),
-																									function (delta) {
+																									A2(_elm_lang$core$Json_Decode_ops[':='], 'tPoints', _elm_lang$core$Json_Decode$int),
+																									function (tPoints) {
 																										return A2(
 																											_elm_lang$core$Json_Decode$andThen,
-																											A2(_elm_lang$core$Json_Decode_ops[':='], 'points', _elm_lang$core$Json_Decode$int),
-																											function (points) {
+																											A2(_elm_lang$core$Json_Decode_ops[':='], 'tPoints_prev', _elm_lang$core$Json_Decode$int),
+																											function (tPoints_prev) {
 																												return A2(
 																													_elm_lang$core$Json_Decode$andThen,
 																													A2(_elm_lang$core$Json_Decode_ops[':='], 'ts', _elm_lang$core$Json_Decode$float),
 																													function (ts) {
-																														return _elm_lang$core$Json_Decode$succeed(
-																															{delta: delta, points: points, ts: ts});
-																													});
-																											});
-																									}))),
-																						function (chist) {
-																							return A2(
-																								_elm_lang$core$Json_Decode$andThen,
-																								A2(
-																									_elm_lang$core$Json_Decode_ops[':='],
-																									'last',
-																									A2(
-																										_elm_lang$core$Json_Decode$andThen,
-																										A2(_elm_lang$core$Json_Decode_ops[':='], 'delta', _elm_lang$core$Json_Decode$int),
-																										function (delta) {
-																											return A2(
-																												_elm_lang$core$Json_Decode$andThen,
-																												A2(_elm_lang$core$Json_Decode_ops[':='], 'points', _elm_lang$core$Json_Decode$int),
-																												function (points) {
-																													return A2(
-																														_elm_lang$core$Json_Decode$andThen,
-																														A2(_elm_lang$core$Json_Decode_ops[':='], 'ts', _elm_lang$core$Json_Decode$float),
-																														function (ts) {
-																															return _elm_lang$core$Json_Decode$succeed(
-																																{delta: delta, points: points, ts: ts});
-																														});
-																												});
-																										})),
-																								function (last) {
-																									return A2(
-																										_elm_lang$core$Json_Decode$andThen,
-																										A2(_elm_lang$core$Json_Decode_ops[':='], 'uname', _elm_lang$core$Json_Decode$string),
-																										function (uname) {
-																											return _elm_lang$core$Json_Decode$succeed(
-																												{chist: chist, last: last, uname: uname});
-																										});
-																								});
-																						}))),
-																			function (tList) {
-																				return A2(
-																					_elm_lang$core$Json_Decode$andThen,
-																					A2(_elm_lang$core$Json_Decode_ops[':='], 'tPoints', _elm_lang$core$Json_Decode$int),
-																					function (tPoints) {
-																						return A2(
-																							_elm_lang$core$Json_Decode$andThen,
-																							A2(_elm_lang$core$Json_Decode_ops[':='], 'tPoints_prev', _elm_lang$core$Json_Decode$int),
-																							function (tPoints_prev) {
-																								return A2(
-																									_elm_lang$core$Json_Decode$andThen,
-																									A2(_elm_lang$core$Json_Decode_ops[':='], 'ts', _elm_lang$core$Json_Decode$float),
-																									function (ts) {
-																										return A2(
-																											_elm_lang$core$Json_Decode$andThen,
-																											A2(_elm_lang$core$Json_Decode_ops[':='], 'uname', _elm_lang$core$Json_Decode$string),
-																											function (uname) {
-																												return A2(
-																													_elm_lang$core$Json_Decode$andThen,
-																													A2(_elm_lang$core$Json_Decode_ops[':='], 'url', _elm_lang$core$Json_Decode$string),
-																													function (url) {
-																														return _elm_lang$core$Json_Decode$succeed(
-																															{error: error, gList: gList, gRoom: gRoom, message: message, name: name, points: points, roomChange: roomChange, tList: tList, tPoints: tPoints, tPoints_prev: tPoints_prev, ts: ts, uname: uname, url: url});
+																														return A2(
+																															_elm_lang$core$Json_Decode$andThen,
+																															A2(_elm_lang$core$Json_Decode_ops[':='], 'uname', _elm_lang$core$Json_Decode$string),
+																															function (uname) {
+																																return A2(
+																																	_elm_lang$core$Json_Decode$andThen,
+																																	A2(_elm_lang$core$Json_Decode_ops[':='], 'url', _elm_lang$core$Json_Decode$string),
+																																	function (url) {
+																																		return _elm_lang$core$Json_Decode$succeed(
+																																			{error: error, gList: gList, gRoom: gRoom, message: message, min15: min15, min5: min5, name: name, points: points, roomChange: roomChange, tList: tList, tPoints: tPoints, tPoints_prev: tPoints_prev, ts: ts, uname: uname, url: url});
+																																	});
+																															});
 																													});
 																											});
 																									});

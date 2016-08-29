@@ -28,6 +28,8 @@ type Msg
   | GitterSuccess (List GRoom) 
   | GitterFail Http.Error
   | GitterIDSuccess (List Gid)
+  | Set5min Bool 
+  | Set15min Bool 
   --| FetchPoints String
 
 
@@ -82,10 +84,17 @@ update action model =
         cList = List.map .uname model'.tList 
 
       in
-        ( model', 
-          -- tickRequest (model'.url ++ model'.uname)
-          Cmd.batch (List.map (tickRequest model'.url) cList)
+        ( model'
+        --, -- tickRequest (model'.url ++ model'.uname)
+        , Cmd.batch (List.map (tickRequest model'.url) cList)
         )
+
+    Set5min bool -> 
+      ( {model|min5 = bool, min15 = False}
+      , Cmd.none)
+    Set15min bool -> 
+      ( {model|min15 = bool, min5 = False}
+      , Cmd.none)
 
     UpdateSucceed member -> 
       let
@@ -96,6 +105,7 @@ update action model =
           } 
       in
         (model', Ports.modelChange model')
+        -- (model', Cmd.none)
 
     FetchGitter -> 
       case model.roomChange of 

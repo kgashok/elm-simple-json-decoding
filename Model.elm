@@ -56,7 +56,14 @@ type alias Model =
   , tPoints_prev : Int 
   , gList : List Camper  -- from Gitter room /kgisl/campsite
   , gRoom : GRoom
+  , min5 : Bool
+  , min15 : Bool
+  , exclude : List String
   }
+
+type Interval
+  = SetMin5
+  | SetMin15
 
 type alias Camper = 
   { uname: String
@@ -211,4 +218,7 @@ initialModel =
   , gList = []
   , gRoom = {id="", name="kgisl/campsite", userCount=0}
   , roomChange = False
+  , min5 = True
+  , min15 = False
+  , exclude = excluded 
   }
