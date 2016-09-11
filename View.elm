@@ -121,8 +121,8 @@ camperItem camper =
     points  = String.join ", " (List.map (formatData prev) history )
   in 
     li []
-      [ span [ class "uname" ] [ text camper.uname ],
-        span [] [text "   "],
+      [ span [ class "uname"  ] [ text camper.uname ],
+--        span [ class "points" ] [text "   -   "],
         span [ class "points" ] [ text points ]
       ]
 
