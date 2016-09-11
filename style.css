@@ -208,14 +208,24 @@ li .phrase {
 }
 
 
-li .points {
-  position: absolute;
+li .uname {
+  /*position: absolute; */
   top: 18px;
   right: 60px;
   float: left;
-  font-weight: lighter;
-  font-size: smaller; 
+  line-height: normal;
+}
 
+
+li .points {
+  /* position: absolute; */
+  top: 18px;
+  right: 60px;
+  /*float: right; */
+  font-weight: lighter;
+  font-size: smaller;
+  height: initial;
+  line-height: normal;
 }
 
 li .index {
