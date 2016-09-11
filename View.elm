@@ -122,6 +122,7 @@ camperItem camper =
   in 
     li []
       [ span [ class "uname" ] [ text camper.uname ],
+        span [] [text "   "],
         span [ class "points" ] [ text points ]
       ]
 
