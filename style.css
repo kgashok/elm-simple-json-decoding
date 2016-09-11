@@ -209,13 +209,13 @@ li .phrase {
 
 
 li .points {
-  position: absolute;
+  /* position: absolute; */
   top: 18px;
   right: 60px;
-  float: left;
+  float: right;
   font-weight: lighter;
   font-size: smaller; 
-
+  
 }
 
 li .index {
