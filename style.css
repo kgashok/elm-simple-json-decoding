@@ -213,7 +213,9 @@ li .uname {
   top: 18px;
   right: 60px;
   float: left;
-  line-height: normal;
+  /*margin: 10px;*/
+  /*line-height: normal */
+
 }
 
 
@@ -226,6 +228,7 @@ li .points {
   font-size: smaller;
   height: initial;
   line-height: normal;
+  margin-left: 10px
 }
 
 li .index {
