@@ -226,8 +226,8 @@ li .points {
   /*float: right; */
   font-weight: lighter;
   font-size: smaller;
-  height: initial;
-  line-height: normal;
+  /*height: initial; */
+  /*line-height: normal; */
   margin-left: 10px
 }
 
