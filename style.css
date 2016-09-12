@@ -228,7 +228,7 @@ li .points {
   margin-left: 10px
   /* position: absolute; */
   /* height: initial; */
-  /* line-height: normal; */
+  line-height: normal;
 }
 
 li .index {
