@@ -225,10 +225,10 @@ li .points {
   float: left; 
   font-weight: lighter;
   font-size: smaller;
-  margin-left: 10px;
   /* position: absolute; */
-  /* height: initial; */
+  height: initial;
   line-height: normal;
+  margin-left: 10px;
 }
 
 li .index {
