@@ -223,7 +223,7 @@ li .points {
   /* position: absolute; */
   top: 18px;
   right: 60px;
-  /*float: right; */
+  float: right; 
   font-weight: lighter;
   font-size: smaller;
   /*height: initial; */
