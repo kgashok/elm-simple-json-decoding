@@ -26,7 +26,7 @@ status, version = commands.getstatusoutput ("git describe --tags --long")
 if not status: 
 	print ("Version: " + version)
 else: 
-	print "git describe return bad status!"
+	print "git describe returned bad status!"
 	version = "NA"
 
 previous = None
@@ -47,7 +47,7 @@ except:
 if version == "NA": 
 	pass 
 elif previous and previous.find (version) != -1:
-	print ("Version.elm already up-to-date!")
+	print (versionFile + " already up-to-date!")
 else: 
 	####################
 	## build elm code 
@@ -71,6 +71,6 @@ version : String \n\
 	fo = open (versionFile, "w+")
 	fo.write (fileContent)
 	#print (fileContent)
-	print ("Version.elm updated with " + version)
+	print (versionFile + " updated with " + version)
 	fo.close()
 
