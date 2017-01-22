@@ -209,26 +209,26 @@ li .phrase {
 
 
 li .uname {
-  /*position: absolute; */
   top: 18px;
   right: 60px;
   float: left;
-  /*margin: 10px;*/
-  /*line-height: normal */
+  /* position: absolute; */
+  /* margin: 10px; */
+  line-height: normal;
 
 }
 
 
 li .points {
-  /* position: absolute; */
   top: 18px;
   right: 60px;
-  /*float: right; */
+  float: left; 
   font-weight: lighter;
   font-size: smaller;
-  height: initial;
+  /* position: absolute; */
+  /* height: initial; */
   line-height: normal;
-  margin-left: 10px
+  margin-left: 10px;
 }
 
 li .index {
