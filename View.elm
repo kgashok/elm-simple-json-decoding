@@ -60,11 +60,11 @@ view model =
         , button [ onClick FetchGitter ] [text "Update from Gitter"]
         , label []
           [ -- br [] []
-            input [ type' "radio", checked model.min5, onCheck Set5min ] []
+            input [ type_ "radio", checked model.min5, onCheck Set5min ] []
           , text "5 min" 
           ]
         , label []
-          [ input [ type' "radio", checked model.min15, onCheck Set15min ] []
+          [ input [ type_ "radio", checked model.min15, onCheck Set15min ] []
           , text "15 min" 
           ]
         -- , updateSettings model 
@@ -131,8 +131,8 @@ campList : Bool -> Time -> List Camper -> Html Msg
 campList display now campers = 
   let
     -- campers_ = List.sortWith flippedComparison2 campers
-    campers' = sortBasedOnHistory now cutOff campers
-    items    = List.map camperItem campers'
+    campers_ = sortBasedOnHistory now cutOff campers
+    items    = List.map camperItem campers_
 
   in
     div [] 

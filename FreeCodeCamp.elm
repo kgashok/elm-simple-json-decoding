@@ -1,6 +1,6 @@
 module Fcc exposing (..) -- where 
 
-import Html.App as Html
+import Html exposing (..) 
 
 import Model exposing (initialModel, fccAPI, Model) 
 import View exposing (view) 
@@ -28,8 +28,7 @@ init : Maybe Model -> ( Model, Cmd Msg )
 init savedModel =
   ( Maybe.withDefault initialModel savedModel, Cmd.none )
 
-
-main : Program (Maybe Model)
+main : Program (Maybe Model) Model Msg
 main =
   Html.programWithFlags
     { init = init

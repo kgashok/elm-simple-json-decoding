@@ -128,8 +128,7 @@ pointsData p time prev =
 
 skipList : Int -> List Int
 skipList userCount = 
-  List.map (\x -> x *30) [0..(round ((toFloat userCount)/30)) ]
-
+  List.map (\x -> x *30) (List.range 0 (round ((toFloat userCount)/30)) )
 
 
 sortBasedOnHistory : Time -> Time -> List Camper -> List Camper
