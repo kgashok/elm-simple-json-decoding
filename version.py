@@ -6,7 +6,7 @@
 
 
 versionFile = "Version.elm"
-defaultRepo = "http://github.com/kgashok/vbracket" 
+defaultRepo = "http://github.com/kgashok/elm-simple-json-decoding" 
 
 
 #####################
@@ -27,6 +27,8 @@ if not status:
 	print ("Version: " + version)
 else: 
 	print "git describe returned bad status!"
+	print "The repo should have at least one release tag!"
+	print "Please see https://help.github.com/articles/creating-releases/"
 	version = "NA"
 
 previous = None
@@ -38,14 +40,15 @@ try:
 	fo.close()
 	
 except:
-	print ("Creating new version file...")
+	if version != "NA":
+		print ("Creating new version file...")
 
 
 ######
 # Is it really necessary to update? 
 ######
-if version == "NA": 
-	pass 
+if version == "NA":
+	print (versionFile + ": generation of file aborted!") 
 elif previous and previous.find (version) != -1:
 	print (versionFile + " already up-to-date!")
 else: 

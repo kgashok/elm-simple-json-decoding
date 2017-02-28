@@ -6,6 +6,8 @@ import Model exposing (initialModel, fccAPI, Model)
 import View exposing (view) 
 import Update exposing (update, Msg) 
 import Subscriptions exposing (subscriptions)
+import Task exposing (..)
+import Time exposing (..)
 
 import Ports exposing (..)
 
@@ -26,7 +28,8 @@ update msg model =
 
 init : Maybe Model -> ( Model, Cmd Msg )
 init savedModel =
-  ( Maybe.withDefault initialModel savedModel, Cmd.none )
+  ( Maybe.withDefault initialModel savedModel, 
+    Task.perform Update.Tick Time.now )
 
 main : Program (Maybe Model) Model Msg
 main =

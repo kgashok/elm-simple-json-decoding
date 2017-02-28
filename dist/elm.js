@@ -15508,7 +15508,7 @@ var _user$project$Fcc$init = function (savedModel) {
 	return {
 		ctor: '_Tuple2',
 		_0: A2(_elm_lang$core$Maybe$withDefault, _user$project$Model$initialModel, savedModel),
-		_1: _elm_lang$core$Platform_Cmd$none
+		_1: A2(_elm_lang$core$Task$perform, _user$project$Update$Tick, _elm_lang$core$Time$now)
 	};
 };
 var _user$project$Fcc$update = F2(
