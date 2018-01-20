@@ -17,7 +17,7 @@ gitterKey : String
 gitterKey = "ae28f23f134c4364ad45e7b7355cfa91c92038bb"
 
 gUrl : String
-gUrl = "https:/api.gitter.im/v1/rooms?access_token=" ++ gitterKey
+gUrl = "https://api.gitter.im/v1/rooms?access_token=" ++ gitterKey
 --gUrl = "https://api.myjson.com/bins/nel8"
 
 
