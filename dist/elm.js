@@ -10128,6 +10128,18 @@ var _ggb$numeral_elm$Numeral$Numeral = function (a) {
 	};
 };
 
+var _mgold$elm_date_format$Date_Local$french = {
+	date: {
+		months: {jan: 'Janvier', feb: 'Février', mar: 'Mars', apr: 'Avril', may: 'Mai', jun: 'Juin', jul: 'Juillet', aug: 'Août', sep: 'Septembre', oct: 'Octobre', nov: 'Novembre', dec: 'Décembre'},
+		monthsAbbrev: {jan: 'Jan', feb: 'Fév', mar: 'Mar', apr: 'Avr', may: 'Mai', jun: 'Jui', jul: 'Jul', aug: 'Aoû', sep: 'Sep', oct: 'Oct', nov: 'Nov', dec: 'Déc'},
+		wdays: {mon: 'Lundi', tue: 'Mardi', wed: 'Mercredi', thu: 'Jeudi', fri: 'Vendredi', sat: 'Samedi', sun: 'Dimanche'},
+		wdaysAbbrev: {mon: 'Lun', tue: 'Mar', wed: 'Mer', thu: 'Jeu', fri: 'Ven', sat: 'Sam', sun: 'Dim'},
+		defaultFormat: _elm_lang$core$Maybe$Nothing
+	},
+	time: {am: 'am', pm: 'pm', defaultFormat: _elm_lang$core$Maybe$Nothing},
+	timeZones: _elm_lang$core$Maybe$Nothing,
+	defaultFormat: _elm_lang$core$Maybe$Nothing
+};
 var _mgold$elm_date_format$Date_Local$international = {
 	date: {
 		months: {jan: 'January', feb: 'February', mar: 'March', apr: 'April', may: 'May', jun: 'June', jul: 'July', aug: 'August', sep: 'September', oct: 'October', nov: 'November', dec: 'December'},
@@ -10174,13 +10186,32 @@ var _mgold$elm_date_format$Date_Local$WeekDays = F7(
 		return {mon: a, tue: b, wed: c, thu: d, fri: e, sat: f, sun: g};
 	});
 
-var _mgold$elm_date_format$Date_Format$padWith = function (c) {
-	return function (_p0) {
-		return A3(
-			_elm_lang$core$String$padLeft,
-			2,
-			c,
-			_elm_lang$core$Basics$toString(_p0));
+var _mgold$elm_date_format$Date_Format$padWith = function (padding) {
+	var padder = function () {
+		var _p0 = padding;
+		switch (_p0.ctor) {
+			case 'NoPadding':
+				return _elm_lang$core$Basics$identity;
+			case 'Zero':
+				return A2(
+					_elm_lang$core$String$padLeft,
+					2,
+					_elm_lang$core$Native_Utils.chr('0'));
+			case 'ZeroThreeDigits':
+				return A2(
+					_elm_lang$core$String$padLeft,
+					3,
+					_elm_lang$core$Native_Utils.chr('0'));
+			default:
+				return A2(
+					_elm_lang$core$String$padLeft,
+					2,
+					_elm_lang$core$Native_Utils.chr(' '));
+		}
+	}();
+	return function (_p1) {
+		return padder(
+			_elm_lang$core$Basics$toString(_p1));
 	};
 };
 var _mgold$elm_date_format$Date_Format$zero2twelve = function (n) {
@@ -10191,8 +10222,8 @@ var _mgold$elm_date_format$Date_Format$mod12 = function (h) {
 };
 var _mgold$elm_date_format$Date_Format$dayOfWeekToWord = F2(
 	function (loc, dow) {
-		var _p1 = dow;
-		switch (_p1.ctor) {
+		var _p2 = dow;
+		switch (_p2.ctor) {
 			case 'Mon':
 				return loc.mon;
 			case 'Tue':
@@ -10211,8 +10242,8 @@ var _mgold$elm_date_format$Date_Format$dayOfWeekToWord = F2(
 	});
 var _mgold$elm_date_format$Date_Format$monthToWord = F2(
 	function (loc, m) {
-		var _p2 = m;
-		switch (_p2.ctor) {
+		var _p3 = m;
+		switch (_p3.ctor) {
 			case 'Jan':
 				return loc.jan;
 			case 'Feb':
@@ -10240,8 +10271,8 @@ var _mgold$elm_date_format$Date_Format$monthToWord = F2(
 		}
 	});
 var _mgold$elm_date_format$Date_Format$monthToInt = function (m) {
-	var _p3 = m;
-	switch (_p3.ctor) {
+	var _p4 = m;
+	switch (_p4.ctor) {
 		case 'Jan':
 			return 1;
 		case 'Feb':
@@ -10268,18 +10299,62 @@ var _mgold$elm_date_format$Date_Format$monthToInt = function (m) {
 			return 12;
 	}
 };
+var _mgold$elm_date_format$Date_Format$re = _elm_lang$core$Regex$regex('%(_|-|0)?(%|Y|y|m|B|b|d|e|a|A|H|k|I|l|L|p|P|M|S)');
+var _mgold$elm_date_format$Date_Format$ZeroThreeDigits = {ctor: 'ZeroThreeDigits'};
+var _mgold$elm_date_format$Date_Format$Zero = {ctor: 'Zero'};
+var _mgold$elm_date_format$Date_Format$Space = {ctor: 'Space'};
+var _mgold$elm_date_format$Date_Format$NoPadding = {ctor: 'NoPadding'};
 var _mgold$elm_date_format$Date_Format$formatToken = F3(
 	function (loc, d, m) {
-		var symbol = function () {
-			var _p4 = m.submatches;
-			if (((_p4.ctor === '::') && (_p4._0.ctor === 'Just')) && (_p4._1.ctor === '[]')) {
-				return _p4._0._0;
-			} else {
-				return ' ';
-			}
+		var _p5 = function () {
+			var _p6 = m.submatches;
+			_v4_4:
+			do {
+				if (_p6.ctor === '::') {
+					if (_p6._0.ctor === 'Just') {
+						if (((_p6._1.ctor === '::') && (_p6._1._0.ctor === 'Just')) && (_p6._1._1.ctor === '[]')) {
+							switch (_p6._0._0) {
+								case '-':
+									return {
+										ctor: '_Tuple2',
+										_0: _elm_lang$core$Maybe$Just(_mgold$elm_date_format$Date_Format$NoPadding),
+										_1: _p6._1._0._0
+									};
+								case '_':
+									return {
+										ctor: '_Tuple2',
+										_0: _elm_lang$core$Maybe$Just(_mgold$elm_date_format$Date_Format$Space),
+										_1: _p6._1._0._0
+									};
+								case '0':
+									return {
+										ctor: '_Tuple2',
+										_0: _elm_lang$core$Maybe$Just(_mgold$elm_date_format$Date_Format$Zero),
+										_1: _p6._1._0._0
+									};
+								default:
+									break _v4_4;
+							}
+						} else {
+							break _v4_4;
+						}
+					} else {
+						if (((_p6._1.ctor === '::') && (_p6._1._0.ctor === 'Just')) && (_p6._1._1.ctor === '[]')) {
+							return {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _p6._1._0._0};
+						} else {
+							break _v4_4;
+						}
+					}
+				} else {
+					break _v4_4;
+				}
+			} while(false);
+			return {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: ' '};
 		}();
-		var _p5 = symbol;
-		switch (_p5) {
+		var padding = _p5._0;
+		var symbol = _p5._1;
+		var _p7 = symbol;
+		switch (_p7) {
 			case '%':
 				return '%';
 			case 'Y':
@@ -10292,13 +10367,11 @@ var _mgold$elm_date_format$Date_Format$formatToken = F3(
 					_elm_lang$core$Basics$toString(
 						_elm_lang$core$Date$year(d)));
 			case 'm':
-				return A3(
-					_elm_lang$core$String$padLeft,
-					2,
-					_elm_lang$core$Native_Utils.chr('0'),
-					_elm_lang$core$Basics$toString(
-						_mgold$elm_date_format$Date_Format$monthToInt(
-							_elm_lang$core$Date$month(d))));
+				return A2(
+					_mgold$elm_date_format$Date_Format$padWith,
+					A2(_elm_lang$core$Maybe$withDefault, _mgold$elm_date_format$Date_Format$Zero, padding),
+					_mgold$elm_date_format$Date_Format$monthToInt(
+						_elm_lang$core$Date$month(d)));
 			case 'B':
 				return A2(
 					_mgold$elm_date_format$Date_Format$monthToWord,
@@ -10312,12 +10385,12 @@ var _mgold$elm_date_format$Date_Format$formatToken = F3(
 			case 'd':
 				return A2(
 					_mgold$elm_date_format$Date_Format$padWith,
-					_elm_lang$core$Native_Utils.chr('0'),
+					A2(_elm_lang$core$Maybe$withDefault, _mgold$elm_date_format$Date_Format$Zero, padding),
 					_elm_lang$core$Date$day(d));
 			case 'e':
 				return A2(
 					_mgold$elm_date_format$Date_Format$padWith,
-					_elm_lang$core$Native_Utils.chr(' '),
+					A2(_elm_lang$core$Maybe$withDefault, _mgold$elm_date_format$Date_Format$Space, padding),
 					_elm_lang$core$Date$day(d));
 			case 'a':
 				return A2(
@@ -10332,24 +10405,24 @@ var _mgold$elm_date_format$Date_Format$formatToken = F3(
 			case 'H':
 				return A2(
 					_mgold$elm_date_format$Date_Format$padWith,
-					_elm_lang$core$Native_Utils.chr('0'),
+					A2(_elm_lang$core$Maybe$withDefault, _mgold$elm_date_format$Date_Format$Zero, padding),
 					_elm_lang$core$Date$hour(d));
 			case 'k':
 				return A2(
 					_mgold$elm_date_format$Date_Format$padWith,
-					_elm_lang$core$Native_Utils.chr(' '),
+					A2(_elm_lang$core$Maybe$withDefault, _mgold$elm_date_format$Date_Format$Space, padding),
 					_elm_lang$core$Date$hour(d));
 			case 'I':
 				return A2(
 					_mgold$elm_date_format$Date_Format$padWith,
-					_elm_lang$core$Native_Utils.chr('0'),
+					A2(_elm_lang$core$Maybe$withDefault, _mgold$elm_date_format$Date_Format$Zero, padding),
 					_mgold$elm_date_format$Date_Format$zero2twelve(
 						_mgold$elm_date_format$Date_Format$mod12(
 							_elm_lang$core$Date$hour(d))));
 			case 'l':
 				return A2(
 					_mgold$elm_date_format$Date_Format$padWith,
-					_elm_lang$core$Native_Utils.chr(' '),
+					A2(_elm_lang$core$Maybe$withDefault, _mgold$elm_date_format$Date_Format$Space, padding),
 					_mgold$elm_date_format$Date_Format$zero2twelve(
 						_mgold$elm_date_format$Date_Format$mod12(
 							_elm_lang$core$Date$hour(d))));
@@ -10364,18 +10437,22 @@ var _mgold$elm_date_format$Date_Format$formatToken = F3(
 			case 'M':
 				return A2(
 					_mgold$elm_date_format$Date_Format$padWith,
-					_elm_lang$core$Native_Utils.chr('0'),
+					A2(_elm_lang$core$Maybe$withDefault, _mgold$elm_date_format$Date_Format$Zero, padding),
 					_elm_lang$core$Date$minute(d));
 			case 'S':
 				return A2(
 					_mgold$elm_date_format$Date_Format$padWith,
-					_elm_lang$core$Native_Utils.chr('0'),
+					A2(_elm_lang$core$Maybe$withDefault, _mgold$elm_date_format$Date_Format$Zero, padding),
 					_elm_lang$core$Date$second(d));
+			case 'L':
+				return A2(
+					_mgold$elm_date_format$Date_Format$padWith,
+					A2(_elm_lang$core$Maybe$withDefault, _mgold$elm_date_format$Date_Format$ZeroThreeDigits, padding),
+					_elm_lang$core$Date$millisecond(d));
 			default:
 				return '';
 		}
 	});
-var _mgold$elm_date_format$Date_Format$re = _elm_lang$core$Regex$regex('%(%|Y|y|m|B|b|d|e|a|A|H|k|I|l|p|P|M|S)');
 var _mgold$elm_date_format$Date_Format$localFormat = F3(
 	function (loc, s, d) {
 		return A4(
@@ -10660,7 +10737,7 @@ var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
 var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.0-beta-119-g6946ba9';
+var _user$project$Version$version = 'v3.0-beta-125-g1a63961';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
