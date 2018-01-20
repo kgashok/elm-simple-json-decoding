@@ -11,7 +11,7 @@ url2 : String
 url2 = "https://api.myjson.com/bins/2kjv4"
 
 fccAPI : String 
-fccAPI = "https://www.freecodecamp.com/api/users/about?username="
+fccAPI = "https://cors-anywhere.herokuapp.com/http://www.freecodecamp.com/api/users/about?username="
 
 gitterKey : String
 gitterKey = "ae28f23f134c4364ad45e7b7355cfa91c92038bb"
