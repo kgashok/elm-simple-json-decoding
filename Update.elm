@@ -5,7 +5,7 @@ import Json.Decode as Json exposing (field)
 import Task
 import String
 import Time exposing (Time)
-
+import Json.Encode as Encode
 import Model exposing (..)
 import Ports exposing (..)
 
@@ -221,7 +221,18 @@ nestedListGID =
 tickRequest : String -> String -> Cmd Msg
 tickRequest url name =
   --Task.perform FetchFail FetchSucceed (Http.get decodePoints url)
-  Task.attempt UpdateSucceed (Http.toTask (Http.get (url ++ name) decodeData ) )
+  --Task.attempt UpdateSucceed (Http.toTask (Http.get (url ++ name) decodeData ) )
+  Task.attempt UpdateSucceed (getUserData url name)
+  
+
+getUserData url name = 
+    let
+        downloadURL =
+            url ++ name
+        settings =
+            { postSettings | url = downloadURL }  
+    in 
+        Http.toTask (Http.request settings)
 
 
 getCamper : Member -> Camper -> Maybe Camper
@@ -334,6 +345,51 @@ decodeData =
         (field "username" Json.string)
         (field "browniePoints" Json.int) 
     )
+
+
+downloadArgs : List ( String, Encode.Value )
+downloadArgs =
+    [ ( "path", Encode.string "junk" ) ]
+
+
+uploadArgs : List ( String, Encode.Value )
+uploadArgs =
+    downloadArgs ++ [ ( "mode", Encode.string "overwrite" ) ]
+
+
+stringify : List ( String, Encode.Value ) -> String
+stringify =
+    Encode.object >> Encode.encode 0
+
+
+authorizationHeader : Http.Header
+authorizationHeader =
+    Http.header "Authorization" "Bearer 4bhveELh1l8AAAAAAAAg1hjS4PUDWf0EeED2cIsmOsdJE04uqkichInc0sN0QZao"
+
+
+-- Missing required request header. Must specify one of: origin,x-requested-with
+downloadHeaders : List Http.Header
+downloadHeaders =
+    [ Http.header "Access-Control-Allow-Headers" "x-requested-with"
+    --, authorizationHeader
+    --, Http.header "Dropbox-API-Arg" (stringify downloadArgs)
+    ]
+
+postSettings =
+    { method = "POST"
+    , headers = downloadHeaders
+    , url = ""
+    , body = Http.emptyBody
+    -- , expect = expectString
+    -- , expect = expectJson decodeFileInfo
+    -- , expect = expectStringResponse expectRev
+    -- , expect = expectStringResponse fileInfo
+    , expect = Http.expectJson decodeData
+    , timeout = Nothing
+    , withCredentials = False
+    }
+
+--{"about":{"username":"kgashok","browniePoints":318,"bio":"Emperor, coffee enthusiast. "}}
 
 
 
