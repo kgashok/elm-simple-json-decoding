@@ -10737,7 +10737,7 @@ var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
 var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.0-beta-140-g176e9f8';
+var _user$project$Version$version = 'v3.0-beta-141-g2dcedbd';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -10796,8 +10796,12 @@ var _user$project$Ports$logExternal = function (value) {
 
 var _user$project$Update$downloadHeaders = {
 	ctor: '::',
-	_0: A2(_elm_lang$http$Http$header, 'Access-Control-Allow-Headers', 'x-requested-with, content-type'),
-	_1: {ctor: '[]'}
+	_0: A2(_elm_lang$http$Http$header, 'Access-Control-Allow-Headers', 'X-Requested-With'),
+	_1: {
+		ctor: '::',
+		_0: A2(_elm_lang$http$Http$header, 'Access-Control-Allow-Origin', '*'),
+		_1: {ctor: '[]'}
+	}
 };
 var _user$project$Update$authorizationHeader = A2(_elm_lang$http$Http$header, 'Authorization', 'Bearer 4bhveELh1l8AAAAAAAAg1hjS4PUDWf0EeED2cIsmOsdJE04uqkichInc0sN0QZao');
 var _user$project$Update$stringify = function (_p0) {
