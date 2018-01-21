@@ -10659,7 +10659,7 @@ var _user$project$Model$gUserUrl = F3(
 	});
 var _user$project$Model$gitterKey = 'ae28f23f134c4364ad45e7b7355cfa91c92038bb';
 var _user$project$Model$gUrl = A2(_elm_lang$core$Basics_ops['++'], 'https://api.gitter.im/v1/rooms?access_token=', _user$project$Model$gitterKey);
-var _user$project$Model$fccAPI = 'https://cors.now.sh/http://www.freecodecamp.org/api/users/about?username=';
+var _user$project$Model$fccAPI = 'https://www.freecodecamp.org/api/users/about?username=';
 var _user$project$Model$initialModel = {
 	url: _user$project$Model$fccAPI,
 	name: '',
@@ -10796,12 +10796,8 @@ var _user$project$Ports$logExternal = function (value) {
 
 var _user$project$Update$downloadHeaders = {
 	ctor: '::',
-	_0: A2(_elm_lang$http$Http$header, 'Access-Control-Allow-Headers', 'x-requested-with, x-requested-for'),
-	_1: {
-		ctor: '::',
-		_0: A2(_elm_lang$http$Http$header, 'Content-Type', 'application/json'),
-		_1: {ctor: '[]'}
-	}
+	_0: A2(_elm_lang$http$Http$header, 'Access-Control-Allow-Headers', 'x-requested-with, content-type'),
+	_1: {ctor: '[]'}
 };
 var _user$project$Update$authorizationHeader = A2(_elm_lang$http$Http$header, 'Authorization', 'Bearer 4bhveELh1l8AAAAAAAAg1hjS4PUDWf0EeED2cIsmOsdJE04uqkichInc0sN0QZao');
 var _user$project$Update$stringify = function (_p0) {
@@ -11037,11 +11033,7 @@ var _user$project$Update$tickRequest = F2(
 		return A2(
 			_elm_lang$core$Task$attempt,
 			_user$project$Update$UpdateSucceed,
-			_elm_lang$http$Http$toTask(
-				A2(
-					_elm_lang$http$Http$get,
-					A2(_elm_lang$core$Basics_ops['++'], url, name),
-					_user$project$Update$decodeData)));
+			A2(_user$project$Update$getUserData, url, name));
 	});
 var _user$project$Update$FetchAll = function (a) {
 	return {ctor: 'FetchAll', _0: a};

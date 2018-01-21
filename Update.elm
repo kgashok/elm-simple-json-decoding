@@ -221,8 +221,8 @@ nestedListGID =
 tickRequest : String -> String -> Cmd Msg
 tickRequest url name =
   --Task.perform FetchFail FetchSucceed (Http.get decodePoints url)
-  Task.attempt UpdateSucceed (Http.toTask (Http.get (url ++ name) decodeData ) )
-  --Task.attempt UpdateSucceed (getUserData url name)
+  --Task.attempt UpdateSucceed (Http.toTask (Http.get (url ++ name) decodeData ) )
+  Task.attempt UpdateSucceed (getUserData url name)
   
 
 getUserData url name = 
@@ -370,8 +370,8 @@ authorizationHeader =
 -- Missing required request header. Must specify one of: origin,x-requested-with
 downloadHeaders : List Http.Header
 downloadHeaders =
-    [ Http.header "Access-Control-Allow-Headers" "x-requested-with, x-requested-for"
-    , Http.header "Content-Type" "application/json"
+    [ Http.header "Access-Control-Allow-Headers" "x-requested-with, content-type"
+    --, Http.header "Content-Type" "application/json"
     --, authorizationHeader
     --, Http.header "Dropbox-API-Arg" (stringify downloadArgs)
     ]
