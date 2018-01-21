@@ -10659,7 +10659,7 @@ var _user$project$Model$gUserUrl = F3(
 	});
 var _user$project$Model$gitterKey = 'ae28f23f134c4364ad45e7b7355cfa91c92038bb';
 var _user$project$Model$gUrl = A2(_elm_lang$core$Basics_ops['++'], 'https://api.gitter.im/v1/rooms?access_token=', _user$project$Model$gitterKey);
-var _user$project$Model$fccAPI = 'https://www.freecodecamp.org/api/users/about?username=';
+var _user$project$Model$fccAPI = 'https://cors-anywhere.herokuapp.com/https://www.freecodecamp.org/api/users/about?username=';
 var _user$project$Model$initialModel = {
 	url: _user$project$Model$fccAPI,
 	name: '',
@@ -10737,7 +10737,7 @@ var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
 var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.0-beta-144-g0f38e75';
+var _user$project$Version$version = 'v3.0-beta-145-g29ffd20';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',

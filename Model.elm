@@ -12,8 +12,8 @@ url2 = "https://api.myjson.com/bins/2kjv4"
 
 fccAPI : String
 --fccAPI = "http://www.freecodecamp.com/about?username="
---fccAPI = "https://cors-anywhere.herokuapp.com/https://www.freecodecamp.org/api/users/about?username="
-fccAPI = "https://www.freecodecamp.org/api/users/about?username="
+fccAPI = "https://cors-anywhere.herokuapp.com/https://www.freecodecamp.org/api/users/about?username="
+--fccAPI = "https://www.freecodecamp.org/api/users/about?username="
 --fccAPI = "https://cors.now.sh/http://www.freecodecamp.org/api/users/about?username="
 
 gitterKey : String
