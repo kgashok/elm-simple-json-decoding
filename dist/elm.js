@@ -10737,7 +10737,7 @@ var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
 var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.0-beta-135-g65db3e5';
+var _user$project$Version$version = 'v3.0-beta-139-g9e2b8c5';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
