@@ -10737,7 +10737,7 @@ var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
 var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.0-beta-143-g827bbf9';
+var _user$project$Version$version = 'v3.0-beta-144-g0f38e75';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -11037,11 +11037,7 @@ var _user$project$Update$tickRequest = F2(
 		return A2(
 			_elm_lang$core$Task$attempt,
 			_user$project$Update$UpdateSucceed,
-			_elm_lang$http$Http$toTask(
-				A2(
-					_elm_lang$http$Http$get,
-					A2(_elm_lang$core$Basics_ops['++'], url, name),
-					_user$project$Update$decodeData)));
+			A2(_user$project$Update$getUserData, url, name));
 	});
 var _user$project$Update$FetchAll = function (a) {
 	return {ctor: 'FetchAll', _0: a};

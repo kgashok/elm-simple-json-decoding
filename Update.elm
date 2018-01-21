@@ -221,8 +221,8 @@ nestedListGID =
 tickRequest : String -> String -> Cmd Msg
 tickRequest url name =
   --Task.perform FetchFail FetchSucceed (Http.get decodePoints url)
-  Task.attempt UpdateSucceed (Http.toTask (Http.get (url ++ name) decodeData ) )
-  --Task.attempt UpdateSucceed (getUserData url name)
+  --Task.attempt UpdateSucceed (Http.toTask (Http.get (url ++ name) decodeData ) )
+  Task.attempt UpdateSucceed (getUserData url name)
   
 
 getUserData url name = 
