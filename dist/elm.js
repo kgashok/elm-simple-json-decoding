@@ -11190,7 +11190,7 @@ var _user$project$Update$update = F2(
 						_1: _elm_lang$core$Platform_Cmd$batch(
 							A2(
 								_elm_lang$core$List$map,
-								_user$project$Update$tickRequest(model.url),
+								_user$project$Update$tickRequest(_user$project$Model$fccAPI),
 								cList))
 					};
 				} else {

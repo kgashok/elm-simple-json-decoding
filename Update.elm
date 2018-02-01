@@ -110,7 +110,7 @@ update action model =
         cList  = List.map .uname camperList 
       in
         ( model_ 
-          , Cmd.batch (List.map (tickRequest model.url) cList)
+          , Cmd.batch (List.map (tickRequest fccAPI) cList)
         )
 
     GitterIDStatus (Err error) ->
@@ -127,7 +127,7 @@ update action model =
         cList  = List.map .uname camperList 
       in
         ( model_ 
-          , Cmd.batch (List.map (tickRequest model.url) cList)
+          , Cmd.batch (List.map (tickRequest fccAPI) cList)
         )
     --}
 
