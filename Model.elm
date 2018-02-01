@@ -7,12 +7,13 @@ import String
 url1 : String
 url1 = "https://api.myjson.com/bins/3fueo"
 
-url2 : String 
+url2 : String
 url2 = "https://api.myjson.com/bins/2kjv4"
 
 fccAPI : String
+fccAPI = "https://comfortable-fibre.glitch.me/"
 --fccAPI = "http://www.freecodecamp.com/about?username="
-fccAPI = "https://cors-anywhere.herokuapp.com/https://www.freecodecamp.org/api/users/about?username="
+--fccAPI = "https://cors-anywhere.herokuapp.com/https://www.freecodecamp.org/api/users/about?username="
 --fccAPI = "https://www.freecodecamp.org/api/users/about?username="
 --fccAPI = "https://cors.now.sh/http://www.freecodecamp.org/api/users/about?username="
 
@@ -25,12 +26,12 @@ gUrl = "https://api.gitter.im/v1/rooms?access_token=" ++ gitterKey
 
 
 gUserUrl : String -> String -> Int -> String
-gUserUrl roomID key index = 
-  "https://api.gitter.im/v1/rooms/" ++ 
+gUserUrl roomID key index =
+  "https://api.gitter.im/v1/rooms/" ++
     roomID ++
-    "/users?access_token=" ++ 
-    key ++ 
-    "&skip=" ++ toString index 
+    "/users?access_token=" ++
+    key ++
+    "&skip=" ++ toString index
 
 --gUserUrl roomId key index =
   -- "https://api.gitter.im/v1/rooms/570a5925187bb6f0eadebf05/users?access_token=ae28f23f134c4364ad45e7b7355cfa91c92038bb&skip=0"
@@ -39,24 +40,24 @@ gUserUrl roomID key index =
 
 -- MODEL
 
-type alias GRoom = 
+type alias GRoom =
   { id : String
-  , name: String 
+  , name: String
   , userCount : Int
   }
 
 type alias Model =
   { url : String
-  , name : String 
+  , name : String
   , uname : String
-  , message : String 
+  , message : String
   , error : Bool
   , roomChange : Bool
-  , points : Int 
+  , points : Int
   , ts  : Time
   , tList : List Camper
   , tPoints : Int
-  , tPoints_prev : Int 
+  , tPoints_prev : Int
   , gList : List Camper  -- from Gitter room /kgisl/campsite
   , gRoom : GRoom
   , min5 : Bool
@@ -68,38 +69,38 @@ type Interval
   = SetMin5
   | SetMin15
 
-type alias Camper = 
+type alias Camper =
   { uname: String
   , chist: List Cdata
   , last: Cdata
   }
 
-type alias Member = 
+type alias Member =
   { uname: String
-  , points: Int  
+  , points: Int
   }
 
-type alias Cdata = 
-  { points: Int 
+type alias Cdata =
+  { points: Int
   , ts : Time
   , delta : Int
   }
 
-type alias Gid = 
+type alias Gid =
   { username : String
-  , displayName : String  
+  , displayName : String
   , avatarUrlSmall : String
   }
 
-difference : Int -> Int -> String 
-difference current previous = 
-  case (current - previous) of 
-    0 -> "" 
+difference : Int -> Int -> String
+difference current previous =
+  case (current - previous) of
+    0 -> ""
     _ -> "(" ++ toString (current - previous) ++ ")"
 
-createCamper : Time -> Member -> Camper 
-createCamper ts member = 
-  let 
+createCamper : Time -> Member -> Camper
+createCamper ts member =
+  let
     data = pointsData member.points ts member.points
   in
     { uname = String.toLower member.uname
@@ -108,14 +109,14 @@ createCamper ts member =
     }
 
 
-createCamperFromGid : List Camper -> Gid -> Maybe Camper  
+createCamperFromGid : List Camper -> Gid -> Maybe Camper
 createCamperFromGid tList gid =
   let
     cList = List.map .uname tList
     isPresent = List.member (String.toLower gid.username) cList
   in
-    case isPresent of 
-      False -> 
+    case isPresent of
+      False ->
         Just { uname = String.toLower gid.username
              , chist = []
              , last  = {points = 0, ts = 0, delta = 0}
@@ -124,30 +125,30 @@ createCamperFromGid tList gid =
         Nothing
 
 
-pointsData : Int -> Time -> Int -> Cdata 
-pointsData p time prev = 
+pointsData : Int -> Time -> Int -> Cdata
+pointsData p time prev =
   {points = p, ts = time, delta = p - prev }
 
 
 skipList : Int -> List Int
-skipList userCount = 
+skipList userCount =
   List.map (\x -> x *30) (List.range 0 (round ((toFloat userCount)/30)) )
 
 
 sortBasedOnHistory : Time -> Time -> List Camper -> List Camper
-sortBasedOnHistory now cutOff campers = 
+sortBasedOnHistory now cutOff campers =
   -- campers_ = List.sortWith flippedComparison2 campers
-  campers 
+  campers
     --|> List.map (truncateHistory now cutOff)
-    --|> List.sortWith flippedComparison2 
+    --|> List.sortWith flippedComparison2
     |> List.sortWith flippedComparison3
     |> List.sortWith flippedComparison
     |> List.sortWith flippedComparison2
 
 
 flippedComparison3: Camper -> Camper -> Order
-flippedComparison3 a b = 
-  case compare a.last.points b.last.points of 
+flippedComparison3 a b =
+  case compare a.last.points b.last.points of
       GT -> LT
       EQ -> EQ
       LT -> GT
@@ -155,15 +156,15 @@ flippedComparison3 a b =
 
 
 flippedComparison2: Camper -> Camper -> Order
-flippedComparison2 a b = 
-  case compare a.last.ts b.last.ts of 
+flippedComparison2 a b =
+  case compare a.last.ts b.last.ts of
       GT -> LT
       EQ -> EQ
       LT -> GT
 
 
 truncateHistory : Time -> Time -> Camper -> Camper
-truncateHistory now cutOff camper = 
+truncateHistory now cutOff camper =
   {camper | chist = List.filterMap (isWithinCutOff now cutOff) camper.chist}
 
 
@@ -178,11 +179,11 @@ isWithinCutOff now cutOff data =
 
 flippedComparison : Camper -> Camper -> Order
 flippedComparison a b =
-  let 
-    ahist = List.map .points a.chist 
-    bhist = List.map .points b.chist 
+  let
+    ahist = List.map .points a.chist
+    bhist = List.map .points b.chist
 
-    deltaA = Maybe.withDefault 0 (List.maximum ahist) 
+    deltaA = Maybe.withDefault 0 (List.maximum ahist)
               - Maybe.withDefault 0 (List.minimum ahist)
     deltaB = Maybe.withDefault 0 (List.maximum bhist)
               - Maybe.withDefault 0 (List.minimum bhist)
@@ -197,15 +198,15 @@ flippedComparison a b =
 {-In Elm repl inHours 2592000000 = 720 hours  or 30 days-}
 cutOff : Float
 cutOff = inHours 2592000000 -- 720 hours
--- cutOff = inHours 5000000 
+-- cutOff = inHours 5000000
 
 
-excluded : List String 
+excluded : List String
 excluded = ["quincylarson", "ddd"]
 
 
 initialModel : Model
-initialModel = 
+initialModel =
   { url = fccAPI
   , name = ""
   , uname = ""
