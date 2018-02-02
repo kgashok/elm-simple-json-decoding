@@ -61,7 +61,7 @@ update action model =
       ( { model | error = True 
                 , points = -1
                 , uname = ""
-                , message = toString err 
+                , message = "User does not exist? " -- toString err 
         }
         , Cmd.none
       )
@@ -82,7 +82,8 @@ update action model =
       ( { model | error = True 
                 , points = -1
                 , uname = ""
-                , message = toString error 
+                --, message = toString error
+                , message = "User does not exist?"
         }
         , Cmd.none
       )
@@ -181,7 +182,8 @@ update action model =
       ( { model | error = True 
                 , points = -1
                 , uname = ""
-                , message = toString error 
+                --, message = toString error 
+                , message = "User does not exist?" 
         }
         , Cmd.none
       )

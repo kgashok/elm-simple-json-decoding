@@ -19,9 +19,9 @@ update msg model =
   in
     ( nextModel
     , Cmd.batch
-      [ Ports.logExternal msg
+      [ --Ports.logExternal msg
       -- , Ports.modelChange model
-      , nextCmd
+        nextCmd
       ]
     )
 

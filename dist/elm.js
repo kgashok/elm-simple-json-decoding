@@ -10659,7 +10659,7 @@ var _user$project$Model$gUserUrl = F3(
 	});
 var _user$project$Model$gitterKey = 'ae28f23f134c4364ad45e7b7355cfa91c92038bb';
 var _user$project$Model$gUrl = A2(_elm_lang$core$Basics_ops['++'], 'https://api.gitter.im/v1/rooms?access_token=', _user$project$Model$gitterKey);
-var _user$project$Model$fccAPI = 'https://comfortable-fibre.glitch.me/';
+var _user$project$Model$fccAPI = 'https://www.freecodecamp.org/api/users/about?username=';
 var _user$project$Model$initialModel = {
 	url: _user$project$Model$fccAPI,
 	name: '',
@@ -10737,7 +10737,7 @@ var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
 var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.0-beta-155-g8679f65';
+var _user$project$Version$version = 'v3.0-beta-156-g643db8d';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -11097,12 +11097,7 @@ var _user$project$Update$update = F2(
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
-							{
-								error: true,
-								points: -1,
-								uname: '',
-								message: _elm_lang$core$Basics$toString(_p5._0._0)
-							}),
+							{error: true, points: -1, uname: '', message: 'User does not exist? '}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				}
@@ -11129,12 +11124,7 @@ var _user$project$Update$update = F2(
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
-							{
-								error: true,
-								points: -1,
-								uname: '',
-								message: _elm_lang$core$Basics$toString(_p5._0._0)
-							}),
+							{error: true, points: -1, uname: '', message: 'User does not exist?'}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				}
@@ -11279,12 +11269,7 @@ var _user$project$Update$update = F2(
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
-							{
-								error: true,
-								points: -1,
-								uname: '',
-								message: _elm_lang$core$Basics$toString(_p5._0._0)
-							}),
+							{error: true, points: -1, uname: '', message: 'User does not exist?'}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				}
@@ -11695,12 +11680,8 @@ var _user$project$Fcc$update = F2(
 			_1: _elm_lang$core$Platform_Cmd$batch(
 				{
 					ctor: '::',
-					_0: _user$project$Ports$logExternal(msg),
-					_1: {
-						ctor: '::',
-						_0: nextCmd,
-						_1: {ctor: '[]'}
-					}
+					_0: nextCmd,
+					_1: {ctor: '[]'}
 				})
 		};
 	});
