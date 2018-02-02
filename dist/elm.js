@@ -10737,7 +10737,7 @@ var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
 var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.0-beta-153-ga30ac41';
+var _user$project$Version$version = 'v3.0-beta-155-g8679f65';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -10796,10 +10796,10 @@ var _user$project$Ports$logExternal = function (value) {
 
 var _user$project$Update$downloadHeaders = {
 	ctor: '::',
-	_0: A2(_elm_lang$http$Http$header, 'Access-Control-Allow-Headers', 'X-Requested-With'),
+	_0: A2(_elm_lang$http$Http$header, 'Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT'),
 	_1: {
 		ctor: '::',
-		_0: A2(_elm_lang$http$Http$header, 'Access-Control-Allow-Origin', '*'),
+		_0: A2(_elm_lang$http$Http$header, 'Access-Control-Allow-Headers', 'Origin,  X-Requested-With, Content-Type'),
 		_1: {ctor: '[]'}
 	}
 };
@@ -11072,7 +11072,7 @@ var _user$project$Update$update = F2(
 				return {
 					ctor: '_Tuple2',
 					_0: model_,
-					_1: A2(_user$project$Update$getData, model_.url, model_.uname)
+					_1: A2(_user$project$Update$getData, _user$project$Model$fccAPI, model_.uname)
 				};
 			case 'FetchOne':
 				if (_p5._0.ctor === 'Ok') {
@@ -11089,7 +11089,7 @@ var _user$project$Update$update = F2(
 						_1: _elm_lang$core$Platform_Cmd$batch(
 							A2(
 								_elm_lang$core$List$map,
-								_user$project$Update$tickRequest(model_.url),
+								_user$project$Update$tickRequest(_user$project$Model$fccAPI),
 								clist))
 					};
 				} else {
@@ -11121,7 +11121,7 @@ var _user$project$Update$update = F2(
 						_1: _elm_lang$core$Platform_Cmd$batch(
 							A2(
 								_elm_lang$core$List$map,
-								_user$project$Update$tickRequest(model_.url),
+								_user$project$Update$tickRequest(_user$project$Model$fccAPI),
 								clist))
 					};
 				} else {
@@ -11239,7 +11239,7 @@ var _user$project$Update$update = F2(
 					_1: _elm_lang$core$Platform_Cmd$batch(
 						A2(
 							_elm_lang$core$List$map,
-							_user$project$Update$tickRequest(model_.url),
+							_user$project$Update$tickRequest(_user$project$Model$fccAPI),
 							cList))
 				};
 			case 'Set5min':

@@ -44,7 +44,7 @@ update action model =
         model_ = {model|uname = model.name}
       in 
         (model_, 
-         getData model_.url model_.uname)
+         getData fccAPI model_.uname)
 
     FetchOne (Ok member) ->
       let 
@@ -54,7 +54,7 @@ update action model =
         -- (model', Ports.modelChange model')
         ( model_,
           -- tickRequest (model'.url ++ model'.uname)
-          Cmd.batch (List.map (tickRequest model_.url) clist)
+          Cmd.batch (List.map (tickRequest fccAPI) clist)
         )
 
     FetchOne (Err err) ->
@@ -74,7 +74,7 @@ update action model =
         -- (model', Ports.modelChange model')
         ( model_,
           -- tickRequest (model'.url ++ model'.uname)
-          Cmd.batch (List.map (tickRequest model_.url) clist)
+          Cmd.batch (List.map (tickRequest fccAPI) clist)
         )
 
 
@@ -151,7 +151,7 @@ update action model =
       in
         ( model_
         --, -- tickRequest (model'.url ++ model'.uname)
-        , Cmd.batch (List.map (tickRequest model_.url) cList)
+        , Cmd.batch (List.map (tickRequest fccAPI) cList)
         )
 
     Set5min bool -> 
@@ -370,8 +370,12 @@ authorizationHeader =
 -- Missing required request header. Must specify one of: origin,x-requested-with
 downloadHeaders : List Http.Header
 downloadHeaders =
-    [ Http.header "Access-Control-Allow-Headers" "X-Requested-With"
-    , Http.header "Access-Control-Allow-Origin" "*"
+    [ 
+    --Http.header "Access-Control-Allow-Origin" "*"
+    --, Http.header "Access-Control-Allow-Credentials" "True"
+    Http.header "Access-Control-Allow-Methods" "GET,HEAD,OPTIONS,POST,PUT"
+    --, Http.header "Access-Control-Allow-Headers" "Access-Control-Allow-Origin, Access-Control-Allow-Headers, Origin, Content-Type, Accept, Authorization, Access-Control-Request-Method, Access-Control-Request-Headers"
+    , Http.header "Access-Control-Allow-Headers" "Origin,  X-Requested-With, Content-Type"
     --, Http.header "Content-Type" "application/json"
     --, authorizationHeader
     --, Http.header "Dropbox-API-Arg" (stringify downloadArgs)
