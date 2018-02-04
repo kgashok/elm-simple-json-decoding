@@ -109,7 +109,7 @@ update action model =
       let 
         camperList = List.filterMap (createCamperFromGid model.tList) gids 
         model_ = { model| tList = model.tList ++ camperList 
-                        , exclude = []
+                        , exclude = excluded
         }
         cList  = List.map .uname camperList 
       in
@@ -150,7 +150,9 @@ update action model =
       let
         model_ = {model | ts = newTime, uname = model.name, tPoints_prev = model.tPoints}
         --cList = updateList model.tList
-        cList = List.map .uname model_.tList 
+        cList = List.map .uname model_.tList
+          |> List.filter (\x -> not <| List.member x model.exclude)
+          
       in
         ( model_
         --, -- tickRequest (model'.url ++ model'.uname)

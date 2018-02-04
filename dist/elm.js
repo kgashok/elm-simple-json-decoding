@@ -10737,7 +10737,7 @@ var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
 var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.0-beta-156-g643db8d';
+var _user$project$Version$version = 'v3.0-beta-158-gf2d0e43';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -11029,14 +11029,15 @@ var _user$project$Update$StoreRoom = function (a) {
 var _user$project$Update$StoreID = function (a) {
 	return {ctor: 'StoreID', _0: a};
 };
-var _user$project$Update$UpdateSucceed = function (a) {
-	return {ctor: 'UpdateSucceed', _0: a};
-};
+var _user$project$Update$UpdateSucceed = F2(
+	function (a, b) {
+		return {ctor: 'UpdateSucceed', _0: a, _1: b};
+	});
 var _user$project$Update$tickRequest = F2(
 	function (url, name) {
 		return A2(
 			_elm_lang$core$Task$attempt,
-			_user$project$Update$UpdateSucceed,
+			_user$project$Update$UpdateSucceed(name),
 			_elm_lang$http$Http$toTask(
 				A2(
 					_elm_lang$http$Http$get,
@@ -11166,7 +11167,8 @@ var _user$project$Update$update = F2(
 					var model_ = _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							tList: A2(_elm_lang$core$Basics_ops['++'], model.tList, camperList)
+							tList: A2(_elm_lang$core$Basics_ops['++'], model.tList, camperList),
+							exclude: _user$project$Model$excluded
 						});
 					var cList = A2(
 						_elm_lang$core$List$map,
@@ -11218,11 +11220,16 @@ var _user$project$Update$update = F2(
 					model,
 					{ts: _p5._0, uname: model.name, tPoints_prev: model.tPoints});
 				var cList = A2(
-					_elm_lang$core$List$map,
-					function (_) {
-						return _.uname;
+					_elm_lang$core$List$filter,
+					function (x) {
+						return !A2(_elm_lang$core$List$member, x, model.exclude);
 					},
-					model_.tList);
+					A2(
+						_elm_lang$core$List$map,
+						function (_) {
+							return _.uname;
+						},
+						model_.tList));
 				return {
 					ctor: '_Tuple2',
 					_0: model_,
@@ -11251,11 +11258,11 @@ var _user$project$Update$update = F2(
 					_1: _user$project$Ports$modelChange(model_)
 				};
 			case 'UpdateSucceed':
-				if (_p5._0.ctor === 'Ok') {
+				if (_p5._1.ctor === 'Ok') {
 					var model_ = _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							tList: A2(_user$project$Update$updateCHistory, model, _p5._0._0),
+							tList: A2(_user$project$Update$updateCHistory, model, _p5._1._0),
 							tPoints: _user$project$Update$calculateTotal(model.tList),
 							message: ''
 						});
@@ -11265,17 +11272,35 @@ var _user$project$Update$update = F2(
 						_1: _user$project$Ports$modelChange(model_)
 					};
 				} else {
+					var _p11 = _p5._0;
+					var _p9 = A2(_elm_lang$core$Debug$log, 'Error retrieving for id: ', _p11);
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
-							{error: true, points: -1, uname: '', message: 'User does not exist?'}),
+							{
+								error: true,
+								points: -1,
+								uname: '',
+								message: A2(
+									_elm_lang$core$Basics_ops['++'],
+									'User ',
+									A2(_elm_lang$core$Basics_ops['++'], _p11, ' does not exist?')),
+								exclude: function () {
+									var _p10 = A2(_elm_lang$core$List$member, _p11, model.exclude);
+									if (_p10 === true) {
+										return model.exclude;
+									} else {
+										return {ctor: '::', _0: _p11, _1: model.exclude};
+									}
+								}()
+							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				}
 			default:
-				var _p9 = model.roomChange;
-				if (_p9 === true) {
+				var _p12 = model.roomChange;
+				if (_p12 === true) {
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
@@ -11472,11 +11497,21 @@ var _user$project$View$buildResponse = function (model) {
 					A2(
 						_elm_lang$core$Basics_ops['++'],
 						_elm_lang$core$Basics$toString(
-							_elm_lang$core$List$length(model.tList)),
+							_elm_lang$core$List$length(model.tList) - _elm_lang$core$List$length(model.exclude)),
 						A2(
 							_elm_lang$core$Basics_ops['++'],
 							' campers; ',
-							A2(_elm_lang$core$Basics_ops['++'], 'last auto update @ ', dateString))))))) : '';
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								'last auto update @ ',
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									dateString,
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										' excluded ',
+										_elm_lang$core$Basics$toString(
+											_elm_lang$core$List$length(model.exclude))))))))))) : '';
 };
 var _user$project$View$view = function (model) {
 	var clist = A2(
