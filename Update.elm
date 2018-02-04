@@ -8,6 +8,7 @@ import Time exposing (Time)
 import Json.Encode as Encode
 import Model exposing (..)
 import Ports exposing (..)
+import Debug exposing (..)
 
 --import Set
 --import List.Extra exposing (dropDuplicates)
@@ -22,7 +23,7 @@ type Msg
 --  | FetchFail Http.Error
   | FetchOne (Result Http.Error Member)
   | FetchAll (Result Http.Error Member) 
-  | UpdateSucceed (Result Http.Error Member)
+  | UpdateSucceed String (Result Http.Error Member)
   | StoreID String
   | StoreRoom String 
   | Tick Time 
@@ -107,7 +108,9 @@ update action model =
     GitterIDStatus (Ok gids) -> 
       let 
         camperList = List.filterMap (createCamperFromGid model.tList) gids 
-        model_ = { model|tList = model.tList ++ camperList}
+        model_ = { model| tList = model.tList ++ camperList 
+                        , exclude = []
+        }
         cList  = List.map .uname camperList 
       in
         ( model_ 
@@ -148,7 +151,6 @@ update action model =
         model_ = {model | ts = newTime, uname = model.name, tPoints_prev = model.tPoints}
         --cList = updateList model.tList
         cList = List.map .uname model_.tList 
-
       in
         ( model_
         --, -- tickRequest (model'.url ++ model'.uname)
@@ -167,7 +169,7 @@ update action model =
       in 
         ( model_, Ports.modelChange model_)
 
-    UpdateSucceed (Ok member) -> 
+    UpdateSucceed name (Ok member) -> 
       let
         model_ = 
           { model|tList = updateCHistory model member,
@@ -178,12 +180,19 @@ update action model =
         (model_, Ports.modelChange model_)
         -- (model', Cmd.none)
 
-    UpdateSucceed (Err error) -> 
+    UpdateSucceed name (Err error) -> 
+    let 
+      _ = Debug.log "Error retrieving for id: " name  
+    in
       ( { model | error = True 
                 , points = -1
                 , uname = ""
                 --, message = toString error 
-                , message = "User does not exist?" 
+                , message = "User " ++ name ++ " does not exist?" 
+                , exclude = 
+                    case (List.member name model.exclude) of 
+                      True -> model.exclude
+                      False -> name :: model.exclude
         }
         , Cmd.none
       )
@@ -223,7 +232,7 @@ nestedListGID =
 tickRequest : String -> String -> Cmd Msg
 tickRequest url name =
   --Task.perform FetchFail FetchSucceed (Http.get decodePoints url)
-  Task.attempt UpdateSucceed (Http.toTask (Http.get (url ++ name) decodeData ) )
+  Task.attempt (UpdateSucceed name) (Http.toTask (Http.get (url ++ name) decodeData ) )
   --Task.attempt UpdateSucceed (getUserData url name)
   
 

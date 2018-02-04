@@ -32,7 +32,8 @@ buildResponse model =
     then "Challenges completed: " ++ (toString model.tPoints) ++
           (difference model.tPoints model.tPoints_prev)       ++
           " by " ++ (toString (List.length model.tList))      ++ " campers; " ++
-          "last auto update @ " ++ dateString 
+          "last auto update @ " ++ dateString ++ 
+          " excluded " ++ toString (List.length model.exclude)
     else "" 
 
 
