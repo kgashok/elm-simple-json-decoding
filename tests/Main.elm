@@ -87,45 +87,25 @@ all =
     clist         = createCampersFromMembers memberList
     dummy         = createCamper 0 {uname = "NA", points = 0}
     first         = List.head clist |> Maybe.withDefault dummy 
-    sortOut       = List.map dinfo (sortBasedOnHistory 20000 20000 clist )
-    sortOutWithCO = List.map dinfo (sortBasedOnHistory 20000 cutOff clist)
+    sortOut       = List.map dinfo (sortBasedOnHistory2 20000 20000 clist )
+    sortOutWithCO = List.map dinfo (sortBasedOnHistory2 20000 cutOff clist)
     --todo "Implement our first test. See http://package.elm-lang.org/packages/elm-community/elm-test/latest for how to do this!"
   in   
     describe "Fcc Test Suite" 
-        [describe "Unit test examples"
-          [ test "zero" <| \() -> Expect.equal 0 0
-              , test "truth" <| \() -> Expect.true "the truth" True
-              , test "booleans" <| \() -> Expect.notEqual True False
-              , test "pass" <| \() -> Expect.equal [0, 30, 60, 90, 120, 150, 180] (skipList 170)
-              , test "history" <| \() -> Expect.equal historyA first.chist
-          ]
+      [describe "Unit test examples"
+        [ test "zero" <| \() -> Expect.equal 0 0
+        , test "truth" <| \() -> Expect.true "the truth" True
+        , test "booleans" <| \() -> Expect.notEqual True False
+        , test "pass" <| \() -> Expect.equal [0, 30, 60, 90, 120, 150, 180] (skipList 170)
+        , test "history" <| \() -> Expect.equal historyA first.chist
+        , test "sort" <| \() ->
+            Expect.equal ["ramya 150", "sudhar 100", "kgashok 200"] sortOut
+        , test "sortcut" <| \() -> 
+            Expect.equal ["ramya 150", "kgashok 200", "sudhar 100"] sortOutWithCO
         ]
+      ]
 
 
-
-{--
-tests : List Test
-tests =
-  let 
-    clist         = createCampersFromMembers memberList
-    dummy         = createCamper 0 {uname = "NA", points = 0}
-    first         = List.head clist |> Maybe.withDefault dummy 
-    sortOut       = List.map dinfo (sortBasedOnHistory 20000 20000 clist )
-    sortOutWithCO = List.map dinfo (sortBasedOnHistory 20000 cutOff clist)
-  in 
-    [ 0 equals 0
-    , test "pass" <| assert True
-    , test "fail" <| assertNotEqual True False
-    , test "pass" <| assertEqual [0, 30, 60, 90, 120, 150, 180] (skipList 170)
-    , test "pass" <| assertEqual historyA first.chist
-    ]
-    ++
-    (List.map defaultTest <| assertionList ["ramya 150", "sudhar 100", "kgashok 200"] sortOut)
-    ++
-    (List.map defaultTest <| assertionList ["ramya 150", "kgashok 200", "sudhar 100"] sortOutWithCO)
-    -- ++
-    -- (List.map defaultTest <| assertionList [1..10] [1..10])
---}
 
 {--
 consoleTests : Test
