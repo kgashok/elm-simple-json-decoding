@@ -10737,7 +10737,7 @@ var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
 var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.0-beta-158-gf2d0e43';
+var _user$project$Version$version = 'v3.0-beta-159-g7de6bb2';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -11497,7 +11497,7 @@ var _user$project$View$buildResponse = function (model) {
 					A2(
 						_elm_lang$core$Basics_ops['++'],
 						_elm_lang$core$Basics$toString(
-							_elm_lang$core$List$length(model.tList) - _elm_lang$core$List$length(model.exclude)),
+							_elm_lang$core$List$length(model.tList)),
 						A2(
 							_elm_lang$core$Basics_ops['++'],
 							' campers; ',
