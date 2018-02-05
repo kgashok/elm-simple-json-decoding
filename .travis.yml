@@ -4,8 +4,8 @@ install:
   - npm install -g elm-test
   - elm-package install -y
 before_script: 
-#  - elm-make --yes --output test.js test/Tests.elm
-#  - elm test init
+# - elm-make --yes --output test.js test/Tests.elm
+  - elm test init
 #script: node test.js
 script: elm test
 
