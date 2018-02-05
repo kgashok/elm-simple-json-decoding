@@ -145,6 +145,16 @@ sortBasedOnHistory now cutOff campers =
     |> List.sortWith flippedComparison
     |> List.sortWith flippedComparison2
 
+sortBasedOnHistory2 : Time -> Time -> List Camper -> List Camper
+sortBasedOnHistory2 now cutOff campers =
+  -- campers_ = List.sortWith flippedComparison2 campers
+  campers
+    |> List.map (truncateHistory now cutOff)
+    --|> List.sortWith flippedComparison2
+    |> List.sortWith flippedComparison3
+    |> List.sortWith flippedComparison
+    |> List.sortWith flippedComparison2
+
 
 flippedComparison3: Camper -> Camper -> Order
 flippedComparison3 a b =

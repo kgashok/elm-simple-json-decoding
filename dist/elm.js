@@ -10560,6 +10560,22 @@ var _user$project$Model$flippedComparison3 = F2(
 				return _elm_lang$core$Basics$GT;
 		}
 	});
+var _user$project$Model$sortBasedOnHistory2 = F3(
+	function (now, cutOff, campers) {
+		return A2(
+			_elm_lang$core$List$sortWith,
+			_user$project$Model$flippedComparison2,
+			A2(
+				_elm_lang$core$List$sortWith,
+				_user$project$Model$flippedComparison,
+				A2(
+					_elm_lang$core$List$sortWith,
+					_user$project$Model$flippedComparison3,
+					A2(
+						_elm_lang$core$List$map,
+						A2(_user$project$Model$truncateHistory, now, cutOff),
+						campers))));
+	});
 var _user$project$Model$sortBasedOnHistory = F3(
 	function (now, cutOff, campers) {
 		return A2(
@@ -10737,7 +10753,7 @@ var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
 var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.0-beta-168-gaf84446';
+var _user$project$Version$version = 'v3.5-beta-2-g06d09a8';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
