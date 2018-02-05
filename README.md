@@ -1,7 +1,6 @@
 # Elm Simple JSON Decoding
 
 [![travis Status](https://travis-ci.org/kgashok/elm-simple-json-decoding.svg?branch=gh-pages)](https://travis-ci.org/kgashok/elm-simple-json-decoding) 
-[![snap-ci Status](https://snap-ci.com/kgashok/elm-simple-json-decoding/branch/gh-pages/build_image)](https://snap-ci.com/kgashok/elm-simple-json-decoding/branch/gh-pages)
 
 A playground of basic examples decoding a JSON object.
 
