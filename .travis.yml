@@ -10,7 +10,7 @@ before_script:
 #script: node test.js
 script: 
   - elm-verify-examples
-  - script: elm test
+  - elm test
 
 # whitelist
 branches: 
