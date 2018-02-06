@@ -15,20 +15,15 @@ url2 =
 
 
 fccAPI : String
-
-
-
---fccAPI = "https://comfortable-fibre.glitch.me/"
---fccAPI = "http://www.freecodecamp.com/about?username="
---fccAPI = "https://cors-anywhere.herokuapp.com/https://www.freecodecamp.org/api/users/about?username="
-
-
 fccAPI =
     "https://www.freecodecamp.org/api/users/about?username="
 
-
-
+{--
+--fccAPI = "https://comfortable-fibre.glitch.me/"
+--fccAPI = "http://www.freecodecamp.com/about?username="
+--fccAPI = "https://cors-anywhere.herokuapp.com/https://www.freecodecamp.org/api/users/about?username="
 --fccAPI = "https://cors.now.sh/http://www.freecodecamp.org/api/users/about?username="
+--}
 
 
 gitterKey : String
@@ -36,13 +31,12 @@ gitterKey =
     "ae28f23f134c4364ad45e7b7355cfa91c92038bb"
 
 
+--gUrl = "https://api.myjson.com/bins/nel8"
 gUrl : String
 gUrl =
     "https://api.gitter.im/v1/rooms?access_token=" ++ gitterKey
 
 
-
---gUrl = "https://api.myjson.com/bins/nel8"
 
 
 gUserUrl : String -> String -> Int -> String
@@ -168,7 +162,18 @@ pointsData : Int -> Time -> Int -> Cdata
 pointsData p time prev =
     { points = p, ts = time, delta = p - prev }
 
-
+{-| returns a list of numbers in intervals of 30.
+ 
+    -- You can write the expected result on the next line,
+ 
+    skipList 120
+    --> [0, 30, 60, 90, 120]
+ 
+    -- or on the same line.
+ 
+    skipList 170 --> [0, 30, 60, 90, 120, 150, 180]
+ 
+-}
 skipList : Int -> List Int
 skipList userCount =
     List.map (\x -> x * 30) (List.range 0 (round ((toFloat userCount) / 30)))
