@@ -37,8 +37,22 @@ gUrl =
     "https://api.gitter.im/v1/rooms?access_token=" ++ gitterKey
 
 
+-- test gitter userid URL
+testGitterUserUrl roomdID key index = "https://api.myjson.com/bins/42vt0"
 
 
+{-| gUserUrl returns a valid URL to access the Gitter API.
+    Used primarily in gitterIDRequest to fire off simultaneous 
+    requests to get all userids in the gitter room
+    The "index" value is generated using the skipList function
+
+    -- handcoded one from earlier on 
+    -- gUserUrl roomId key index = "https://api.gitter.im/v1/rooms/570a5925187bb6f0eadebf05/users?access_token=ae28f23f134c4364ad45e7b7355cfa91c92038bb&skip=0"
+
+    gUserUrl "570a5" "ae28" 30
+    --> "https://api.gitter.im/v1/rooms/570a5/users?access_token=ae28&skip=30"
+    
+-}
 gUserUrl : String -> String -> Int -> String
 gUserUrl roomID key index =
     "https://api.gitter.im/v1/rooms/"
@@ -50,9 +64,6 @@ gUserUrl roomID key index =
 
 
 
---gUserUrl roomId key index =
--- "https://api.gitter.im/v1/rooms/570a5925187bb6f0eadebf05/users?access_token=ae28f23f134c4364ad45e7b7355cfa91c92038bb&skip=0"
--- gUserUrl roomdID key index = "https://api.myjson.com/bins/42vt0"
 -- MODEL
 
 
@@ -162,17 +173,11 @@ pointsData : Int -> Time -> Int -> Cdata
 pointsData p time prev =
     { points = p, ts = time, delta = p - prev }
 
-{-| returns a list of numbers in intervals of 30.
- 
-    -- You can write the expected result on the next line,
- 
+
+{-| skipList returns a list of numbers in intervals of 30.
     skipList 120
     --> [0, 30, 60, 90, 120]
- 
-    -- or on the same line.
- 
     skipList 170 --> [0, 30, 60, 90, 120, 150, 180]
- 
 -}
 skipList : Int -> List Int
 skipList userCount =
