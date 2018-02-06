@@ -18,6 +18,8 @@ fccAPI : String
 fccAPI =
     "https://www.freecodecamp.org/api/users/about?username="
 
+
+
 {--
 --fccAPI = "https://comfortable-fibre.glitch.me/"
 --fccAPI = "http://www.freecodecamp.com/about?username="
@@ -26,32 +28,39 @@ fccAPI =
 --}
 
 
+{-| mock test gitter URL to simulate rooms information
+-}
+testGitterUrl =
+    "https://api.myjson.com/bins/nel8"
+
+
+{-| mock test gitter URL to simulate userids in specific gitter room
+-}
+testGitterUserUrl roomdID key index =
+    "https://api.myjson.com/bins/42vt0"
+
+
 gitterKey : String
 gitterKey =
     "ae28f23f134c4364ad45e7b7355cfa91c92038bb"
 
 
---gUrl = "https://api.myjson.com/bins/nel8"
 gUrl : String
 gUrl =
     "https://api.gitter.im/v1/rooms?access_token=" ++ gitterKey
 
 
--- test gitter userid URL
-testGitterUserUrl roomdID key index = "https://api.myjson.com/bins/42vt0"
-
-
 {-| gUserUrl returns a valid URL to access the Gitter API.
-    Used primarily in gitterIDRequest to fire off simultaneous 
-    requests to get all userids in the gitter room
-    The "index" value is generated using the skipList function
+Used primarily in gitterIDRequest to fire off simultaneous
+requests to get all userids in the gitter room
+The "index" value is generated using the skipList function
 
-    -- handcoded one from earlier on 
+    -- handcoded one from earlier on
     -- gUserUrl roomId key index = "https://api.gitter.im/v1/rooms/570a5925187bb6f0eadebf05/users?access_token=ae28f23f134c4364ad45e7b7355cfa91c92038bb&skip=0"
 
     gUserUrl "570a5" "ae28" 30
     --> "https://api.gitter.im/v1/rooms/570a5/users?access_token=ae28&skip=30"
-    
+
 -}
 gUserUrl : String -> String -> Int -> String
 gUserUrl roomID key index =
@@ -175,9 +184,15 @@ pointsData p time prev =
 
 
 {-| skipList returns a list of numbers in intervals of 30.
+
+    -- this is required for parallel dispatch of ~30 requests
+
     skipList 120
     --> [0, 30, 60, 90, 120]
-    skipList 170 --> [0, 30, 60, 90, 120, 150, 180]
+
+    skipList 170
+    --> [0, 30, 60, 90, 120, 150, 180]
+
 -}
 skipList : Int -> List Int
 skipList userCount =
