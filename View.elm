@@ -139,7 +139,7 @@ campList display now campers =
     let
         -- campers_ = List.sortWith flippedComparison2 campers
         campers_ =
-            sortBasedOnHistory now cutOff campers
+            Update.sortBasedOnHistory now cutOff campers
 
         items =
             List.map camperItem campers_

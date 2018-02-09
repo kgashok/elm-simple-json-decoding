@@ -8,6 +8,7 @@ import Test exposing (..)
 --import ElmTest exposing (..)
 
 import Model exposing (..)
+import Update exposing (skipList, sortBasedOnHistory2)
 
 
 testm : Model

@@ -10478,126 +10478,6 @@ var _user$project$Model$excluded = {
 	}
 };
 var _user$project$Model$cutOff = _elm_lang$core$Time$inHours(2592000000);
-var _user$project$Model$flippedComparison = F2(
-	function (a, b) {
-		var bhist = A2(
-			_elm_lang$core$List$map,
-			function (_) {
-				return _.points;
-			},
-			b.chist);
-		var deltaB = A2(
-			_elm_lang$core$Maybe$withDefault,
-			0,
-			_elm_lang$core$List$maximum(bhist)) - A2(
-			_elm_lang$core$Maybe$withDefault,
-			0,
-			_elm_lang$core$List$minimum(bhist));
-		var ahist = A2(
-			_elm_lang$core$List$map,
-			function (_) {
-				return _.points;
-			},
-			a.chist);
-		var deltaA = A2(
-			_elm_lang$core$Maybe$withDefault,
-			0,
-			_elm_lang$core$List$maximum(ahist)) - A2(
-			_elm_lang$core$Maybe$withDefault,
-			0,
-			_elm_lang$core$List$minimum(ahist));
-		var _p0 = A2(_elm_lang$core$Basics$compare, deltaA, deltaB);
-		switch (_p0.ctor) {
-			case 'GT':
-				return _elm_lang$core$Basics$LT;
-			case 'EQ':
-				return _elm_lang$core$Basics$EQ;
-			default:
-				return _elm_lang$core$Basics$GT;
-		}
-	});
-var _user$project$Model$isWithinCutOff = F3(
-	function (now, cutOff, data) {
-		var _p1 = _elm_lang$core$Native_Utils.cmp(data.ts, now - cutOff) > -1;
-		if (_p1 === true) {
-			return _elm_lang$core$Maybe$Just(data);
-		} else {
-			return _elm_lang$core$Maybe$Nothing;
-		}
-	});
-var _user$project$Model$truncateHistory = F3(
-	function (now, cutOff, camper) {
-		return _elm_lang$core$Native_Utils.update(
-			camper,
-			{
-				chist: A2(
-					_elm_lang$core$List$filterMap,
-					A2(_user$project$Model$isWithinCutOff, now, cutOff),
-					camper.chist)
-			});
-	});
-var _user$project$Model$flippedComparison2 = F2(
-	function (a, b) {
-		var _p2 = A2(_elm_lang$core$Basics$compare, a.last.ts, b.last.ts);
-		switch (_p2.ctor) {
-			case 'GT':
-				return _elm_lang$core$Basics$LT;
-			case 'EQ':
-				return _elm_lang$core$Basics$EQ;
-			default:
-				return _elm_lang$core$Basics$GT;
-		}
-	});
-var _user$project$Model$flippedComparison3 = F2(
-	function (a, b) {
-		var _p3 = A2(_elm_lang$core$Basics$compare, a.last.points, b.last.points);
-		switch (_p3.ctor) {
-			case 'GT':
-				return _elm_lang$core$Basics$LT;
-			case 'EQ':
-				return _elm_lang$core$Basics$EQ;
-			default:
-				return _elm_lang$core$Basics$GT;
-		}
-	});
-var _user$project$Model$sortBasedOnHistory2 = F3(
-	function (now, cutOff, campers) {
-		return A2(
-			_elm_lang$core$List$sortWith,
-			_user$project$Model$flippedComparison2,
-			A2(
-				_elm_lang$core$List$sortWith,
-				_user$project$Model$flippedComparison,
-				A2(
-					_elm_lang$core$List$sortWith,
-					_user$project$Model$flippedComparison3,
-					A2(
-						_elm_lang$core$List$map,
-						A2(_user$project$Model$truncateHistory, now, cutOff),
-						campers))));
-	});
-var _user$project$Model$sortBasedOnHistory = F3(
-	function (now, cutOff, campers) {
-		return A2(
-			_elm_lang$core$List$sortWith,
-			_user$project$Model$flippedComparison2,
-			A2(
-				_elm_lang$core$List$sortWith,
-				_user$project$Model$flippedComparison,
-				A2(_elm_lang$core$List$sortWith, _user$project$Model$flippedComparison3, campers)));
-	});
-var _user$project$Model$skipList = function (userCount) {
-	return A2(
-		_elm_lang$core$List$map,
-		function (x) {
-			return x * 30;
-		},
-		A2(
-			_elm_lang$core$List$range,
-			0,
-			_elm_lang$core$Basics$round(
-				_elm_lang$core$Basics$toFloat(userCount) / 30)));
-};
 var _user$project$Model$pointsData = F3(
 	function (p, time, prev) {
 		return {points: p, ts: time, delta: p - prev};
@@ -10614,8 +10494,8 @@ var _user$project$Model$createCamperFromGid = F2(
 			_elm_lang$core$List$member,
 			_elm_lang$core$String$toLower(gid.username),
 			cList);
-		var _p4 = isPresent;
-		if (_p4 === false) {
+		var _p0 = isPresent;
+		if (_p0 === false) {
 			return _elm_lang$core$Maybe$Just(
 				{
 					uname: _elm_lang$core$String$toLower(gid.username),
@@ -10638,40 +10518,6 @@ var _user$project$Model$createCamper = F2(
 			},
 			last: data
 		};
-	});
-var _user$project$Model$difference = F2(
-	function (current, previous) {
-		var _p5 = current - previous;
-		if (_p5 === 0) {
-			return '';
-		} else {
-			return A2(
-				_elm_lang$core$Basics_ops['++'],
-				'(',
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					_elm_lang$core$Basics$toString(current - previous),
-					')'));
-		}
-	});
-var _user$project$Model$gUserUrl = F3(
-	function (roomID, key, index) {
-		return A2(
-			_elm_lang$core$Basics_ops['++'],
-			'https://api.gitter.im/v1/rooms/',
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				roomID,
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					'/users?access_token=',
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						key,
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							'&skip=',
-							_elm_lang$core$Basics$toString(index))))));
 	});
 var _user$project$Model$gitterKey = 'ae28f23f134c4364ad45e7b7355cfa91c92038bb';
 var _user$project$Model$gUrl = A2(_elm_lang$core$Basics_ops['++'], 'https://api.gitter.im/v1/rooms?access_token=', _user$project$Model$gitterKey);
@@ -11158,17 +11004,23 @@ var _user$project$Update$Set5min = function (a) {
 var _user$project$Update$GitterIDStatus = function (a) {
 	return {ctor: 'GitterIDStatus', _0: a};
 };
-var _user$project$Update$gitterIDRequest = F2(
-	function (groom, skip) {
-		return A2(
-			_elm_lang$core$Task$attempt,
-			_user$project$Update$GitterIDStatus,
-			_elm_lang$http$Http$toTask(
-				A2(
-					_elm_lang$http$Http$get,
-					A3(_user$project$Update$gUserUrl, groom.id, _user$project$Model$gitterKey, skip),
-					_user$project$Update$decodeIDData)));
-	});
+var _user$project$Update$gitterIDBatchRequest = function (groom) {
+	var gitterIDRequest = F2(
+		function (roomid, skip) {
+			return A2(
+				_elm_lang$core$Task$attempt,
+				_user$project$Update$GitterIDStatus,
+				_elm_lang$http$Http$toTask(
+					A2(
+						_elm_lang$http$Http$get,
+						A3(_user$project$Update$gUserUrl, roomid, _user$project$Model$gitterKey, skip),
+						_user$project$Update$decodeIDData)));
+		});
+	return A2(
+		_elm_lang$core$List$map,
+		gitterIDRequest(groom.id),
+		_user$project$Update$skipList(groom.userCount));
+};
 var _user$project$Update$FetchGitter = {ctor: 'FetchGitter'};
 var _user$project$Update$GitterStatus = function (a) {
 	return {ctor: 'GitterStatus', _0: a};
@@ -11309,10 +11161,7 @@ var _user$project$Update$update = F2(
 								model,
 								{gRoom: _p11}),
 							_1: _elm_lang$core$Platform_Cmd$batch(
-								A2(
-									_elm_lang$core$List$map,
-									_user$project$Update$gitterIDRequest(_p11),
-									_user$project$Update$skipList(_p11.userCount)))
+								_user$project$Update$gitterIDBatchRequest(_p11))
 						};
 					}
 				} else {
@@ -11660,7 +11509,7 @@ var _user$project$View$camperItem = function (camper) {
 };
 var _user$project$View$campList = F3(
 	function (display, now, campers) {
-		var campers_ = A3(_user$project$Model$sortBasedOnHistory, now, _user$project$Model$cutOff, campers);
+		var campers_ = A3(_user$project$Update$sortBasedOnHistory, now, _user$project$Model$cutOff, campers);
 		var items = A2(_elm_lang$core$List$map, _user$project$View$camperItem, campers_);
 		return A2(
 			_elm_lang$html$Html$div,

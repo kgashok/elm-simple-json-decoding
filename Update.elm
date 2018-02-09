@@ -112,10 +112,7 @@ update action model =
 
                     Just gRoom_ ->
                         ( { model | gRoom = gRoom_ }
-                        , Cmd.batch
-                            (List.map (gitterIDRequest gRoom_)
-                                (skipList gRoom_.userCount)
-                            )
+                        , Cmd.batch (gitterIDBatchRequest gRoom_)
                         )
 
         GitterStatus (Err error) ->
@@ -243,12 +240,16 @@ update action model =
 
 -- HTTP
 
-
-gitterIDRequest : GRoom -> Int -> Cmd Msg
-gitterIDRequest groom skip =
-    Task.attempt GitterIDStatus
-        (Http.toTask (Http.get (gUserUrl groom.id gitterKey skip) decodeIDData))
-
+--gitterIDBatchRequest : GRoom -> List Cmd Msg
+gitterIDBatchRequest groom =
+    let
+        gitterIDRequest roomid skip =
+            Task.attempt GitterIDStatus
+                (Http.toTask (Http.get 
+                    (gUserUrl roomid gitterKey skip) decodeIDData))
+    in
+        List.map (gitterIDRequest groom.id) <| (skipList groom.userCount)
+        
 
 decodeIDData : Json.Decoder (List Gid)
 decodeIDData =
