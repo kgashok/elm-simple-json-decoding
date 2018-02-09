@@ -11377,18 +11377,12 @@ var _user$project$View$buildResponse = function (model) {
 							_elm_lang$core$List$length(model.tList)),
 						A2(
 							_elm_lang$core$Basics_ops['++'],
-							' campers; ',
+							' campers; (excluded ',
 							A2(
 								_elm_lang$core$Basics_ops['++'],
-								'last auto update @ ',
-								A2(
-									_elm_lang$core$Basics_ops['++'],
-									dateString,
-									A2(
-										_elm_lang$core$Basics_ops['++'],
-										' excluded ',
-										_elm_lang$core$Basics$toString(
-											_elm_lang$core$List$length(model.exclude))))))))))) : '';
+								_elm_lang$core$Basics$toString(
+									_elm_lang$core$List$length(model.exclude)),
+								A2(_elm_lang$core$Basics_ops['++'], ') last auto update @ ', dateString)))))))) : '';
 };
 var _user$project$View$footer = A2(
 	_elm_lang$html$Html$div,

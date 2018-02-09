@@ -211,11 +211,10 @@ buildResponse model =
                 ++ (difference model.tPoints model.tPoints_prev)
                 ++ " by "
                 ++ (toString (List.length model.tList))
-                ++ " campers; "
-                ++ "last auto update @ "
-                ++ dateString
-                ++ " excluded "
+                ++ " campers (excluded "
                 ++ toString (List.length model.exclude)
+                ++ "); last auto update @ "
+                ++ dateString
         else
             ""
 
