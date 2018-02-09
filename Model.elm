@@ -55,28 +55,6 @@ gUrl =
     "https://api.gitter.im/v1/rooms?access_token=" ++ gitterKey
 
 
-{-| gUserUrl returns a valid URL to access the Gitter API.
-Used primarily in gitterIDRequest to fire off simultaneous
-requests to get all userids in the gitter room
-The "index" value is generated using the skipList function
-
-    -- handcoded one from earlier on
-    -- gUserUrl roomId key index = "https://api.gitter.im/v1/rooms/570a5925187bb6f0eadebf05/users?access_token=ae28f23f134c4364ad45e7b7355cfa91c92038bb&skip=0"
-
-    gUserUrl "570a5" "ae28" 30
-    --> "https://api.gitter.im/v1/rooms/570a5/users?access_token=ae28&skip=30"
-
--}
-gUserUrl : String -> String -> Int -> String
-gUserUrl roomID key index =
-    "https://api.gitter.im/v1/rooms/"
-        ++ roomID
-        ++ "/users?access_token="
-        ++ key
-        ++ "&skip="
-        ++ toString index
-
-
 
 -- MODEL
 
@@ -140,15 +118,6 @@ type alias Gid =
     }
 
 
-difference : Int -> Int -> String
-difference current previous =
-    case (current - previous) of
-        0 ->
-            ""
-
-        _ ->
-            "(" ++ toString (current - previous) ++ ")"
-
 
 createCamper : Time -> Member -> Camper
 createCamper ts member =
@@ -186,113 +155,6 @@ createCamperFromGid tList gid =
 pointsData : Int -> Time -> Int -> Cdata
 pointsData p time prev =
     { points = p, ts = time, delta = p - prev }
-
-
-{-| skipList returns a list of numbers in intervals of 30.
-
-    -- this is required for parallel dispatch of ~30 requests
-
-    skipList 120
-    --> [0, 30, 60, 90, 120]
-
-    skipList 170
-    --> [0, 30, 60, 90, 120, 150, 180]
-
--}
-skipList : Int -> List Int
-skipList userCount =
-    List.map (\x -> x * 30) (List.range 0 (round ((toFloat userCount) / 30)))
-
-
-sortBasedOnHistory : Time -> Time -> List Camper -> List Camper
-sortBasedOnHistory now cutOff campers =
-    -- campers_ = List.sortWith flippedComparison2 campers
-    campers
-        --|> List.map (truncateHistory now cutOff)
-        --|> List.sortWith flippedComparison2
-        |> List.sortWith flippedComparison3
-        |> List.sortWith flippedComparison
-        |> List.sortWith flippedComparison2
-
-
-sortBasedOnHistory2 : Time -> Time -> List Camper -> List Camper
-sortBasedOnHistory2 now cutOff campers =
-    -- campers_ = List.sortWith flippedComparison2 campers
-    campers
-        |> List.map (truncateHistory now cutOff)
-        --|> List.sortWith flippedComparison2
-        |> List.sortWith flippedComparison3
-        |> List.sortWith flippedComparison
-        |> List.sortWith flippedComparison2
-
-
-flippedComparison3 : Camper -> Camper -> Order
-flippedComparison3 a b =
-    case compare a.last.points b.last.points of
-        GT ->
-            LT
-
-        EQ ->
-            EQ
-
-        LT ->
-            GT
-
-
-flippedComparison2 : Camper -> Camper -> Order
-flippedComparison2 a b =
-    case compare a.last.ts b.last.ts of
-        GT ->
-            LT
-
-        EQ ->
-            EQ
-
-        LT ->
-            GT
-
-
-truncateHistory : Time -> Time -> Camper -> Camper
-truncateHistory now cutOff camper =
-    { camper | chist = List.filterMap (isWithinCutOff now cutOff) camper.chist }
-
-
-isWithinCutOff : Time -> Time -> Cdata -> Maybe Cdata
-isWithinCutOff now cutOff data =
-    case (data.ts >= (now - cutOff)) of
-        True ->
-            Just data
-
-        False ->
-            Nothing
-
-
-flippedComparison : Camper -> Camper -> Order
-flippedComparison a b =
-    let
-        ahist =
-            List.map .points a.chist
-
-        bhist =
-            List.map .points b.chist
-
-        deltaA =
-            Maybe.withDefault 0 (List.maximum ahist)
-                - Maybe.withDefault 0 (List.minimum ahist)
-
-        deltaB =
-            Maybe.withDefault 0 (List.maximum bhist)
-                - Maybe.withDefault 0 (List.minimum bhist)
-    in
-        case compare deltaA deltaB of
-            GT ->
-                LT
-
-            EQ ->
-                EQ
-
-            LT ->
-                GT
 
 
 

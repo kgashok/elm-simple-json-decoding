@@ -16,38 +16,6 @@ import String
 -- VIEW
 
 
-buildResponse : Model -> String
-buildResponse model =
-    let
-        now =
-            fromTime model.ts
-
-        shour =
-            format "00" (toFloat (hour now))
-
-        smin =
-            format "00" (toFloat (minute now))
-
-        dateString =
-            formatISO8601 now
-    in
-        --if model.error == True
-        --then "Error: userID not valid? " ++ model.message
-        if model.tPoints /= -1 then
-            "Challenges completed: "
-                ++ (toString model.tPoints)
-                ++ (difference model.tPoints model.tPoints_prev)
-                ++ " by "
-                ++ (toString (List.length model.tList))
-                ++ " campers; "
-                ++ "last auto update @ "
-                ++ dateString
-                ++ " excluded "
-                ++ toString (List.length model.exclude)
-        else
-            ""
-
-
 view : Model -> Html Msg
 view model =
     let
@@ -218,3 +186,45 @@ footer =
             ]
             [ text version ]
         ]
+
+
+buildResponse : Model -> String
+buildResponse model =
+    let
+        now =
+            fromTime model.ts
+
+        shour =
+            format "00" (toFloat (hour now))
+
+        smin =
+            format "00" (toFloat (minute now))
+
+        dateString =
+            formatISO8601 now
+    in
+        --if model.error == True
+        --then "Error: userID not valid? " ++ model.message
+        if model.tPoints /= -1 then
+            "Challenges completed: "
+                ++ (toString model.tPoints)
+                ++ (difference model.tPoints model.tPoints_prev)
+                ++ " by "
+                ++ (toString (List.length model.tList))
+                ++ " campers; "
+                ++ "last auto update @ "
+                ++ dateString
+                ++ " excluded "
+                ++ toString (List.length model.exclude)
+        else
+            ""
+
+
+difference : Int -> Int -> String
+difference current previous =
+    case (current - previous) of
+        0 ->
+            ""
+
+        _ ->
+            "(" ++ toString (current - previous) ++ ")"
