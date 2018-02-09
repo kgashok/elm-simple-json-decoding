@@ -239,17 +239,22 @@ update action model =
 
 
 -- HTTP
-
 --gitterIDBatchRequest : GRoom -> List Cmd Msg
+
+
 gitterIDBatchRequest groom =
     let
         gitterIDRequest roomid skip =
             Task.attempt GitterIDStatus
-                (Http.toTask (Http.get 
-                    (gUserUrl roomid gitterKey skip) decodeIDData))
+                (Http.toTask
+                    (Http.get
+                        (gUserUrl roomid gitterKey skip)
+                        decodeIDData
+                    )
+                )
     in
         List.map (gitterIDRequest groom.id) <| (skipList groom.userCount)
-        
+
 
 decodeIDData : Json.Decoder (List Gid)
 decodeIDData =

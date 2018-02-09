@@ -118,7 +118,6 @@ type alias Gid =
     }
 
 
-
 createCamper : Time -> Member -> Camper
 createCamper ts member =
     let
