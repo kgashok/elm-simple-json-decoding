@@ -5,7 +5,7 @@ module Version exposing (..)
 
 
 version : String 
-version = "v3.5-beta-18-g27a4759"
+version = "v3.5-beta-19-gf013a52"
 
 gitRepo : String 
 gitRepo = "https://github.com/kgashok/elm-simple-json-decoding"

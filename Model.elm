@@ -4,28 +4,33 @@ import Time exposing (Time, inHours)
 import String
 
 
-url1 : String
-url1 =
-    "https://api.myjson.com/bins/3fueo"
+{-| Other variants that have not worked properly
 
+    --fccAPI = "https://comfortable-fibre.glitch.me/"
+    --fccAPI = "http://www.freecodecamp.com/about?username="
+    --fccAPI = "https://cors-anywhere.herokuapp.com/https://www.freecodecamp.org/api/users/about?username="
+    --fccAPI = "https://cors.now.sh/http://www.freecodecamp.org/api/users/about?username="
 
-url2 : String
-url2 =
-    "https://api.myjson.com/bins/2kjv4"
-
-
+-}
 fccAPI : String
 fccAPI =
     "https://www.freecodecamp.org/api/users/about?username="
 
 
+{-| mock test URL to get brownie points information for user
+-- points value is a string equivalent of the integer value
+-}
+testUrl1 : String
+testUrl1 =
+    "https://api.myjson.com/bins/3fueo"
 
-{--
---fccAPI = "https://comfortable-fibre.glitch.me/"
---fccAPI = "http://www.freecodecamp.com/about?username="
---fccAPI = "https://cors-anywhere.herokuapp.com/https://www.freecodecamp.org/api/users/about?username="
---fccAPI = "https://cors.now.sh/http://www.freecodecamp.org/api/users/about?username="
---}
+
+{-| mock test URL to get brownie points information for user
+-- points value is an integer value
+-}
+testUrl2 : String
+testUrl2 =
+    "https://api.myjson.com/bins/2kjv4"
 
 
 {-| mock test gitter URL to simulate rooms information
