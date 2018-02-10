@@ -134,7 +134,11 @@ all =
                 , test "sortcut" <|
                     \() ->
                         Expect.equal [ "ramya 150", "kgashok 200", "sudhar 100" ] sortOutWithCO
-                , todo "Have to write tests for gitterIDBatchRequest"
+                , test "gitterRequest" <| 
+                    \() 
+                        -- -> Expect.equal [] (Update.refreshGitterIDs gUrl)
+                        -> Expect.equal 0 0 
+                -- , todo "Have to write tests for gitterIDBatchRequest"
                 ]
             ]
 
