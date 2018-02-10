@@ -78,3 +78,4 @@ version : String \n\
 	print (versionFile + " updated with " + version)
 	fo.close()
 
+commands.getstatusoutput ("elm-format Version.elm --yes") 

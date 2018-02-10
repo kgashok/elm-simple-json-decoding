@@ -67,7 +67,7 @@ type alias GRoom =
 
 
 type alias Model =
-    { url : String
+    { url : String -- needs to moved out
     , name : String
     , uname : String
     , message : String
@@ -178,15 +178,13 @@ excluded =
 
 initialModel : Model
 initialModel =
-    { url = fccAPI
+    { url = fccAPI -- needs to be moved out
     , name = ""
     , uname = ""
     , message = ""
     , error = False
     , points = -1
     , ts = 0
-
-    -- , ts = 1466438517981
     , tList = []
     , tPoints = 0
     , tPoints_prev = 0

@@ -10604,7 +10604,7 @@ var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
 var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.5-beta-19-gf013a52';
+var _user$project$Version$version = 'v3.5-beta-24-gccda048';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -10768,37 +10768,6 @@ var _user$project$Update$sortBasedOnHistory = F3(
 				_elm_lang$core$List$sortWith,
 				_user$project$Update$flippedComparison,
 				A2(_elm_lang$core$List$sortWith, _user$project$Update$flippedComparison3, campers)));
-	});
-var _user$project$Update$skipList = function (userCount) {
-	return A2(
-		_elm_lang$core$List$map,
-		function (x) {
-			return x * 30;
-		},
-		A2(
-			_elm_lang$core$List$range,
-			0,
-			_elm_lang$core$Basics$round(
-				_elm_lang$core$Basics$toFloat(userCount) / 30)));
-};
-var _user$project$Update$gUserUrl = F3(
-	function (roomID, key, index) {
-		return A2(
-			_elm_lang$core$Basics_ops['++'],
-			'https://api.gitter.im/v1/rooms/',
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				roomID,
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					'/users?access_token=',
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						key,
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							'&skip=',
-							_elm_lang$core$Basics$toString(index))))));
 	});
 var _user$project$Update$downloadHeaders = {
 	ctor: '::',
@@ -10995,6 +10964,37 @@ var _user$project$Update$decodeIDData = A2(
 	_elm_lang$core$Json_Decode$at,
 	{ctor: '[]'},
 	_elm_lang$core$Json_Decode$list(_user$project$Update$nestedListGID));
+var _user$project$Update$skipList = function (userCount) {
+	return A2(
+		_elm_lang$core$List$map,
+		function (x) {
+			return x * 30;
+		},
+		A2(
+			_elm_lang$core$List$range,
+			0,
+			_elm_lang$core$Basics$round(
+				_elm_lang$core$Basics$toFloat(userCount) / 30)));
+};
+var _user$project$Update$gUserUrl = F3(
+	function (roomID, key, index) {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			'https://api.gitter.im/v1/rooms/',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				roomID,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'/users?access_token=',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						key,
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'&skip=',
+							_elm_lang$core$Basics$toString(index))))));
+	});
 var _user$project$Update$Set15min = function (a) {
 	return {ctor: 'Set15min', _0: a};
 };
@@ -11005,21 +11005,20 @@ var _user$project$Update$GitterIDStatus = function (a) {
 	return {ctor: 'GitterIDStatus', _0: a};
 };
 var _user$project$Update$gitterIDBatchRequest = function (groom) {
-	var gitterIDRequest = F2(
-		function (roomid, skip) {
-			return A2(
-				_elm_lang$core$Task$attempt,
-				_user$project$Update$GitterIDStatus,
-				_elm_lang$http$Http$toTask(
-					A2(
-						_elm_lang$http$Http$get,
-						A3(_user$project$Update$gUserUrl, roomid, _user$project$Model$gitterKey, skip),
-						_user$project$Update$decodeIDData)));
-		});
+	var gitterIDRequest = function (url) {
+		return A2(
+			_elm_lang$core$Task$attempt,
+			_user$project$Update$GitterIDStatus,
+			_elm_lang$http$Http$toTask(
+				A2(_elm_lang$http$Http$get, url, _user$project$Update$decodeIDData)));
+	};
 	return A2(
 		_elm_lang$core$List$map,
-		gitterIDRequest(groom.id),
-		_user$project$Update$skipList(groom.userCount));
+		gitterIDRequest,
+		A2(
+			_elm_lang$core$List$map,
+			A2(_user$project$Update$gUserUrl, groom.id, _user$project$Model$gitterKey),
+			_user$project$Update$skipList(groom.userCount)));
 };
 var _user$project$Update$FetchGitter = {ctor: 'FetchGitter'};
 var _user$project$Update$GitterStatus = function (a) {

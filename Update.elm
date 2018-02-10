@@ -239,21 +239,63 @@ update action model =
 
 
 -- HTTP
---gitterIDBatchRequest : GRoom -> List Cmd Msg
 
 
+{-| gUserUrl returns a valid URL to access the Gitter API.
+Used primarily in gitterIDRequest to fire off simultaneous
+requests to get all userids in the gitter room
+The "index" value is generated using the skipList function
+
+    -- handcoded one from earlier on
+    -- gUserUrl roomId key index = "https://api.gitter.im/v1/rooms/570a5925187bb6f0eadebf05/users?access_token=ae28f23f134c4364ad45e7b7355cfa91c92038bb&skip=0"
+
+    gUserUrl "570a5" "ae28" 30
+    --> "https://api.gitter.im/v1/rooms/570a5/users?access_token=ae28&skip=30"
+
+-}
+gUserUrl : String -> String -> Int -> String
+gUserUrl roomID key index =
+    "https://api.gitter.im/v1/rooms/"
+        ++ roomID
+        ++ "/users?access_token="
+        ++ key
+        ++ "&skip="
+        ++ toString index
+
+
+{-| skipList returns a list of numbers in intervals of 30.
+
+    -- this is required for parallel dispatch of ~30 requests
+
+    skipList 120
+    --> [0, 30, 60, 90, 120]
+
+    skipList 170
+    --> [0, 30, 60, 90, 120, 150, 180]
+
+-}
+skipList : Int -> List Int
+skipList userCount =
+    List.map (\x -> x * 30) (List.range 0 (round ((toFloat userCount) / 30)))
+
+
+{-| gitterIDBatchRequest helps create a list of Http.gets
+to get all the Ids in a specific gitter room
+
+    -- uses skipList and gUserUrl to generate a list 
+    -- of Http requests
+
+-}
+gitterIDBatchRequest : GRoom -> List (Cmd Msg)
 gitterIDBatchRequest groom =
     let
-        gitterIDRequest roomid skip =
+        gitterIDRequest url =
             Task.attempt GitterIDStatus
-                (Http.toTask
-                    (Http.get
-                        (gUserUrl roomid gitterKey skip)
-                        decodeIDData
-                    )
-                )
+                (Http.toTask (Http.get url decodeIDData))
     in
-        List.map (gitterIDRequest groom.id) <| (skipList groom.userCount)
+        skipList groom.userCount
+            |> List.map (gUserUrl groom.id gitterKey)
+            |> List.map gitterIDRequest
 
 
 decodeIDData : Json.Decoder (List Gid)
@@ -485,44 +527,6 @@ postSettings =
     , timeout = Nothing
     , withCredentials = False
     }
-
-
-{-| gUserUrl returns a valid URL to access the Gitter API.
-Used primarily in gitterIDRequest to fire off simultaneous
-requests to get all userids in the gitter room
-The "index" value is generated using the skipList function
-
-    -- handcoded one from earlier on
-    -- gUserUrl roomId key index = "https://api.gitter.im/v1/rooms/570a5925187bb6f0eadebf05/users?access_token=ae28f23f134c4364ad45e7b7355cfa91c92038bb&skip=0"
-
-    gUserUrl "570a5" "ae28" 30
-    --> "https://api.gitter.im/v1/rooms/570a5/users?access_token=ae28&skip=30"
-
--}
-gUserUrl : String -> String -> Int -> String
-gUserUrl roomID key index =
-    "https://api.gitter.im/v1/rooms/"
-        ++ roomID
-        ++ "/users?access_token="
-        ++ key
-        ++ "&skip="
-        ++ toString index
-
-
-{-| skipList returns a list of numbers in intervals of 30.
-
-    -- this is required for parallel dispatch of ~30 requests
-
-    skipList 120
-    --> [0, 30, 60, 90, 120]
-
-    skipList 170
-    --> [0, 30, 60, 90, 120, 150, 180]
-
--}
-skipList : Int -> List Int
-skipList userCount =
-    List.map (\x -> x * 30) (List.range 0 (round ((toFloat userCount) / 30)))
 
 
 sortBasedOnHistory : Time -> Time -> List Camper -> List Camper
