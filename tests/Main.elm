@@ -18,6 +18,42 @@ testm =
             { id = "570a5925187bb6f0eadebf05", name = "", userCount = 0 }
     }
 
+camper1: Camper
+camper1 = {
+    chist =
+        [ { delta = 1, points = 350, ts = 1518892020524 }
+        , { delta = 9, points = 349, ts = 1518889467698 }
+        , { delta = 10, points = 340, ts = 1518218502684 }
+        , { delta = 5, points = 330, ts = 1517861564348 }
+        , { delta = 5, points = 325, ts = 1517764495001 }
+        , { delta = 320, points = 320, ts = 1517588916347 }
+        ]
+    , last = { delta = 1, points = 350, ts = 1518892020524 }
+    , uname = "kgashok"
+    
+    }
+
+camper2 = {
+    chist = 
+        [ { delta = 33, points = 249, ts = 1518889467698 }
+        , { delta = 12, points = 216, ts = 1517861564348 }
+        , { delta = 19, points = 204, ts = 1517851916496 }
+        , { delta = 185, points = 185, ts = 1517588916347 }
+        ]
+    , last = { delta = 33, points = 249, ts = 1518889467698 }
+    , uname = "srimathic"
+    
+    }
+
+camper3 = {
+    chist = 
+        [ { delta = 42, points = 205, ts = 1518889467698 }
+        , { delta = 6, points = 163, ts = 1518218502684 }
+        , { delta = 157, points = 157, ts = 1517588916347 }
+        ]
+    , last = { delta = 42, points = 205, ts = 1518889467698 }
+    , uname = "divyamano"
+    }
 
 createMember : String -> Int -> Member
 createMember name points =
@@ -140,6 +176,10 @@ all =
                         -> Expect.equal 0 0 
                 -- , todo "Have to write tests for gitterIDBatchRequest"
                 ]
+                , test "sortCamper" <|
+                    \() -> 
+                        Expect.equal [ camper1, camper2, camper3] 
+                        (Update.sortBasedOnHistory 1518898649827 1518898649827 [camper3, camper1, camper2])
             ]
 
 
