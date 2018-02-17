@@ -42,7 +42,7 @@ historyS : List Cdata
 historyS =
     [ pointsData 110 9000 0
     , pointsData 120 15000 9000
-    , pointsData 122 16000 10000
+    , pointsData 122 16000 15000
     ]
 
 
@@ -50,7 +50,7 @@ historyR : List Cdata
 historyR =
     [ pointsData 150 9000 0
     , pointsData 170 15500 9000
-    , pointsData 222 17000 10000
+    , pointsData 222 17000 15500
     ]
 
 
@@ -59,7 +59,7 @@ historyA =
     [ pointsData 220 9000 0
     , pointsData 222 10000 9000
     , pointsData 226 11000 10000
-    , pointsData 229 11000 10000
+    , pointsData 229 12000 11000
     ]
 
 
