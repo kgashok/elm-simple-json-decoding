@@ -282,7 +282,7 @@ skipList userCount =
 {-| gitterIDBatchRequest helps create a list of Http.gets
 to get all the Ids in a specific gitter room
 
-    -- uses skipList and gUserUrl to generate a list 
+    -- uses skipList and gUserUrl to generate a list
     -- of Http requests
 
 -}
@@ -535,8 +535,11 @@ sortBasedOnHistory now cutOff campers =
     campers
         --|> List.map (truncateHistory now cutOff)
         --|> List.sortWith flippedComparison2
+        -- latest points
         |> List.sortWith flippedComparison3
+        -- latest timestamp
         |> List.sortWith flippedComparison
+        -- delta of max and min in history
         |> List.sortWith flippedComparison2
 
 
