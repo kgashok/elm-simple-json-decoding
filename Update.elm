@@ -535,12 +535,12 @@ sortBasedOnHistory now cutOff campers =
     campers
         --|> List.map (truncateHistory now cutOff)
         --|> List.sortWith flippedComparison2
+        -- latest timestamp
+        |> List.sortWith flippedComparison2
         -- latest points
         |> List.sortWith flippedComparison3
-        -- latest timestamp
-        |> List.sortWith flippedComparison
         -- delta of max and min in history
-        |> List.sortWith flippedComparison2
+        |> List.sortWith flippedComparison
 
 
 sortBasedOnHistory2 : Time -> Time -> List Camper -> List Camper
