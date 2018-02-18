@@ -10477,10 +10477,10 @@ var _user$project$Model$excluded = {
 		_1: {ctor: '[]'}
 	}
 };
-var _user$project$Model$cutOff = _elm_lang$core$Time$inHours(2592000000);
+var _user$project$Model$cutOff30Days = _elm_lang$core$Time$inHours(2592000000);
 var _user$project$Model$pointsData = F3(
-	function (p, time, prev) {
-		return {points: p, ts: time, delta: p - prev};
+	function (currentPoints, time, prevPoints) {
+		return {points: currentPoints, ts: time, delta: currentPoints - prevPoints};
 	});
 var _user$project$Model$createCamperFromGid = F2(
 	function (tList, gid) {
@@ -10604,7 +10604,7 @@ var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
 var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.5-beta-31-gd264cef';
+var _user$project$Version$version = 'v3.5-beta-33-g0f8938d';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -10747,17 +10747,14 @@ var _user$project$Update$sortBasedOnHistory2 = F3(
 	function (now, cutOff, campers) {
 		return A2(
 			_elm_lang$core$List$sortWith,
-			_user$project$Update$flippedComparison2,
+			_user$project$Update$flippedComparison,
 			A2(
 				_elm_lang$core$List$sortWith,
-				_user$project$Update$flippedComparison,
+				_user$project$Update$flippedComparison2,
 				A2(
-					_elm_lang$core$List$sortWith,
-					_user$project$Update$flippedComparison3,
-					A2(
-						_elm_lang$core$List$map,
-						A2(_user$project$Update$truncateHistory, now, cutOff),
-						campers))));
+					_elm_lang$core$List$map,
+					A2(_user$project$Update$truncateHistory, now, cutOff),
+					campers)));
 	});
 var _user$project$Update$sortBasedOnHistory = F3(
 	function (now, cutOff, campers) {
@@ -11502,7 +11499,7 @@ var _user$project$View$camperItem = function (camper) {
 };
 var _user$project$View$campList = F3(
 	function (display, now, campers) {
-		var campers_ = A3(_user$project$Update$sortBasedOnHistory, now, _user$project$Model$cutOff, campers);
+		var campers_ = A3(_user$project$Update$sortBasedOnHistory, now, _user$project$Model$cutOff30Days, campers);
 		var items = A2(_elm_lang$core$List$map, _user$project$View$camperItem, campers_);
 		return A2(
 			_elm_lang$html$Html$div,

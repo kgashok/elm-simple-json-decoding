@@ -548,10 +548,13 @@ sortBasedOnHistory2 now cutOff campers =
     -- campers_ = List.sortWith flippedComparison2 campers
     campers
         |> List.map (truncateHistory now cutOff)
-        --|> List.sortWith flippedComparison2
-        |> List.sortWith flippedComparison3
-        |> List.sortWith flippedComparison
+        --|> Debug.log "post cut"
+        --|> List.sortWith flippedComparison3
+        --|> Debug.log "post compare3"
         |> List.sortWith flippedComparison2
+        --|> Debug.log "post compare2"
+        |> List.sortWith flippedComparison
+        --|> Debug.log "post compare"
 
 
 flippedComparison3 : Camper -> Camper -> Order
@@ -582,7 +585,10 @@ flippedComparison2 a b =
 
 truncateHistory : Time -> Time -> Camper -> Camper
 truncateHistory now cutOff camper =
-    { camper | chist = List.filterMap (isWithinCutOff now cutOff) camper.chist }
+    { camper
+        | chist =
+            List.filterMap (isWithinCutOff now cutOff) camper.chist
+    }
 
 
 isWithinCutOff : Time -> Time -> Cdata -> Maybe Cdata
@@ -611,6 +617,13 @@ flippedComparison a b =
         deltaB =
             Maybe.withDefault 0 (List.maximum bhist)
                 - Maybe.withDefault 0 (List.minimum bhist)
+
+        {-
+           _ = Debug.log "a " a
+           _ = Debug.log "b " b
+           _ = Debug.log "deltaA " deltaA
+           _ = Debug.log "deltaB " deltaB
+        -}
     in
         case compare deltaA deltaB of
             GT ->

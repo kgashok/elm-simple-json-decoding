@@ -4,6 +4,7 @@ import Expect exposing (Expectation)
 import Fuzz exposing (Fuzzer, int, list, string)
 import Test exposing (..)
 
+import Debug exposing (..)
 
 --import ElmTest exposing (..)
 
@@ -48,11 +49,11 @@ cSrimathi =
 
 cDivya =
     { chist =
-        [ { delta = 42, points = 205, ts = 1518889467698 }
+        [ { delta = 62, points = 225, ts = 1518889467698 }
         , { delta = 6, points = 163, ts = 1518218502684 }
         , { delta = 157, points = 157, ts = 1517588916347 }
         ]
-    , last = { delta = 42, points = 205, ts = 1518889467698 }
+    , last = { delta = 62, points = 225, ts = 1518889467698 }
     , uname = "divyamano"
     }
 
@@ -66,38 +67,37 @@ createMember name points =
 
 memberList : List Member
 memberList =
-    [ createMember "kgashok" 200
+    [ createMember "kgashok" 140
     , createMember "sudhar" 100
     , createMember "ramya" 150
     ]
 
 
-
-{- pointsData : Int -> Time -> Int -> Cdata -}
-
-
 historyS : List Cdata
 historyS =
-    [ pointsData 110 9000 0
-    , pointsData 120 15000 9000
-    , pointsData 122 16000 15000
+    [ pointsData 124 16000 120
+    , pointsData 120 15000 110
+    , pointsData 110 9000 100
+    , pointsData 100 8000 0
     ]
 
 
 historyR : List Cdata
 historyR =
-    [ pointsData 150 9000 0
-    , pointsData 170 15500 9000
-    , pointsData 222 17000 15500
+    [ pointsData 222 17000 170
+    , pointsData 170 15500 151
+    , pointsData 151 9000 150
+    , pointsData 150 8000 0
     ]
 
 
 historyA : List Cdata
 historyA =
-    [ pointsData 220 9000 0
-    , pointsData 222 10000 9000
-    , pointsData 226 11000 10000
-    , pointsData 229 12000 11000
+    [ pointsData 229 17000 226
+    , pointsData 226 11000 222
+    , pointsData 222 10000 220
+    , pointsData 220 9000 140
+    , pointsData 140 8000 0
     ]
 
 
@@ -113,7 +113,9 @@ cutOff =
 
 assignHistory : List Cdata -> Camper -> Camper
 assignHistory data camper =
-    { camper | chist = data }
+    { camper | chist = data
+             , last = Maybe.withDefault camper.last (List.head data)
+    }
 
 
 createCampersFromMembers : List Member -> List Camper
@@ -152,8 +154,13 @@ all =
         sortOut =
             List.map dinfo (sortBasedOnHistory2 20000 20000 clist)
 
+        truncated = sortBasedOnHistory2 20000 8000 clist
+        
         sortOutWithCO =
-            List.map dinfo (sortBasedOnHistory2 20000 cutOff clist)
+            List.map dinfo truncated 
+            
+        --_ = Debug.log "truncated" truncated
+        
     in
         describe "Fcc Test Suite"
             [ describe "Unit test examples"
@@ -164,10 +171,10 @@ all =
                 , test "history" <| \() -> Expect.equal historyA first.chist
                 , test "sort" <|
                     \() ->
-                        Expect.equal [ "ramya 150", "sudhar 100", "kgashok 200" ] sortOut
+                        Expect.equal [ "kgashok 229", "ramya 222", "sudhar 124" ] sortOut
                 , test "sortcut" <|
                     \() ->
-                        Expect.equal [ "ramya 150", "kgashok 200", "sudhar 100" ] sortOutWithCO
+                        Expect.equal [ "ramya 222", "sudhar 124", "kgashok 229" ] sortOutWithCO
                 , test "gitterRequest" <|
                     \() ->
                         -- -> Expect.equal [] (Update.refreshGitterIDs gUrl)
@@ -178,13 +185,13 @@ all =
                             (Update.sortBasedOnHistory 1518898649827 1518898649827 [ cDivya, cAshok, cSrimathi ])
                 , test "sortCamper2" <|
                     \() ->
-                        Expect.equal [ "kgashok 350", "srimathic 249", "divyamano 205" ]
+                        Expect.equal [ "kgashok 350", "srimathic 249", "divyamano 225" ]
                             (List.map dinfo
-                                (Update.sortBasedOnHistory2 1518898649827 0 [ cDivya, cAshok, cSrimathi ])
+                                (Update.sortBasedOnHistory2 1518898649827 670965014 [ cSrimathi, cAshok, cDivya ])
                             )
                 ]
 
-            -- , todo "Have to write tests for gitterIDBatchRequest"
+            -- , todo "Have to write tests for excluded Bug"
             ]
 
 

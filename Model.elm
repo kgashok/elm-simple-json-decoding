@@ -152,8 +152,11 @@ createCamperFromGid tList gid =
 
 
 pointsData : Int -> Time -> Int -> Cdata
-pointsData p time prev =
-    { points = p, ts = time, delta = p - prev }
+pointsData currentPoints time prevPoints =
+    { points = currentPoints
+    , ts = time
+    , delta = currentPoints - prevPoints
+    }
 
 
 
@@ -161,8 +164,8 @@ pointsData p time prev =
 {- In Elm repl inHours 2592000000 = 720 hours  or 30 days -}
 
 
-cutOff : Float
-cutOff =
+cutOff30Days : Float
+cutOff30Days =
     inHours 2592000000
 
 
