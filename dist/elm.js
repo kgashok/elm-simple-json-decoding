@@ -10604,7 +10604,7 @@ var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
 var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.5-beta-33-g0f8938d';
+var _user$project$Version$version = 'v3.5-beta-34-ge96a0ab';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -10663,6 +10663,32 @@ var _user$project$Ports$logExternal = function (value) {
 
 var _user$project$Update$flippedComparison = F2(
 	function (a, b) {
+		var bdelta = A2(
+			_elm_lang$core$Debug$log,
+			'bdelta',
+			_elm_lang$core$List$sum(
+				A2(
+					_elm_lang$core$Debug$log,
+					'bdelta list',
+					A2(
+						_elm_lang$core$List$map,
+						function (_) {
+							return _.delta;
+						},
+						b.chist))));
+		var adelta = A2(
+			_elm_lang$core$Debug$log,
+			'adelta',
+			_elm_lang$core$List$sum(
+				A2(
+					_elm_lang$core$Debug$log,
+					'adelta list',
+					A2(
+						_elm_lang$core$List$map,
+						function (_) {
+							return _.delta;
+						},
+						a.chist))));
 		var bhist = A2(
 			_elm_lang$core$List$map,
 			function (_) {
@@ -10689,7 +10715,7 @@ var _user$project$Update$flippedComparison = F2(
 			_elm_lang$core$Maybe$withDefault,
 			0,
 			_elm_lang$core$List$minimum(ahist));
-		var _p0 = A2(_elm_lang$core$Basics$compare, deltaA, deltaB);
+		var _p0 = A2(_elm_lang$core$Basics$compare, adelta, bdelta);
 		switch (_p0.ctor) {
 			case 'GT':
 				return _elm_lang$core$Basics$LT;

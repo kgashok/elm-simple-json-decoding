@@ -151,6 +151,7 @@ all =
         first =
             List.head clist |> Maybe.withDefault dummy
 
+        
         sortOut =
             List.map dinfo (sortBasedOnHistory2 20000 20000 clist)
 
@@ -158,8 +159,7 @@ all =
         
         sortOutWithCO =
             List.map dinfo truncated 
-            
-        --_ = Debug.log "truncated" truncated
+        -- _ = Debug.log "truncated" truncated
         
     in
         describe "Fcc Test Suite"
@@ -175,23 +175,26 @@ all =
                 , test "sortcut" <|
                     \() ->
                         Expect.equal [ "ramya 222", "sudhar 124", "kgashok 229" ] sortOutWithCO
-                , test "gitterRequest" <|
-                    \() ->
-                        -- -> Expect.equal [] (Update.refreshGitterIDs gUrl)
-                        Expect.equal 0 0
+                
                 , test "sortCamper" <|
                     \() ->
                         Expect.equal [ cAshok, cSrimathi, cDivya ]
                             (Update.sortBasedOnHistory 1518898649827 1518898649827 [ cDivya, cAshok, cSrimathi ])
+                
                 , test "sortCamper2" <|
                     \() ->
-                        Expect.equal [ "kgashok 350", "srimathic 249", "divyamano 225" ]
+                        Expect.equal [ "divyamano 225", "srimathic 249", "kgashok 350" ]
                             (List.map dinfo
                                 (Update.sortBasedOnHistory2 1518898649827 670965014 [ cSrimathi, cAshok, cDivya ])
                             )
                 ]
 
-            -- , todo "Have to write tests for excluded Bug"
+                , todo "Have to write tests for excluded List Bug > Total Campers!"
+                , test "gitterRequest" <|
+                    \() ->
+                        -- -> Expect.equal [] (Update.refreshGitterIDs gUrl)
+                        Expect.equal 0 0
+                
             ]
 
 
