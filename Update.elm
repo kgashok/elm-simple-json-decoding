@@ -548,13 +548,13 @@ sortBasedOnHistory2 now cutOff campers =
     -- campers_ = List.sortWith flippedComparison2 campers
     campers
         |> List.map (truncateHistory now cutOff)
-        -- Debug.log "post cut"
+        --|> Debug.log "post cut"
         --|> List.sortWith flippedComparison3
         --|> Debug.log "post compare3"
         |> List.sortWith flippedComparison2
         --|> Debug.log "post compare2"
         |> List.sortWith flippedComparison
-        -- Debug.log "post compare"
+        --|> Debug.log "post compare"
 
 
 flippedComparison3 : Camper -> Camper -> Order
@@ -612,15 +612,15 @@ flippedComparison a b =
 
         adelta =
             List.map .delta a.chist
-                |> Debug.log "adelta list"
+                --|> Debug.log "adelta list"
                 |> List.sum
-                |> Debug.log "adelta"
+                --|> Debug.log "adelta"
 
         bdelta =
             List.map .delta b.chist
-                |> Debug.log "bdelta list"
+                --|> Debug.log "bdelta list"
                 |> List.sum
-                |> Debug.log "bdelta"
+                --|> Debug.log "bdelta"
 
         deltaA =
             Maybe.withDefault 0 (List.maximum ahist)
