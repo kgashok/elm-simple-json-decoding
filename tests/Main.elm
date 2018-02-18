@@ -78,7 +78,6 @@ historyS =
     [ pointsData 124 16000 120
     , pointsData 120 15000 110
     , pointsData 110 9000 100
-    , pointsData 100 8000 0
     ]
 
 
@@ -87,7 +86,6 @@ historyR =
     [ pointsData 222 17000 170
     , pointsData 170 15500 151
     , pointsData 151 9000 150
-    , pointsData 150 8000 0
     ]
 
 
@@ -97,7 +95,6 @@ historyA =
     , pointsData 226 11000 222
     , pointsData 222 10000 220
     , pointsData 220 9000 140
-    , pointsData 140 8000 0
     ]
 
 
