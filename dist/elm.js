@@ -10604,7 +10604,7 @@ var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
 var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.5-beta-51-g6fdd603';
+var _user$project$Version$version = 'v3.5-beta-53-g1b1abfa';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -10679,8 +10679,8 @@ var _user$project$Update$flippedComparison = F2(
 				a.chist));
 		var _p0 = A2(
 			_elm_lang$core$Basics$compare,
-			{ctor: '_Tuple3', _0: bdelta, _1: b.last.points, _2: b.last.ts},
-			{ctor: '_Tuple3', _0: adelta, _1: a.last.points, _2: a.last.ts});
+			{ctor: '_Tuple3', _0: b.last.ts, _1: b.last.points, _2: bdelta},
+			{ctor: '_Tuple3', _0: a.last.ts, _1: a.last.points, _2: adelta});
 		switch (_p0.ctor) {
 			case 'GT':
 				return _elm_lang$core$Basics$GT;
