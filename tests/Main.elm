@@ -160,7 +160,7 @@ all =
         
     in
         describe "Fcc Test Suite"
-            [ describe "Unit test examples"
+            [ only <| describe "Unit test examples"
                 [ test "zero" <| \() -> Expect.equal 0 0
                 , test "truth" <| \() -> Expect.true "the truth" True
                 , test "booleans" <| \() -> Expect.notEqual True False
@@ -189,11 +189,10 @@ all =
                 , todo "Have to write tests for excluded List Bug > Total Campers!"
                 , todo "Ready to do some documentation of the Comparators"
                 , todo "Read up http://package.elm-lang.org/packages/matthewsj/elm-ordering/1.1.0/Ordering#isOrdered"
-                , test "gitterRequest" <|
+                , skip <| test "gitterRequest" <|
                     \() ->
                         -- -> Expect.equal [] (Update.refreshGitterIDs gUrl)
                         Expect.equal 0 0
-                
             ]
 
 
