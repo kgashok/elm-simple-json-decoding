@@ -187,6 +187,8 @@ all =
                 ]
 
                 , todo "Have to write tests for excluded List Bug > Total Campers!"
+                , todo "Ready to do some documentation of the Comparators"
+                , todo "Read up http://package.elm-lang.org/packages/matthewsj/elm-ordering/1.1.0/Ordering#isOrdered"
                 , test "gitterRequest" <|
                     \() ->
                         -- -> Expect.equal [] (Update.refreshGitterIDs gUrl)

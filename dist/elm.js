@@ -10677,32 +10677,6 @@ var _user$project$Update$flippedComparison = F2(
 					return _.delta;
 				},
 				a.chist));
-		var bhist = A2(
-			_elm_lang$core$List$map,
-			function (_) {
-				return _.points;
-			},
-			b.chist);
-		var deltaB = A2(
-			_elm_lang$core$Maybe$withDefault,
-			0,
-			_elm_lang$core$List$maximum(bhist)) - A2(
-			_elm_lang$core$Maybe$withDefault,
-			0,
-			_elm_lang$core$List$minimum(bhist));
-		var ahist = A2(
-			_elm_lang$core$List$map,
-			function (_) {
-				return _.points;
-			},
-			a.chist);
-		var deltaA = A2(
-			_elm_lang$core$Maybe$withDefault,
-			0,
-			_elm_lang$core$List$maximum(ahist)) - A2(
-			_elm_lang$core$Maybe$withDefault,
-			0,
-			_elm_lang$core$List$minimum(ahist));
 		var _p0 = A2(_elm_lang$core$Basics$compare, adelta, bdelta);
 		switch (_p0.ctor) {
 			case 'GT':
