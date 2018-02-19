@@ -601,43 +601,32 @@ isWithinCutOff now cutOff data =
             Nothing
 
 
+{-| sum all the deltas from the history (or truncated history)
+    and use it for the comparisons 
+    
+    flippedComparison { uname = "kgashok"
+                      , chist = [{ points = 229, ts = 17000, delta = 3 }]
+                      , last = { points = 229, ts = 17000, delta = 3 } 
+                      }
+                      { uname = "sudhar"
+                      , chist = [ { points = 124, ts = 16000, delta = 4 }
+                                , { points = 120, ts = 15000, delta = 10 }
+                                ]
+                      , last = { points = 124, ts = 16000, delta = 4 } }
+    --> GT
+    
+-}
 flippedComparison : Camper -> Camper -> Order
 flippedComparison a b =
     let
-        ahist =
-            List.map .points a.chist
-
-        bhist =
-            List.map .points b.chist
-
         adelta =
-            List.map .delta a.chist
-                --|> Debug.log "adelta list"
-                |> List.sum
-                --|> Debug.log "adelta"
+            List.sum <| List.map .delta a.chist
 
         bdelta =
-            List.map .delta b.chist
-                --|> Debug.log "bdelta list"
-                |> List.sum
-                --|> Debug.log "bdelta"
+            List.sum <| List.map .delta b.chist
 
-        deltaA =
-            Maybe.withDefault 0 (List.maximum ahist)
-                - Maybe.withDefault 0 (List.minimum ahist)
-
-        deltaB =
-            Maybe.withDefault 0 (List.maximum bhist)
-                - Maybe.withDefault 0 (List.minimum bhist)
-
-        {- _ = Debug.log "a " a
-           _ = Debug.log "b " b
-           _ = Debug.log "deltaA " deltaA
-           _ = Debug.log "deltaB " deltaB
-        -}
     in
         case compare adelta bdelta of
-            -- case compare deltaA deltaB of
             GT ->
                 LT
 
@@ -649,7 +638,27 @@ flippedComparison a b =
 
 
 
---{"about":{"username":"kgashok","browniePoints":318,"bio":"Emperor, coffee enthusiast. "}}
+{-
+   ahist =
+       List.map .points a.chist
+
+   bhist =
+       List.map .points b.chist
+
+   deltaA =
+       Maybe.withDefault 0 (List.maximum ahist)
+           - Maybe.withDefault 0 (List.minimum ahist)
+
+   deltaB =
+       Maybe.withDefault 0 (List.maximum bhist)
+           - Maybe.withDefault 0 (List.minimum bhist)
+
+   _ = Debug.log "a " a
+   _ = Debug.log "b " b
+   _ = Debug.log "deltaA " deltaA
+   _ = Debug.log "deltaB " deltaB
+-}
+-- {"about":{"username":"kgashok","browniePoints":318,"bio":"Emperor, coffee enthusiast. "}}
 {-
    https://api.myjson.com/bins/4j9e0?pretty=1 - for kgashok
 

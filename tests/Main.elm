@@ -187,6 +187,7 @@ all =
                 ]
 
                 , todo "Have to write tests for excluded List Bug > Total Campers!"
+                , todo "Ready to do some documentation of the Comparators"
                 , test "gitterRequest" <|
                     \() ->
                         -- -> Expect.equal [] (Update.refreshGitterIDs gUrl)
