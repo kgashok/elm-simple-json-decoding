@@ -531,16 +531,14 @@ postSettings =
 
 sortBasedOnHistory : Time -> Time -> List Camper -> List Camper
 sortBasedOnHistory now cutOff campers =
-    -- campers_ = List.sortWith flippedComparison2 campers
     campers
         --|> List.map (truncateHistory now cutOff)
-        --|> List.sortWith flippedComparison2
-        -- delta of max and min in history
+        -- latest timestamp
+        |> List.sortWith flippedComparison2
+        -- summation of deltas in history
         |> List.sortWith flippedComparison
         -- latest points
         |> List.sortWith flippedComparison3
-        -- latest timestamp
-        |> List.sortWith flippedComparison2
 
 
 sortBasedOnHistory2 : Time -> Time -> List Camper -> List Camper
@@ -602,7 +600,7 @@ isWithinCutOff now cutOff data =
 
 
 {-| sum all the deltas from the history (or truncated history)
-    and use it for the comparisons 
+    and use it for ordering in the sorting operations
     
     flippedComparison { uname = "kgashok"
                       , chist = [{ points = 229, ts = 17000, delta = 3 }]
