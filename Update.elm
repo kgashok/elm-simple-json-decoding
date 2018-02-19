@@ -533,12 +533,12 @@ sortBasedOnHistory : Time -> Time -> List Camper -> List Camper
 sortBasedOnHistory now cutOff campers =
     campers
         --|> List.map (truncateHistory now cutOff)
+        -- latest points
+        |> List.sortWith flippedComparison3
         -- latest timestamp
         |> List.sortWith flippedComparison2
         -- summation of deltas in history
         |> List.sortWith flippedComparison
-        -- latest points
-        |> List.sortWith flippedComparison3
 
 
 sortBasedOnHistory2 : Time -> Time -> List Camper -> List Camper
