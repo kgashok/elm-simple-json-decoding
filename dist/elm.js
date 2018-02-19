@@ -10748,11 +10748,11 @@ var _user$project$Update$sortBasedOnHistory = F3(
 	function (now, cutOff, campers) {
 		return A2(
 			_elm_lang$core$List$sortWith,
-			_user$project$Update$flippedComparison,
+			_user$project$Update$flippedComparison2,
 			A2(
 				_elm_lang$core$List$sortWith,
-				_user$project$Update$flippedComparison2,
-				A2(_elm_lang$core$List$sortWith, _user$project$Update$flippedComparison3, campers)));
+				_user$project$Update$flippedComparison3,
+				A2(_elm_lang$core$List$sortWith, _user$project$Update$flippedComparison, campers)));
 	});
 var _user$project$Update$downloadHeaders = {
 	ctor: '::',
