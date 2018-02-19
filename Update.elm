@@ -628,8 +628,8 @@ flippedComparison a b =
             List.sum <| List.map .delta b.chist
     in
         case
-            compare ( bdelta, b.last.ts, b.last.points )
-                ( adelta, a.last.ts, a.last.points )
+            compare ( bdelta, b.last.points, b.last.ts )
+                ( adelta, a.last.points, a.last.ts )
         of
             GT ->
                 GT

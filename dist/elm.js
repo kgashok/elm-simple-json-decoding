@@ -10679,8 +10679,8 @@ var _user$project$Update$flippedComparison = F2(
 				a.chist));
 		var _p0 = A2(
 			_elm_lang$core$Basics$compare,
-			{ctor: '_Tuple3', _0: bdelta, _1: b.last.ts, _2: b.last.points},
-			{ctor: '_Tuple3', _0: adelta, _1: a.last.ts, _2: a.last.points});
+			{ctor: '_Tuple3', _0: bdelta, _1: b.last.points, _2: b.last.ts},
+			{ctor: '_Tuple3', _0: adelta, _1: a.last.points, _2: a.last.ts});
 		switch (_p0.ctor) {
 			case 'GT':
 				return _elm_lang$core$Basics$GT;
