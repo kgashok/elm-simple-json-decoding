@@ -6,7 +6,7 @@ module Version exposing (..)
 
 version : String
 version =
-    "v3.5-beta-45-g215b67b"
+    "v3.5-beta-50-ga283f7d"
 
 
 gitRepo : String

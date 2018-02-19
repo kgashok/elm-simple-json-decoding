@@ -10604,7 +10604,7 @@ var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
 var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.5-beta-45-g215b67b';
+var _user$project$Version$version = 'v3.5-beta-50-ga283f7d';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -10677,14 +10677,17 @@ var _user$project$Update$flippedComparison = F2(
 					return _.delta;
 				},
 				a.chist));
-		var _p0 = A2(_elm_lang$core$Basics$compare, adelta, bdelta);
+		var _p0 = A2(
+			_elm_lang$core$Basics$compare,
+			{ctor: '_Tuple3', _0: bdelta, _1: b.last.ts, _2: b.last.points},
+			{ctor: '_Tuple3', _0: adelta, _1: a.last.ts, _2: a.last.points});
 		switch (_p0.ctor) {
 			case 'GT':
-				return _elm_lang$core$Basics$LT;
+				return _elm_lang$core$Basics$GT;
 			case 'EQ':
 				return _elm_lang$core$Basics$EQ;
 			default:
-				return _elm_lang$core$Basics$GT;
+				return _elm_lang$core$Basics$LT;
 		}
 	});
 var _user$project$Update$isWithinCutOff = F3(
@@ -10746,13 +10749,7 @@ var _user$project$Update$sortBasedOnHistory2 = F3(
 	});
 var _user$project$Update$sortBasedOnHistory = F3(
 	function (now, cutOff, campers) {
-		return A2(
-			_elm_lang$core$List$sortWith,
-			_user$project$Update$flippedComparison2,
-			A2(
-				_elm_lang$core$List$sortWith,
-				_user$project$Update$flippedComparison3,
-				A2(_elm_lang$core$List$sortWith, _user$project$Update$flippedComparison, campers)));
+		return A2(_elm_lang$core$List$sortWith, _user$project$Update$flippedComparison, campers);
 	});
 var _user$project$Update$downloadHeaders = {
 	ctor: '::',

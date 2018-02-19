@@ -533,12 +533,13 @@ sortBasedOnHistory : Time -> Time -> List Camper -> List Camper
 sortBasedOnHistory now cutOff campers =
     campers
         --|> List.map (truncateHistory now cutOff)
+        --|> Debug.log "after trunc"
         -- summation of deltas in history
         |> List.sortWith flippedComparison
         -- latest points
-        |> List.sortWith flippedComparison3
+        --|> List.sortWith flippedComparison3
         -- latest timestamp
-        |> List.sortWith flippedComparison2
+        --|> List.sortWith flippedComparison2
 
 
 sortBasedOnHistory2 : Time -> Time -> List Camper -> List Camper
@@ -552,7 +553,10 @@ sortBasedOnHistory2 now cutOff campers =
         |> List.sortWith flippedComparison2
         --|> Debug.log "post compare2"
         |> List.sortWith flippedComparison
-        --|> Debug.log "post compare"
+
+
+
+--|> Debug.log "post compare"
 
 
 flippedComparison3 : Camper -> Camper -> Order
@@ -600,11 +604,11 @@ isWithinCutOff now cutOff data =
 
 
 {-| sum all the deltas from the history (or truncated history)
-    and use it for ordering in the sorting operations
-    
+and use it for ordering in the sorting operations
+
     flippedComparison { uname = "kgashok"
                       , chist = [{ points = 229, ts = 17000, delta = 3 }]
-                      , last = { points = 229, ts = 17000, delta = 3 } 
+                      , last = { points = 229, ts = 17000, delta = 3 }
                       }
                       { uname = "sudhar"
                       , chist = [ { points = 124, ts = 16000, delta = 4 }
@@ -612,7 +616,7 @@ isWithinCutOff now cutOff data =
                                 ]
                       , last = { points = 124, ts = 16000, delta = 4 } }
     --> GT
-    
+
 -}
 flippedComparison : Camper -> Camper -> Order
 flippedComparison a b =
@@ -622,17 +626,19 @@ flippedComparison a b =
 
         bdelta =
             List.sum <| List.map .delta b.chist
-
     in
-        case compare adelta bdelta of
+        case
+            compare ( bdelta, b.last.ts, b.last.points )
+                ( adelta, a.last.ts, a.last.points )
+        of
             GT ->
-                LT
+                GT
 
             EQ ->
                 EQ
 
-            LT ->
-                GT
+            _ ->
+                LT
 
 
 
