@@ -10604,7 +10604,7 @@ var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
 var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.5-beta-34-ge96a0ab';
+var _user$project$Version$version = 'v3.5-beta-45-g215b67b';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -10748,11 +10748,11 @@ var _user$project$Update$sortBasedOnHistory = F3(
 	function (now, cutOff, campers) {
 		return A2(
 			_elm_lang$core$List$sortWith,
-			_user$project$Update$flippedComparison2,
+			_user$project$Update$flippedComparison3,
 			A2(
 				_elm_lang$core$List$sortWith,
-				_user$project$Update$flippedComparison3,
-				A2(_elm_lang$core$List$sortWith, _user$project$Update$flippedComparison, campers)));
+				_user$project$Update$flippedComparison,
+				A2(_elm_lang$core$List$sortWith, _user$project$Update$flippedComparison2, campers)));
 	});
 var _user$project$Update$downloadHeaders = {
 	ctor: '::',
