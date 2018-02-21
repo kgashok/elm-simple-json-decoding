@@ -622,14 +622,20 @@ flippedComparison : Camper -> Camper -> Order
 flippedComparison a b =
     let
         adelta =
-            List.sum <| List.map .delta a.chist
+            List.sum 
+                <| List.map .delta 
+                <| List.take ((List.length a.chist) - 1)
+                <| a.chist
 
         bdelta =
-            List.sum <| List.map .delta b.chist
+            List.sum 
+                <| List.map .delta
+                <| List.take ((List.length b.chist) - 1)
+                <| b.chist
     in
         case
-            compare ( bdelta, b.last.points, b.last.ts )
-                ( adelta, a.last.points, a.last.ts )
+            compare ( bdelta, b.last.ts, b.last.points)
+                ( adelta, a.last.ts, a.last.points )
         of
             GT ->
                 GT
