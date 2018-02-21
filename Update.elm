@@ -634,8 +634,8 @@ flippedComparison a b =
                 <| b.chist
     in
         case
-            compare ( bdelta, b.last.ts, b.last.points)
-                ( adelta, a.last.ts, a.last.points )
+            compare ( b.last.ts, bdelta, b.last.points)
+                ( a.last.ts, adelta, a.last.points )
         of
             GT ->
                 GT
