@@ -166,7 +166,8 @@ pointsData currentPoints time prevPoints =
 
 cutOff30Days : Float
 cutOff30Days =
-    inHours 2592000000
+    -- inHours 2592000000
+    2592000000
 
 
 
