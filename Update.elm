@@ -615,7 +615,7 @@ and use it for ordering in the sorting operations
                                 , { points = 120, ts = 15000, delta = 10 }
                                 ]
                       , last = { points = 124, ts = 16000, delta = 4 } }
-    --> GT
+    --> LT
 
 -}
 flippedComparison : Camper -> Camper -> Order
@@ -634,8 +634,8 @@ flippedComparison a b =
                 <| b.chist
     in
         case
-            compare ( bdelta, b.last.ts, b.last.points)
-                ( adelta, a.last.ts, a.last.points )
+            compare ( b.last.ts, bdelta, b.last.points)
+                ( a.last.ts, adelta, a.last.points )
         of
             GT ->
                 GT
