@@ -536,10 +536,13 @@ sortBasedOnHistory now cutOff campers =
         --|> Debug.log "after trunc"
         -- summation of deltas in history
         |> List.sortWith flippedComparison
-        -- latest points
-        --|> List.sortWith flippedComparison3
-        -- latest timestamp
-        --|> List.sortWith flippedComparison2
+
+
+
+-- latest points
+--|> List.sortWith flippedComparison3
+-- latest timestamp
+--|> List.sortWith flippedComparison2
 
 
 sortBasedOnHistory2 : Time -> Time -> List Camper -> List Camper
@@ -603,18 +606,24 @@ isWithinCutOff now cutOff data =
             Nothing
 
 
-{-| sum all the deltas from the history (or truncated history)
-and use it for ordering in the sorting operations
+{-| comparator for campers based on their
+challenge completion activity, in the following order:
+
+  - latest timestamp of last completed challenge
+
+  - sum of all delta in history (or truncated history)
+
+  - total challenges completed
 
     flippedComparison { uname = "kgashok"
-                      , chist = [{ points = 229, ts = 17000, delta = 3 }]
-                      , last = { points = 229, ts = 17000, delta = 3 }
-                      }
-                      { uname = "sudhar"
-                      , chist = [ { points = 124, ts = 16000, delta = 4 }
-                                , { points = 120, ts = 15000, delta = 10 }
-                                ]
-                      , last = { points = 124, ts = 16000, delta = 4 } }
+    , chist = [{ points = 229, ts = 17000, delta = 3 }]
+    , last = { points = 229, ts = 17000, delta = 3 }
+    }
+    { uname = "sudhar"
+    , chist = [ { points = 124, ts = 16000, delta = 4 }
+    , { points = 120, ts = 15000, delta = 10 }
+    ]
+    , last = { points = 124, ts = 16000, delta = 4 } }
     --> LT
 
 -}
@@ -622,19 +631,19 @@ flippedComparison : Camper -> Camper -> Order
 flippedComparison a b =
     let
         adelta =
-            List.sum 
-                <| List.map .delta 
-                <| List.take ((List.length a.chist) - 1)
-                <| a.chist
+            a.chist
+                |> List.take ((List.length a.chist) - 1)
+                |> List.map .delta
+                |> List.sum
 
         bdelta =
-            List.sum 
-                <| List.map .delta
-                <| List.take ((List.length b.chist) - 1)
-                <| b.chist
+            b.chist
+                |> List.take ((List.length b.chist) - 1)
+                |> List.map .delta
+                |> List.sum
     in
         case
-            compare ( b.last.ts, bdelta, b.last.points)
+            compare ( b.last.ts, bdelta, b.last.points )
                 ( a.last.ts, adelta, a.last.points )
         of
             GT ->
