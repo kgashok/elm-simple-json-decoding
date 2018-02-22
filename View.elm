@@ -277,7 +277,7 @@ challenge completion activity, in the following order:
 
   - total challenges completed
 
-    flippedComparison { uname = "kgashok"
+    flippedComparison 17000 17000 { uname = "kgashok"
     , chist = [{ points = 229, ts = 17000, delta = 3 }]
     , last = { points = 229, ts = 17000, delta = 3 }
     }
