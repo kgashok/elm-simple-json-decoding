@@ -10604,7 +10604,7 @@ var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
 var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.5-beta-62-g6747efe';
+var _user$project$Version$version = 'v3.5-beta-63-g44636a5';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -11412,6 +11412,23 @@ var _user$project$View$difference = F2(
 		}
 	});
 var _user$project$View$buildResponse = function (model) {
+	var cutOffYear = _elm_lang$core$Date$year(
+		_elm_lang$core$Date$fromTime(model.ts - _user$project$Model$cutOff30Days));
+	var cutOffMonth = _elm_lang$core$Date$month(
+		_elm_lang$core$Date$fromTime(model.ts - _user$project$Model$cutOff30Days));
+	var cutOffString = A2(
+		_elm_lang$core$Basics_ops['++'],
+		'(since ',
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(cutOffMonth),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				' ',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(cutOffYear),
+					'): '))));
 	var now = _elm_lang$core$Date$fromTime(model.ts);
 	var shour = A2(
 		_ggb$numeral_elm$Numeral$format,
@@ -11426,28 +11443,31 @@ var _user$project$View$buildResponse = function (model) {
 	var dateString = _mgold$elm_date_format$Date_Format$formatISO8601(now);
 	return (!_elm_lang$core$Native_Utils.eq(model.tPoints, -1)) ? A2(
 		_elm_lang$core$Basics_ops['++'],
-		'Challenges completed: ',
+		'Challenges completed ',
 		A2(
 			_elm_lang$core$Basics_ops['++'],
-			_elm_lang$core$Basics$toString(model.tPoints),
+			cutOffString,
 			A2(
 				_elm_lang$core$Basics_ops['++'],
-				A2(_user$project$View$difference, model.tPoints, model.tPoints_prev),
+				_elm_lang$core$Basics$toString(model.tPoints),
 				A2(
 					_elm_lang$core$Basics_ops['++'],
-					' by ',
+					A2(_user$project$View$difference, model.tPoints, model.tPoints_prev),
 					A2(
 						_elm_lang$core$Basics_ops['++'],
-						_elm_lang$core$Basics$toString(
-							_elm_lang$core$List$length(model.tList)),
+						' by ',
 						A2(
 							_elm_lang$core$Basics_ops['++'],
-							' campers (excluded ',
+							_elm_lang$core$Basics$toString(
+								_elm_lang$core$List$length(model.tList)),
 							A2(
 								_elm_lang$core$Basics_ops['++'],
-								_elm_lang$core$Basics$toString(
-									_elm_lang$core$List$length(model.exclude)),
-								A2(_elm_lang$core$Basics_ops['++'], '); last auto update @ ', dateString)))))))) : '';
+								' campers (excluded ',
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									_elm_lang$core$Basics$toString(
+										_elm_lang$core$List$length(model.exclude)),
+									A2(_elm_lang$core$Basics_ops['++'], '); last auto update @ ', dateString))))))))) : '';
 };
 var _user$project$View$footer = A2(
 	_elm_lang$html$Html$div,

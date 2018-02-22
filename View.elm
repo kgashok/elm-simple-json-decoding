@@ -199,11 +199,25 @@ buildResponse model =
 
         dateString =
             formatISO8601 now
+            
+        cutOffMonth = 
+            fromTime (model.ts - cutOff30Days) |> month
+        cutOffYear = 
+            fromTime (model.ts - cutOff30Days) |> year
+            
+        cutOffString = 
+            "(since " 
+                ++ (toString cutOffMonth) 
+                ++ " " 
+                ++ (toString cutOffYear) 
+                ++ "): "
+    
     in
         --if model.error == True
         --then "Error: userID not valid? " ++ model.message
         if model.tPoints /= -1 then
-            "Challenges completed: "
+            "Challenges completed "
+                ++ cutOffString 
                 ++ (toString model.tPoints)
                 ++ (difference model.tPoints model.tPoints_prev)
                 ++ " by "
