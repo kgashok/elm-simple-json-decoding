@@ -7,3 +7,7 @@ https://github.com/stoeffel/elm-verify-examples
 # Testing Http requests
 
 http://package.elm-lang.org/packages/rogeriochaves/elm-testable/latest
+
+# Testing time and date
+
+https://medium.com/@ryanolsonx/working-with-dates-and-time-in-elm-e79ff1cf1a43

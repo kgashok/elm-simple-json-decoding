@@ -229,23 +229,26 @@ difference current previous =
 sortBasedOnHistory : Time -> Time -> List Camper -> List Camper
 sortBasedOnHistory now cutOff campers =
     campers
-        |> List.map (truncateHistory now cutOff)
-        |> List.sortWith flippedComparison
+        --|> List.map (truncateHistory now cutOff)
+        |> List.sortWith (flippedComparison now cutOff) 
 
 
-truncateHistory : Time -> Time -> Camper -> Camper
+{-| deprecated
+-}
+{-truncateHistory : Time -> Time -> Camper -> Camper
 truncateHistory now cutOff camper =
     { camper
         | chist =
             List.filterMap (isWithinCutOff now cutOff) camper.chist
     }
+-}
 
-
-isWithinCutOff : Time -> Time -> Cdata -> Maybe Cdata
+--isWithinCutOff : Time -> Time -> Cdata -> Maybe Cdata
+isWithinCutOff : Time -> Time -> Cdata -> Maybe Int
 isWithinCutOff now cutOff data =
     case (data.ts >= (now - cutOff)) of
         True ->
-            Just data
+            Just data.delta
 
         False ->
             Nothing
@@ -272,19 +275,21 @@ challenge completion activity, in the following order:
     --> LT
 
 -}
-flippedComparison : Camper -> Camper -> Order
-flippedComparison a b =
+flippedComparison : Time -> Time -> Camper -> Camper -> Order
+flippedComparison now cutOff a b =
     let
         adelta =
             a.chist
                 --|> List.take ((List.length a.chist) - 1)
-                |> List.map .delta
+                |> List.filterMap (isWithinCutOff now cutOff)
+                --|> List.map .delta
                 |> List.sum
 
         bdelta =
             b.chist
                 --|> List.take ((List.length b.chist) - 1)
-                |> List.map .delta
+                |> List.filterMap (isWithinCutOff now cutOff)
+                --|> List.map .delta
                 |> List.sum
     in
         case
@@ -305,13 +310,13 @@ sortBasedOnHistory2 : Time -> Time -> List Camper -> List Camper
 sortBasedOnHistory2 now cutOff campers =
     -- campers_ = List.sortWith flippedComparison2 campers
     campers
-        |> List.map (truncateHistory now cutOff)
+        --|> List.map (truncateHistory now cutOff)
         --|> Debug.log "post cut"
         --|> List.sortWith flippedComparison3
         --|> Debug.log "post compare3"
         |> List.sortWith flippedComparison2
         --|> Debug.log "post compare2"
-        |> List.sortWith flippedComparison
+        |> List.sortWith (flippedComparison now cutOff)
 
 
 

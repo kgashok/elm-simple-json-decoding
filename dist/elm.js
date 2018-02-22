@@ -10604,7 +10604,7 @@ var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
 var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.5-beta-61-g6b5aaf9';
+var _user$project$Version$version = 'v3.5-beta-62-g6747efe';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -11348,27 +11348,32 @@ var _user$project$View$flippedComparison3 = F2(
 				return _elm_lang$core$Basics$GT;
 		}
 	});
-var _user$project$View$flippedComparison = F2(
-	function (a, b) {
+var _user$project$View$isWithinCutOff = F3(
+	function (now, cutOff, data) {
+		var _p2 = _elm_lang$core$Native_Utils.cmp(data.ts, now - cutOff) > -1;
+		if (_p2 === true) {
+			return _elm_lang$core$Maybe$Just(data.delta);
+		} else {
+			return _elm_lang$core$Maybe$Nothing;
+		}
+	});
+var _user$project$View$flippedComparison = F4(
+	function (now, cutOff, a, b) {
 		var bdelta = _elm_lang$core$List$sum(
 			A2(
-				_elm_lang$core$List$map,
-				function (_) {
-					return _.delta;
-				},
+				_elm_lang$core$List$filterMap,
+				A2(_user$project$View$isWithinCutOff, now, cutOff),
 				b.chist));
 		var adelta = _elm_lang$core$List$sum(
 			A2(
-				_elm_lang$core$List$map,
-				function (_) {
-					return _.delta;
-				},
+				_elm_lang$core$List$filterMap,
+				A2(_user$project$View$isWithinCutOff, now, cutOff),
 				a.chist));
-		var _p2 = A2(
+		var _p3 = A2(
 			_elm_lang$core$Basics$compare,
 			{ctor: '_Tuple3', _0: b.last.ts, _1: bdelta, _2: b.last.points},
 			{ctor: '_Tuple3', _0: a.last.ts, _1: adelta, _2: a.last.points});
-		switch (_p2.ctor) {
+		switch (_p3.ctor) {
 			case 'GT':
 				return _elm_lang$core$Basics$GT;
 			case 'EQ':
@@ -11377,48 +11382,19 @@ var _user$project$View$flippedComparison = F2(
 				return _elm_lang$core$Basics$LT;
 		}
 	});
-var _user$project$View$isWithinCutOff = F3(
-	function (now, cutOff, data) {
-		var _p3 = _elm_lang$core$Native_Utils.cmp(data.ts, now - cutOff) > -1;
-		if (_p3 === true) {
-			return _elm_lang$core$Maybe$Just(data);
-		} else {
-			return _elm_lang$core$Maybe$Nothing;
-		}
-	});
-var _user$project$View$truncateHistory = F3(
-	function (now, cutOff, camper) {
-		return _elm_lang$core$Native_Utils.update(
-			camper,
-			{
-				chist: A2(
-					_elm_lang$core$List$filterMap,
-					A2(_user$project$View$isWithinCutOff, now, cutOff),
-					camper.chist)
-			});
-	});
 var _user$project$View$sortBasedOnHistory2 = F3(
 	function (now, cutOff, campers) {
 		return A2(
 			_elm_lang$core$List$sortWith,
-			_user$project$View$flippedComparison,
-			A2(
-				_elm_lang$core$List$sortWith,
-				_user$project$View$flippedComparison2,
-				A2(
-					_elm_lang$core$List$map,
-					A2(_user$project$View$truncateHistory, now, cutOff),
-					campers)));
+			A2(_user$project$View$flippedComparison, now, cutOff),
+			A2(_elm_lang$core$List$sortWith, _user$project$View$flippedComparison2, campers));
 	});
 var _user$project$View$sortBasedOnHistory = F3(
 	function (now, cutOff, campers) {
 		return A2(
 			_elm_lang$core$List$sortWith,
-			_user$project$View$flippedComparison,
-			A2(
-				_elm_lang$core$List$map,
-				A2(_user$project$View$truncateHistory, now, cutOff),
-				campers));
+			A2(_user$project$View$flippedComparison, now, cutOff),
+			campers);
 	});
 var _user$project$View$difference = F2(
 	function (current, previous) {
