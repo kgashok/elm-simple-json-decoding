@@ -199,25 +199,25 @@ buildResponse model =
 
         dateString =
             formatISO8601 now
-            
-        cutOffMonth = 
+
+        cutOffMonth =
             fromTime (model.ts - cutOff30Days) |> month
-        cutOffYear = 
+
+        cutOffYear =
             fromTime (model.ts - cutOff30Days) |> year
-            
-        cutOffString = 
-            "(since " 
-                ++ (toString cutOffMonth) 
-                ++ " " 
-                ++ (toString cutOffYear) 
+
+        cutOffString =
+            "(since "
+                ++ (toString cutOffMonth)
+                ++ " "
+                ++ (toString cutOffYear)
                 ++ "): "
-    
     in
         --if model.error == True
         --then "Error: userID not valid? " ++ model.message
         if model.tPoints /= -1 then
             "Challenges completed "
-                ++ cutOffString 
+                ++ cutOffString
                 ++ (toString model.tPoints)
                 ++ (difference model.tPoints model.tPoints_prev)
                 ++ " by "
@@ -244,20 +244,24 @@ sortBasedOnHistory : Time -> Time -> List Camper -> List Camper
 sortBasedOnHistory now cutOff campers =
     campers
         --|> List.map (truncateHistory now cutOff)
-        |> List.sortWith (flippedComparison now cutOff) 
+        |> List.sortWith (flippedComparison now cutOff)
 
 
 {-| deprecated
 -}
-{-truncateHistory : Time -> Time -> Camper -> Camper
-truncateHistory now cutOff camper =
-    { camper
-        | chist =
-            List.filterMap (isWithinCutOff now cutOff) camper.chist
-    }
--}
 
+
+
+{- truncateHistory : Time -> Time -> Camper -> Camper
+   truncateHistory now cutOff camper =
+       { camper
+           | chist =
+               List.filterMap (isWithinCutOff now cutOff) camper.chist
+       }
+-}
 --isWithinCutOff : Time -> Time -> Cdata -> Maybe Cdata
+
+
 isWithinCutOff : Time -> Time -> Cdata -> Maybe Int
 isWithinCutOff now cutOff data =
     case (data.ts >= (now - cutOff)) of
