@@ -532,17 +532,8 @@ postSettings =
 sortBasedOnHistory : Time -> Time -> List Camper -> List Camper
 sortBasedOnHistory now cutOff campers =
     campers
-        --|> List.map (truncateHistory now cutOff)
-        --|> Debug.log "after trunc"
-        -- summation of deltas in history
+        |> List.map (truncateHistory now cutOff)
         |> List.sortWith flippedComparison
-
-
-
--- latest points
---|> List.sortWith flippedComparison3
--- latest timestamp
---|> List.sortWith flippedComparison2
 
 
 sortBasedOnHistory2 : Time -> Time -> List Camper -> List Camper
@@ -601,7 +592,7 @@ isWithinCutOff now cutOff data =
     case (data.ts >= (now - cutOff)) of
         True ->
             Just data
-
+    
         False ->
             Nothing
 

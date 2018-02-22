@@ -10477,7 +10477,7 @@ var _user$project$Model$excluded = {
 		_1: {ctor: '[]'}
 	}
 };
-var _user$project$Model$cutOff30Days = _elm_lang$core$Time$inHours(2592000000);
+var _user$project$Model$cutOff30Days = 2592000000 * 2;
 var _user$project$Model$pointsData = F3(
 	function (currentPoints, time, prevPoints) {
 		return {points: currentPoints, ts: time, delta: currentPoints - prevPoints};
@@ -10604,7 +10604,7 @@ var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
 var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.5-beta-55-g3aafef9';
+var _user$project$Version$version = 'v3.5-beta-60-gfcf358f';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -10755,7 +10755,13 @@ var _user$project$Update$sortBasedOnHistory2 = F3(
 	});
 var _user$project$Update$sortBasedOnHistory = F3(
 	function (now, cutOff, campers) {
-		return A2(_elm_lang$core$List$sortWith, _user$project$Update$flippedComparison, campers);
+		return A2(
+			_elm_lang$core$List$sortWith,
+			_user$project$Update$flippedComparison,
+			A2(
+				_elm_lang$core$List$map,
+				A2(_user$project$Update$truncateHistory, now, cutOff),
+				campers));
 	});
 var _user$project$Update$downloadHeaders = {
 	ctor: '::',
@@ -11318,10 +11324,106 @@ var _user$project$Update$update = F2(
 	});
 var _user$project$Update$FetchData = {ctor: 'FetchData'};
 
+var _user$project$View$flippedComparison2 = F2(
+	function (a, b) {
+		var _p0 = A2(_elm_lang$core$Basics$compare, a.last.ts, b.last.ts);
+		switch (_p0.ctor) {
+			case 'GT':
+				return _elm_lang$core$Basics$LT;
+			case 'EQ':
+				return _elm_lang$core$Basics$EQ;
+			default:
+				return _elm_lang$core$Basics$GT;
+		}
+	});
+var _user$project$View$flippedComparison3 = F2(
+	function (a, b) {
+		var _p1 = A2(_elm_lang$core$Basics$compare, a.last.points, b.last.points);
+		switch (_p1.ctor) {
+			case 'GT':
+				return _elm_lang$core$Basics$LT;
+			case 'EQ':
+				return _elm_lang$core$Basics$EQ;
+			default:
+				return _elm_lang$core$Basics$GT;
+		}
+	});
+var _user$project$View$flippedComparison = F2(
+	function (a, b) {
+		var bdelta = _elm_lang$core$List$sum(
+			A2(
+				_elm_lang$core$List$map,
+				function (_) {
+					return _.delta;
+				},
+				b.chist));
+		var adelta = _elm_lang$core$List$sum(
+			A2(
+				_elm_lang$core$List$map,
+				function (_) {
+					return _.delta;
+				},
+				a.chist));
+		var _p2 = A2(
+			_elm_lang$core$Basics$compare,
+			{ctor: '_Tuple3', _0: b.last.ts, _1: bdelta, _2: b.last.points},
+			{ctor: '_Tuple3', _0: a.last.ts, _1: adelta, _2: a.last.points});
+		switch (_p2.ctor) {
+			case 'GT':
+				return _elm_lang$core$Basics$GT;
+			case 'EQ':
+				return _elm_lang$core$Basics$EQ;
+			default:
+				return _elm_lang$core$Basics$LT;
+		}
+	});
+var _user$project$View$isWithinCutOff = F3(
+	function (now, cutOff, data) {
+		var _p3 = _elm_lang$core$Native_Utils.cmp(data.ts, now - cutOff) > -1;
+		if (_p3 === true) {
+			return _elm_lang$core$Maybe$Just(data);
+		} else {
+			return _elm_lang$core$Maybe$Nothing;
+		}
+	});
+var _user$project$View$truncateHistory = F3(
+	function (now, cutOff, camper) {
+		return _elm_lang$core$Native_Utils.update(
+			camper,
+			{
+				chist: A2(
+					_elm_lang$core$List$filterMap,
+					A2(_user$project$View$isWithinCutOff, now, cutOff),
+					camper.chist)
+			});
+	});
+var _user$project$View$sortBasedOnHistory2 = F3(
+	function (now, cutOff, campers) {
+		return A2(
+			_elm_lang$core$List$sortWith,
+			_user$project$View$flippedComparison,
+			A2(
+				_elm_lang$core$List$sortWith,
+				_user$project$View$flippedComparison2,
+				A2(
+					_elm_lang$core$List$map,
+					A2(_user$project$View$truncateHistory, now, cutOff),
+					campers)));
+	});
+var _user$project$View$sortBasedOnHistory = F3(
+	function (now, cutOff, campers) {
+		return A2(
+			_elm_lang$core$List$sortWith,
+			_user$project$View$flippedComparison,
+			A2(
+				_elm_lang$core$List$map,
+				A2(_user$project$View$truncateHistory, now, cutOff),
+				campers));
+	});
 var _user$project$View$difference = F2(
 	function (current, previous) {
-		var _p0 = current - previous;
-		if (_p0 === 0) {
+		var _p4 = current - previous;
+		if (_p4 === 0) {
 			return '';
 		} else {
 			return A2(
@@ -11405,27 +11507,27 @@ var _user$project$View$footer = A2(
 	});
 var _user$project$View$formatData = F2(
 	function (prevEntry, cdata) {
-		var _p1 = prevEntry;
-		if (_p1.ctor === 'Nothing') {
+		var _p5 = prevEntry;
+		if (_p5.ctor === 'Nothing') {
 			return _elm_lang$core$Basics$toString(cdata.points);
 		} else {
-			var timeLapsed = _elm_lang$core$Time$inHours(cdata.ts - _p1._0.ts);
-			var _p2 = {
+			var timeLapsed = _elm_lang$core$Time$inHours(cdata.ts - _p5._0.ts);
+			var _p6 = {
 				ctor: '_Tuple2',
 				_0: cdata.ts,
 				_1: (!_elm_lang$core$Native_Utils.eq(timeLapsed, 0)) && (_elm_lang$core$Native_Utils.cmp(timeLapsed, -720) > -1)
 			};
-			_v2_0:
+			_v6_0:
 			do {
-				if (_p2._1 === false) {
-					if (_p2._0 === 0) {
-						break _v2_0;
+				if (_p6._1 === false) {
+					if (_p6._0 === 0) {
+						break _v6_0;
 					} else {
 						return _elm_lang$core$Basics$toString(cdata.points);
 					}
 				} else {
-					if (_p2._0 === 0) {
-						break _v2_0;
+					if (_p6._0 === 0) {
+						break _v6_0;
 					} else {
 						return A2(
 							_elm_lang$core$Basics_ops['++'],
