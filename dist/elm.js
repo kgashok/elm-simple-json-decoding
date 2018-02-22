@@ -10477,7 +10477,7 @@ var _user$project$Model$excluded = {
 		_1: {ctor: '[]'}
 	}
 };
-var _user$project$Model$cutOff30Days = 2592000000 * 2;
+var _user$project$Model$cutOff30Days = 2592000000 * 3;
 var _user$project$Model$pointsData = F3(
 	function (currentPoints, time, prevPoints) {
 		return {points: currentPoints, ts: time, delta: currentPoints - prevPoints};
@@ -10604,7 +10604,7 @@ var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
 var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.5-beta-60-gfcf358f';
+var _user$project$Version$version = 'v3.5-beta-61-g6b5aaf9';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
