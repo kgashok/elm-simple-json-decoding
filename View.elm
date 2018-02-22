@@ -277,7 +277,7 @@ challenge completion activity, in the following order:
 
   - latest timestamp of last completed challenge
 
-  - sum of all delta in history (or truncated history)
+  - sum of all delta in history (within the cutOff)
 
   - total challenges completed
 
