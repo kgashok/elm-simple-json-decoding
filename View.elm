@@ -12,7 +12,6 @@ import Date.Format exposing (formatISO8601)
 import Numeral exposing (format)
 import String
 
-
 -- VIEW
 
 
@@ -136,7 +135,7 @@ campList display now campers =
     let
         -- campers_ = List.sortWith flippedComparison2 campers
         campers_ =
-            Update.sortBasedOnHistory now cutOff30Days campers
+            sortBasedOnHistory now cutOff30Days campers
 
         items =
             List.map camperItem campers_
@@ -326,7 +325,6 @@ flippedComparison now cutOff a b =
 
 sortBasedOnHistory2 : Time -> Time -> List Camper -> List Camper
 sortBasedOnHistory2 now cutOff campers =
-    -- campers_ = List.sortWith flippedComparison2 campers
     campers
         --|> List.map (truncateHistory now cutOff)
         --|> Debug.log "post cut"

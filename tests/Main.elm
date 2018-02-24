@@ -3,13 +3,15 @@ module Main exposing (..)
 import Expect exposing (Expectation)
 import Fuzz exposing (Fuzzer, int, list, string)
 import Test exposing (..)
+import Time exposing (..)
 
 import Debug exposing (..)
 
 --import ElmTest exposing (..)
 
 import Model exposing (..)
-import Update exposing (skipList, sortBasedOnHistory2)
+import Update exposing (skipList)
+import View exposing (sortBasedOnHistory2)
 
 
 testm : Model
@@ -136,6 +138,7 @@ url =
     "http://myjson.com/2dzdj"
 
 
+
 all : Test
 all =
     let
@@ -148,19 +151,20 @@ all =
         first =
             List.head clist |> Maybe.withDefault dummy
 
-        
         sortOut =
             List.map dinfo (sortBasedOnHistory2 20000 20000 clist)
 
         truncated = sortBasedOnHistory2 20000 8000 clist
-        
+
         sortOutWithCO =
             List.map dinfo truncated 
         -- _ = Debug.log "truncated" truncated
         
     in
         describe "Fcc Test Suite"
-            [ describe "Unit test examples"
+            [ 
+            
+                describe "Unit test examples"
                 [ test "zero" <| \() -> Expect.equal 0 0
                 , test "truth" <| \() -> Expect.true "the truth" True
                 , test "booleans" <| \() -> Expect.notEqual True False
@@ -169,21 +173,23 @@ all =
                 , test "sort" <|
                     \() ->
                         Expect.equal [ "kgashok 229", "ramya 222", "sudhar 124" ] sortOut
+                
                 , test "sortcut" <|
                     \() ->
-                        Expect.equal [ "ramya 222", "sudhar 124", "kgashok 229" ] sortOutWithCO
+                        Expect.equal [ "ramya 222", "kgashok 229", "sudhar 124" ] sortOutWithCO
                 
                 , test "sortCamper" <|
                     \() ->
                         Expect.equal [ cAshok, cSrimathi, cDivya ]
-                            (Update.sortBasedOnHistory 1518898649827 1518898649827 [ cDivya, cAshok, cSrimathi ])
+                            (View.sortBasedOnHistory 1518898649827 1518898649827 [ cDivya, cAshok, cSrimathi ])
                 
                 , test "sortCamper2" <|
                     \() ->
-                        Expect.equal [ "divyamano 225", "srimathic 249", "kgashok 350" ]
+                        Expect.equal [ "kgashok 350", "divyamano 225", "srimathic 249" ]
                             (List.map dinfo
-                                (Update.sortBasedOnHistory2 1518898649827 670965014 [ cSrimathi, cAshok, cDivya ])
+                                (View.sortBasedOnHistory2 1518892020524 670965014 [ cSrimathi, cAshok, cDivya ])
                             )
+                
                 ]
 
                 --, todo "Have to write tests for excluded List Bug > Total Campers!"
@@ -193,6 +199,37 @@ all =
                     \() ->
                         -- -> Expect.equal [] (Update.refreshGitterIDs gUrl)
                         Expect.equal 0 0
+                -}
+                {-only <| describe "truncate" 
+                [ skip "no truncate" <| \() -> 
+                    Expect.equal 
+                        { chist = 
+                                [ { delta = 1, points = 350, ts = 1518892020524 }
+                                , { delta = 9, points = 349, ts = 1518889467698 }
+                                ]
+                        , last = { delta = 1, points = 350, ts = 1518892020524 }
+                        , uname = "kgashok" 
+                        } 
+                        (View.truncateHistory 
+                            1518898649827 673517840 cAshok
+                        )
+                , skip "truncate 30 days" <| \() -> 
+                    Expect.equal 
+                        { chist = 
+                            [ { delta = 1, points = 350, ts = 1518892020524 }
+                            , { delta = 9, points = 349, ts = 1518889467698 }
+                            , { delta = 10, points = 340, ts = 1518218502684 }
+                            , { delta = 5, points = 330, ts = 1517861564348 }
+                            , { delta = 5, points = 325, ts = 1517764495001 }
+                            , { delta = 320, points = 320, ts = 1517588916347 }
+                            ]
+                        , last = { delta = 1, points = 350, ts = 1518892020524 }
+                        , uname = "kgashok" 
+                        } 
+                        (View.truncateHistory 
+                            1518898649827 2592000000 cAshok
+                        )
+                ]
                 -}
             ]
 
