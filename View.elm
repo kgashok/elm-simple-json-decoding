@@ -12,7 +12,6 @@ import Date.Format exposing (formatISO8601)
 import Numeral exposing (format)
 import String
 
-
 -- VIEW
 
 
@@ -136,7 +135,7 @@ campList display now campers =
     let
         -- campers_ = List.sortWith flippedComparison2 campers
         campers_ =
-            Update.sortBasedOnHistory now cutOff30Days campers
+            sortBasedOnHistory now cutOff30Days campers
 
         items =
             List.map camperItem campers_

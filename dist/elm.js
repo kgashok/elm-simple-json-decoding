@@ -10604,7 +10604,7 @@ var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
 var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.5-beta-63-g44636a5';
+var _user$project$Version$version = 'v3.5-beta-68-g2a333e4';
 
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
@@ -10661,108 +10661,6 @@ var _user$project$Ports$logExternal = function (value) {
 		_elm_lang$core$Basics$toString(value));
 };
 
-var _user$project$Update$flippedComparison = F2(
-	function (a, b) {
-		var bdelta = _elm_lang$core$List$sum(
-			A2(
-				_elm_lang$core$List$map,
-				function (_) {
-					return _.delta;
-				},
-				A2(
-					_elm_lang$core$List$take,
-					_elm_lang$core$List$length(b.chist) - 1,
-					b.chist)));
-		var adelta = _elm_lang$core$List$sum(
-			A2(
-				_elm_lang$core$List$map,
-				function (_) {
-					return _.delta;
-				},
-				A2(
-					_elm_lang$core$List$take,
-					_elm_lang$core$List$length(a.chist) - 1,
-					a.chist)));
-		var _p0 = A2(
-			_elm_lang$core$Basics$compare,
-			{ctor: '_Tuple3', _0: b.last.ts, _1: bdelta, _2: b.last.points},
-			{ctor: '_Tuple3', _0: a.last.ts, _1: adelta, _2: a.last.points});
-		switch (_p0.ctor) {
-			case 'GT':
-				return _elm_lang$core$Basics$GT;
-			case 'EQ':
-				return _elm_lang$core$Basics$EQ;
-			default:
-				return _elm_lang$core$Basics$LT;
-		}
-	});
-var _user$project$Update$isWithinCutOff = F3(
-	function (now, cutOff, data) {
-		var _p1 = _elm_lang$core$Native_Utils.cmp(data.ts, now - cutOff) > -1;
-		if (_p1 === true) {
-			return _elm_lang$core$Maybe$Just(data);
-		} else {
-			return _elm_lang$core$Maybe$Nothing;
-		}
-	});
-var _user$project$Update$truncateHistory = F3(
-	function (now, cutOff, camper) {
-		return _elm_lang$core$Native_Utils.update(
-			camper,
-			{
-				chist: A2(
-					_elm_lang$core$List$filterMap,
-					A2(_user$project$Update$isWithinCutOff, now, cutOff),
-					camper.chist)
-			});
-	});
-var _user$project$Update$flippedComparison2 = F2(
-	function (a, b) {
-		var _p2 = A2(_elm_lang$core$Basics$compare, a.last.ts, b.last.ts);
-		switch (_p2.ctor) {
-			case 'GT':
-				return _elm_lang$core$Basics$LT;
-			case 'EQ':
-				return _elm_lang$core$Basics$EQ;
-			default:
-				return _elm_lang$core$Basics$GT;
-		}
-	});
-var _user$project$Update$flippedComparison3 = F2(
-	function (a, b) {
-		var _p3 = A2(_elm_lang$core$Basics$compare, a.last.points, b.last.points);
-		switch (_p3.ctor) {
-			case 'GT':
-				return _elm_lang$core$Basics$LT;
-			case 'EQ':
-				return _elm_lang$core$Basics$EQ;
-			default:
-				return _elm_lang$core$Basics$GT;
-		}
-	});
-var _user$project$Update$sortBasedOnHistory2 = F3(
-	function (now, cutOff, campers) {
-		return A2(
-			_elm_lang$core$List$sortWith,
-			_user$project$Update$flippedComparison,
-			A2(
-				_elm_lang$core$List$sortWith,
-				_user$project$Update$flippedComparison2,
-				A2(
-					_elm_lang$core$List$map,
-					A2(_user$project$Update$truncateHistory, now, cutOff),
-					campers)));
-	});
-var _user$project$Update$sortBasedOnHistory = F3(
-	function (now, cutOff, campers) {
-		return A2(
-			_elm_lang$core$List$sortWith,
-			_user$project$Update$flippedComparison,
-			A2(
-				_elm_lang$core$List$map,
-				A2(_user$project$Update$truncateHistory, now, cutOff),
-				campers));
-	});
 var _user$project$Update$downloadHeaders = {
 	ctor: '::',
 	_0: A2(_elm_lang$http$Http$header, 'Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT'),
@@ -10773,11 +10671,11 @@ var _user$project$Update$downloadHeaders = {
 	}
 };
 var _user$project$Update$authorizationHeader = A2(_elm_lang$http$Http$header, 'Authorization', 'Bearer 4bhveELh1l8AAAAAAAAg1hjS4PUDWf0EeED2cIsmOsdJE04uqkichInc0sN0QZao');
-var _user$project$Update$stringify = function (_p4) {
+var _user$project$Update$stringify = function (_p0) {
 	return A2(
 		_elm_lang$core$Json_Encode$encode,
 		0,
-		_elm_lang$core$Json_Encode$object(_p4));
+		_elm_lang$core$Json_Encode$object(_p0));
 };
 var _user$project$Update$downloadArgs = {
 	ctor: '::',
@@ -10860,11 +10758,11 @@ var _user$project$Update$calculateTotal = function (tlist) {
 			},
 			A2(
 				_elm_lang$core$List$filterMap,
-				function (_p5) {
+				function (_p1) {
 					return _elm_lang$core$List$head(
 						function (_) {
 							return _.chist;
-						}(_p5));
+						}(_p1));
 				},
 				tlist)));
 };
@@ -10886,8 +10784,8 @@ var _user$project$Update$addToList = F2(
 			},
 			model.tList);
 		var isPresent = A2(_elm_lang$core$List$member, member.uname, clist);
-		var _p6 = isPresent;
-		if (_p6 === true) {
+		var _p2 = isPresent;
+		if (_p2 === true) {
 			return model;
 		} else {
 			return _elm_lang$core$Native_Utils.update(
@@ -10914,11 +10812,11 @@ var _user$project$Update$updateCHistory = F2(
 				_elm_lang$core$List$filterMap,
 				_user$project$Update$getCamper(member),
 				tList_));
-		var _p7 = camper;
-		if (_p7.ctor === 'Nothing') {
+		var _p3 = camper;
+		if (_p3.ctor === 'Nothing') {
 			return tList_;
 		} else {
-			var _p8 = _p7._0;
+			var _p4 = _p3._0;
 			var model_ = _elm_lang$core$Native_Utils.update(
 				model,
 				{
@@ -10929,11 +10827,11 @@ var _user$project$Update$updateCHistory = F2(
 						},
 						tList_)
 				});
-			var data = A3(_user$project$Model$pointsData, member.points, model.ts, _p8.last.points);
+			var data = A3(_user$project$Model$pointsData, member.points, model.ts, _p4.last.points);
 			var camper_ = _elm_lang$core$Native_Utils.update(
-				_p8,
+				_p4,
 				{
-					chist: {ctor: '::', _0: data, _1: _p8.chist},
+					chist: {ctor: '::', _0: data, _1: _p4.chist},
 					last: data
 				});
 			return {ctor: '::', _0: camper_, _1: model_.tList};
@@ -11069,8 +10967,8 @@ var _user$project$Update$getData = F2(
 	});
 var _user$project$Update$update = F2(
 	function (action, model) {
-		var _p9 = action;
-		switch (_p9.ctor) {
+		var _p5 = action;
+		switch (_p5.ctor) {
 			case 'FetchData':
 				var model_ = _elm_lang$core$Native_Utils.update(
 					model,
@@ -11081,8 +10979,8 @@ var _user$project$Update$update = F2(
 					_1: A2(_user$project$Update$getData, _user$project$Model$fccAPI, model_.uname)
 				};
 			case 'FetchOne':
-				if (_p9._0.ctor === 'Ok') {
-					var model_ = A2(_user$project$Update$addToList, _p9._0._0, model);
+				if (_p5._0.ctor === 'Ok') {
+					var model_ = A2(_user$project$Update$addToList, _p5._0._0, model);
 					var clist = A2(
 						_elm_lang$core$List$map,
 						function (_) {
@@ -11108,8 +11006,8 @@ var _user$project$Update$update = F2(
 					};
 				}
 			case 'FetchAll':
-				if (_p9._0.ctor === 'Ok') {
-					var model_ = A2(_user$project$Update$addToList, _p9._0._0, model);
+				if (_p5._0.ctor === 'Ok') {
+					var model_ = A2(_user$project$Update$addToList, _p5._0._0, model);
 					var clist = A2(
 						_elm_lang$core$List$map,
 						function (_) {
@@ -11135,37 +11033,37 @@ var _user$project$Update$update = F2(
 					};
 				}
 			case 'GitterStatus':
-				if (_p9._0.ctor === 'Ok') {
+				if (_p5._0.ctor === 'Ok') {
 					var gRoom_ = _elm_lang$core$List$head(
 						A2(
 							_elm_lang$core$List$filter,
 							function (x) {
 								return _elm_lang$core$Native_Utils.eq(x.name, model.gRoom.name);
 							},
-							_p9._0._0));
-					var _p10 = gRoom_;
-					if (_p10.ctor === 'Nothing') {
+							_p5._0._0));
+					var _p6 = gRoom_;
+					if (_p6.ctor === 'Nothing') {
 						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 					} else {
-						var _p11 = _p10._0;
+						var _p7 = _p6._0;
 						return {
 							ctor: '_Tuple2',
 							_0: _elm_lang$core$Native_Utils.update(
 								model,
-								{gRoom: _p11}),
+								{gRoom: _p7}),
 							_1: _elm_lang$core$Platform_Cmd$batch(
-								_user$project$Update$gitterIDBatchRequest(_p11))
+								_user$project$Update$gitterIDBatchRequest(_p7))
 						};
 					}
 				} else {
 					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 				}
 			case 'GitterIDStatus':
-				if (_p9._0.ctor === 'Ok') {
+				if (_p5._0.ctor === 'Ok') {
 					var camperList = A2(
 						_elm_lang$core$List$filterMap,
 						_user$project$Model$createCamperFromGid(model.tList),
-						_p9._0._0);
+						_p5._0._0);
 					var model_ = _elm_lang$core$Native_Utils.update(
 						model,
 						{
@@ -11196,19 +11094,19 @@ var _user$project$Update$update = F2(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							name: _elm_lang$core$String$toLower(_p9._0)
+							name: _elm_lang$core$String$toLower(_p5._0)
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'StoreRoom':
-				var _p12 = _p9._0;
+				var _p8 = _p5._0;
 				var room = {
 					id: '',
-					name: _elm_lang$core$String$toLower(_p12),
+					name: _elm_lang$core$String$toLower(_p8),
 					userCount: 0
 				};
 				var change = !_elm_lang$core$Native_Utils.eq(
-					_elm_lang$core$String$toLower(_p12),
+					_elm_lang$core$String$toLower(_p8),
 					model.gRoom.name);
 				return {
 					ctor: '_Tuple2',
@@ -11220,7 +11118,7 @@ var _user$project$Update$update = F2(
 			case 'Tick':
 				var model_ = _elm_lang$core$Native_Utils.update(
 					model,
-					{ts: _p9._0, uname: model.name, tPoints_prev: model.tPoints});
+					{ts: _p5._0, uname: model.name, tPoints_prev: model.tPoints});
 				var cList = A2(
 					_elm_lang$core$List$filter,
 					function (x) {
@@ -11244,7 +11142,7 @@ var _user$project$Update$update = F2(
 			case 'Set5min':
 				var model_ = _elm_lang$core$Native_Utils.update(
 					model,
-					{min5: _p9._0, min15: false});
+					{min5: _p5._0, min15: false});
 				return {
 					ctor: '_Tuple2',
 					_0: model_,
@@ -11253,18 +11151,18 @@ var _user$project$Update$update = F2(
 			case 'Set15min':
 				var model_ = _elm_lang$core$Native_Utils.update(
 					model,
-					{min15: _p9._0, min5: false});
+					{min15: _p5._0, min5: false});
 				return {
 					ctor: '_Tuple2',
 					_0: model_,
 					_1: _user$project$Ports$modelChange(model_)
 				};
 			case 'UpdateSucceed':
-				if (_p9._1.ctor === 'Ok') {
+				if (_p5._1.ctor === 'Ok') {
 					var model_ = _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							tList: A2(_user$project$Update$updateCHistory, model, _p9._1._0),
+							tList: A2(_user$project$Update$updateCHistory, model, _p5._1._0),
 							tPoints: _user$project$Update$calculateTotal(model.tList),
 							message: ''
 						});
@@ -11274,8 +11172,8 @@ var _user$project$Update$update = F2(
 						_1: _user$project$Ports$modelChange(model_)
 					};
 				} else {
-					var _p15 = _p9._0;
-					var _p13 = A2(_elm_lang$core$Debug$log, 'Error retrieving for id: ', _p15);
+					var _p11 = _p5._0;
+					var _p9 = A2(_elm_lang$core$Debug$log, 'Error retrieving for id: ', _p11);
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
@@ -11287,13 +11185,13 @@ var _user$project$Update$update = F2(
 								message: A2(
 									_elm_lang$core$Basics_ops['++'],
 									'User ',
-									A2(_elm_lang$core$Basics_ops['++'], _p15, ' does not exist?')),
+									A2(_elm_lang$core$Basics_ops['++'], _p11, ' does not exist?')),
 								exclude: function () {
-									var _p14 = A2(_elm_lang$core$List$member, _p15, model.exclude);
-									if (_p14 === true) {
+									var _p10 = A2(_elm_lang$core$List$member, _p11, model.exclude);
+									if (_p10 === true) {
 										return model.exclude;
 									} else {
-										return {ctor: '::', _0: _p15, _1: model.exclude};
+										return {ctor: '::', _0: _p11, _1: model.exclude};
 									}
 								}()
 							}),
@@ -11301,8 +11199,8 @@ var _user$project$Update$update = F2(
 					};
 				}
 			default:
-				var _p16 = model.roomChange;
-				if (_p16 === true) {
+				var _p12 = model.roomChange;
+				if (_p12 === true) {
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
@@ -11588,7 +11486,7 @@ var _user$project$View$camperItem = function (camper) {
 };
 var _user$project$View$campList = F3(
 	function (display, now, campers) {
-		var campers_ = A3(_user$project$Update$sortBasedOnHistory, now, _user$project$Model$cutOff30Days, campers);
+		var campers_ = A3(_user$project$View$sortBasedOnHistory, now, _user$project$Model$cutOff30Days, campers);
 		var items = A2(_elm_lang$core$List$map, _user$project$View$camperItem, campers_);
 		return A2(
 			_elm_lang$html$Html$div,
