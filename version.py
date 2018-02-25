@@ -81,4 +81,4 @@ version : String \n\
 commands.getstatusoutput ("elm-format Version.elm --yes") 
 commands.getstatusoutput ("git add Version.elm")
 commands.getstatusoutput ("elm make FreeCodeCamp.elm --output dist/elm.js")
-print(commands.getoutput("grep v3.5 dist/elm.js"))
+print(commands.getoutput("grep \"\-beta\" dist/elm.js"))
