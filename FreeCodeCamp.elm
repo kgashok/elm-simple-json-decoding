@@ -1,7 +1,4 @@
 module Fcc exposing (..)
-
--- where
-
 import Html exposing (..)
 import Model exposing (initialModel, fccAPI, Model)
 import View exposing (view)

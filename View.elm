@@ -12,6 +12,7 @@ import Date.Format exposing (formatISO8601)
 import Numeral exposing (format)
 import String
 
+
 -- VIEW
 
 
@@ -52,12 +53,7 @@ view model =
                 [ input [ type_ "radio", checked model.min15, onCheck Set15min ] []
                 , text "15 min"
                 ]
-
-            -- , updateSettings model
             , h1 [ rStyle ] [ text response ]
-
-            --, div [] [ text (toString model.gRoom) ]
-            --, div [] [ text (toString model.gList) ]
             , campList True model.ts model.tList
             ]
 
@@ -246,31 +242,6 @@ sortBasedOnHistory now cutOff campers =
         |> List.sortWith (flippedComparison now cutOff)
 
 
-{-| deprecated
--}
-
-
-
-{- truncateHistory : Time -> Time -> Camper -> Camper
-   truncateHistory now cutOff camper =
-       { camper
-           | chist =
-               List.filterMap (isWithinCutOff now cutOff) camper.chist
-       }
--}
---isWithinCutOff : Time -> Time -> Cdata -> Maybe Cdata
-
-
-isWithinCutOff : Time -> Time -> Cdata -> Maybe Int
-isWithinCutOff now cutOff data =
-    case (data.ts >= (now - cutOff)) of
-        True ->
-            Just data.delta
-
-        False ->
-            Nothing
-
-
 {-| comparator for campers based on their
 challenge completion activity, in the following order:
 
@@ -323,6 +294,16 @@ flippedComparison now cutOff a b =
                 LT
 
 
+isWithinCutOff : Time -> Time -> Cdata -> Maybe Int
+isWithinCutOff now cutOff data =
+    case (data.ts >= (now - cutOff)) of
+        True ->
+            Just data.delta
+
+        False ->
+            Nothing
+
+
 sortBasedOnHistory2 : Time -> Time -> List Camper -> List Camper
 sortBasedOnHistory2 now cutOff campers =
     campers
@@ -333,10 +314,7 @@ sortBasedOnHistory2 now cutOff campers =
         |> List.sortWith flippedComparison2
         --|> Debug.log "post compare2"
         |> List.sortWith (flippedComparison now cutOff)
-
-
-
---|> Debug.log "post compare"
+        --|> Debug.log "post compare"
 
 
 flippedComparison3 : Camper -> Camper -> Order

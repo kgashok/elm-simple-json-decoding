@@ -101,15 +101,6 @@ historyA =
 
 
 
-{- Both the below needed to be included in the model -}
-{- In Elm repl inHours 2592000000 = 720 hours  or 30 days -}
-
-
-cutOff : Float
-cutOff =
-    10000
-
-
 assignHistory : List Cdata -> Camper -> Camper
 assignHistory data camper =
     { camper | chist = data
@@ -192,44 +183,12 @@ all =
                 
                 ]
 
-                --, todo "Have to write tests for excluded List Bug > Total Campers!"
-                --, todo "Ready to do some documentation of the Comparators"
+                , todo "Have to write tests for excluded List Bug > Total Campers!"
                 --, todo "Read up http://package.elm-lang.org/packages/matthewsj/elm-ordering/1.1.0/Ordering#isOrdered"
                 {-, skip <| test "gitterRequest" <|
                     \() ->
                         -- -> Expect.equal [] (Update.refreshGitterIDs gUrl)
                         Expect.equal 0 0
-                -}
-                {-only <| describe "truncate" 
-                [ skip "no truncate" <| \() -> 
-                    Expect.equal 
-                        { chist = 
-                                [ { delta = 1, points = 350, ts = 1518892020524 }
-                                , { delta = 9, points = 349, ts = 1518889467698 }
-                                ]
-                        , last = { delta = 1, points = 350, ts = 1518892020524 }
-                        , uname = "kgashok" 
-                        } 
-                        (View.truncateHistory 
-                            1518898649827 673517840 cAshok
-                        )
-                , skip "truncate 30 days" <| \() -> 
-                    Expect.equal 
-                        { chist = 
-                            [ { delta = 1, points = 350, ts = 1518892020524 }
-                            , { delta = 9, points = 349, ts = 1518889467698 }
-                            , { delta = 10, points = 340, ts = 1518218502684 }
-                            , { delta = 5, points = 330, ts = 1517861564348 }
-                            , { delta = 5, points = 325, ts = 1517764495001 }
-                            , { delta = 320, points = 320, ts = 1517588916347 }
-                            ]
-                        , last = { delta = 1, points = 350, ts = 1518892020524 }
-                        , uname = "kgashok" 
-                        } 
-                        (View.truncateHistory 
-                            1518898649827 2592000000 cAshok
-                        )
-                ]
                 -}
             ]
 

@@ -78,6 +78,8 @@ version : String \n\
 	print (versionFile + " updated with " + version)
 	fo.close()
 
+
+# Commands for injection into JS script (elm.js)
 commands.getstatusoutput ("elm-format Version.elm --yes") 
 commands.getstatusoutput ("git add Version.elm")
 commands.getstatusoutput ("elm make FreeCodeCamp.elm --output dist/elm.js")

@@ -28,9 +28,7 @@ type Msg
     | Tick Time
     | GitterStatus (Result Http.Error (List GRoom))
     | FetchGitter
-      --  | GitterFail Http.Error
     | GitterIDStatus (Result Http.Error (List Gid))
-      --  | GitterIDSuccess (List Gid)
     | Set5min Bool
     | Set15min Bool
 
@@ -139,18 +137,6 @@ update action model =
         GitterIDStatus (Err error) ->
             ( model, Cmd.none )
 
-        -- GitterFail _ ->
-        --  (model, Cmd.none)
-        -- GitterIDSuccess gids ->
-        {--let
-        camperList = List.filterMap (createCamperFromGid model.tList) gids
-        model_ = { model|tList = model.tList ++ camperList}
-        cList  = List.map .uname camperList
-      in
-        ( model_
-          , Cmd.batch (List.map (tickRequest fccAPI) cList)
-        )
-    --}
         StoreID name ->
             ( { model | name = String.toLower name }, Cmd.none )
 
@@ -314,11 +300,8 @@ nestedListGID =
 tickRequest : String -> String -> Cmd Msg
 tickRequest url name =
     --Task.perform FetchFail FetchSucceed (Http.get decodePoints url)
+    --Task.attempt UpdateSucceed (getUserData url name)
     Task.attempt (UpdateSucceed name) (Http.toTask (Http.get (url ++ name) decodeData))
-
-
-
---Task.attempt UpdateSucceed (getUserData url name)
 
 
 getUserData url name =
@@ -460,6 +443,10 @@ decodeTitle =
     Json.at [ "title" ] Json.string
 
 
+
+-- {"about":{"username":"kgashok","browniePoints":318,"bio":"Emperor, coffee enthusiast. "}}
+
+
 decodePoints : Json.Decoder Int
 decodePoints =
     Json.at [ "about", "browniePoints" ] Json.int
@@ -527,18 +514,3 @@ postSettings =
     , timeout = Nothing
     , withCredentials = False
     }
-
-
--- {"about":{"username":"kgashok","browniePoints":318,"bio":"Emperor, coffee enthusiast. "}}
-{-
-   https://api.myjson.com/bins/4j9e0?pretty=1 - for kgashok
-
-   {
-     "about": {
-       "username": "kgashok",
-       "browniePoints": 174,
-       "bio": ""
-     }
-   }
-
--}
