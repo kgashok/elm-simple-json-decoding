@@ -10604,8 +10604,13 @@ var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
 var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v4.0-beta-4-gdf1cbcd';
+var _user$project$Version$version = 'v4.0-beta-6-g683a1cd';
 
+var _user$project$Ports$popover = _elm_lang$core$Native_Platform.outgoingPort(
+	'popover',
+	function (v) {
+		return v;
+	});
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
 	function (v) {
@@ -10887,6 +10892,7 @@ var _user$project$Update$gUserUrl = F3(
 							'&skip=',
 							_elm_lang$core$Basics$toString(index))))));
 	});
+var _user$project$Update$PopHover = {ctor: 'PopHover'};
 var _user$project$Update$Set15min = function (a) {
 	return {ctor: 'Set15min', _0: a};
 };
@@ -11198,7 +11204,7 @@ var _user$project$Update$update = F2(
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				}
-			default:
+			case 'FetchGitter':
 				var _p12 = model.roomChange;
 				if (_p12 === true) {
 					return {
@@ -11218,6 +11224,12 @@ var _user$project$Update$update = F2(
 						_1: _user$project$Update$refreshGitterIDs(_user$project$Model$gUrl)
 					};
 				}
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: _user$project$Ports$popover(true)
+				};
 		}
 	});
 var _user$project$Update$FetchData = {ctor: 'FetchData'};
@@ -11528,106 +11540,111 @@ var _user$project$View$view = function (model) {
 		{
 			ctor: '::',
 			_0: A2(
-				_elm_lang$html$Html$h2,
-				{ctor: '[]'},
+				_elm_lang$html$Html$button,
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html$text('CamperBot for KGISL Meetups'),
+					_0: _elm_lang$html$Html_Attributes$id('pcontainer'),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('btn btn-primary btn-large'),
+						_1: {
+							ctor: '::',
+							_0: A2(_elm_lang$html$Html_Attributes$attribute, 'data-popover', 'true'),
+							_1: {
+								ctor: '::',
+								_0: A2(_elm_lang$html$Html_Attributes$attribute, 'data-html', 'true'),
+								_1: {
+									ctor: '::',
+									_0: A2(_elm_lang$html$Html_Attributes$attribute, 'data-content', '<a href=\'http://www.wojt.eu\' target=\'blank\' >click me, I\'ll try not to disappear</a>'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onClick(_user$project$Update$PopHover),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('hover here'),
 					_1: {ctor: '[]'}
 				}),
 			_1: {
 				ctor: '::',
-				_0: _user$project$View$footer,
+				_0: A2(
+					_elm_lang$html$Html$h2,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('CamperBot for KGISL Meetups'),
+						_1: {ctor: '[]'}
+					}),
 				_1: {
 					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$hr,
-						{ctor: '[]'},
-						{ctor: '[]'}),
+					_0: _user$project$View$footer,
 					_1: {
 						ctor: '::',
 						_0: A2(
-							_elm_lang$html$Html$input,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$placeholder('Enter a FCC username'),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$html$Html_Events$onInput(_user$project$Update$StoreID),
-									_1: {ctor: '[]'}
-								}
-							},
+							_elm_lang$html$Html$hr,
+							{ctor: '[]'},
 							{ctor: '[]'}),
 						_1: {
 							ctor: '::',
 							_0: A2(
-								_elm_lang$html$Html$button,
+								_elm_lang$html$Html$input,
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html_Events$onClick(_user$project$Update$FetchData),
-									_1: {ctor: '[]'}
+									_0: _elm_lang$html$Html_Attributes$placeholder('Enter a FCC username'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onInput(_user$project$Update$StoreID),
+										_1: {ctor: '[]'}
+									}
 								},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text('Fetch and Add!'),
-									_1: {ctor: '[]'}
-								}),
+								{ctor: '[]'}),
 							_1: {
 								ctor: '::',
 								_0: A2(
-									_elm_lang$html$Html$input,
+									_elm_lang$html$Html$button,
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$placeholder(model.gRoom.name),
-										_1: {
-											ctor: '::',
-											_0: _elm_lang$html$Html_Events$onInput(_user$project$Update$StoreRoom),
-											_1: {ctor: '[]'}
-										}
+										_0: _elm_lang$html$Html_Events$onClick(_user$project$Update$FetchData),
+										_1: {ctor: '[]'}
 									},
-									{ctor: '[]'}),
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Fetch and Add!'),
+										_1: {ctor: '[]'}
+									}),
 								_1: {
 									ctor: '::',
 									_0: A2(
-										_elm_lang$html$Html$button,
+										_elm_lang$html$Html$input,
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html_Events$onClick(_user$project$Update$FetchGitter),
-											_1: {ctor: '[]'}
+											_0: _elm_lang$html$Html_Attributes$placeholder(model.gRoom.name),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Events$onInput(_user$project$Update$StoreRoom),
+												_1: {ctor: '[]'}
+											}
 										},
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html$text('Update from Gitter'),
-											_1: {ctor: '[]'}
-										}),
+										{ctor: '[]'}),
 									_1: {
 										ctor: '::',
 										_0: A2(
-											_elm_lang$html$Html$label,
-											{ctor: '[]'},
+											_elm_lang$html$Html$button,
 											{
 												ctor: '::',
-												_0: A2(
-													_elm_lang$html$Html$input,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$type_('radio'),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$checked(model.min5),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Events$onCheck(_user$project$Update$Set5min),
-																_1: {ctor: '[]'}
-															}
-														}
-													},
-													{ctor: '[]'}),
-												_1: {
-													ctor: '::',
-													_0: _elm_lang$html$Html$text('5 min'),
-													_1: {ctor: '[]'}
-												}
+												_0: _elm_lang$html$Html_Events$onClick(_user$project$Update$FetchGitter),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('Update from Gitter'),
+												_1: {ctor: '[]'}
 											}),
 										_1: {
 											ctor: '::',
@@ -11643,10 +11660,10 @@ var _user$project$View$view = function (model) {
 															_0: _elm_lang$html$Html_Attributes$type_('radio'),
 															_1: {
 																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$checked(model.min15),
+																_0: _elm_lang$html$Html_Attributes$checked(model.min5),
 																_1: {
 																	ctor: '::',
-																	_0: _elm_lang$html$Html_Events$onCheck(_user$project$Update$Set15min),
+																	_0: _elm_lang$html$Html_Events$onCheck(_user$project$Update$Set5min),
 																	_1: {ctor: '[]'}
 																}
 															}
@@ -11654,28 +11671,58 @@ var _user$project$View$view = function (model) {
 														{ctor: '[]'}),
 													_1: {
 														ctor: '::',
-														_0: _elm_lang$html$Html$text('15 min'),
+														_0: _elm_lang$html$Html$text('5 min'),
 														_1: {ctor: '[]'}
 													}
 												}),
 											_1: {
 												ctor: '::',
 												_0: A2(
-													_elm_lang$html$Html$h1,
+													_elm_lang$html$Html$label,
+													{ctor: '[]'},
 													{
 														ctor: '::',
-														_0: _user$project$View$rStyle,
-														_1: {ctor: '[]'}
-													},
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html$text(response),
-														_1: {ctor: '[]'}
+														_0: A2(
+															_elm_lang$html$Html$input,
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$type_('radio'),
+																_1: {
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$checked(model.min15),
+																	_1: {
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Events$onCheck(_user$project$Update$Set15min),
+																		_1: {ctor: '[]'}
+																	}
+																}
+															},
+															{ctor: '[]'}),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html$text('15 min'),
+															_1: {ctor: '[]'}
+														}
 													}),
 												_1: {
 													ctor: '::',
-													_0: A3(_user$project$View$campList, true, model.ts, model.tList),
-													_1: {ctor: '[]'}
+													_0: A2(
+														_elm_lang$html$Html$h1,
+														{
+															ctor: '::',
+															_0: _user$project$View$rStyle,
+															_1: {ctor: '[]'}
+														},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text(response),
+															_1: {ctor: '[]'}
+														}),
+													_1: {
+														ctor: '::',
+														_0: A3(_user$project$View$campList, true, model.ts, model.tList),
+														_1: {ctor: '[]'}
+													}
 												}
 											}
 										}
