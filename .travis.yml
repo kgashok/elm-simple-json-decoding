@@ -1,10 +1,16 @@
 language: haskell
 install:
   - npm install -g elm
+  - npm install -g elm-test
+  - npm install -g elm-verify-examples
   - elm-package install -y
 before_script: 
-  - elm-make --yes --output test.js test/Tests.elm
-script: node test.js
+# - elm-make --yes --output test.js test/Tests.elm
+  - elm test init
+#script: node test.js
+script: 
+  - elm-verify-examples
+  - elm test
 
 # whitelist
 branches: 

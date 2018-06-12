@@ -10477,114 +10477,10 @@ var _user$project$Model$excluded = {
 		_1: {ctor: '[]'}
 	}
 };
-var _user$project$Model$cutOff = _elm_lang$core$Time$inHours(2592000000);
-var _user$project$Model$flippedComparison = F2(
-	function (a, b) {
-		var bhist = A2(
-			_elm_lang$core$List$map,
-			function (_) {
-				return _.points;
-			},
-			b.chist);
-		var deltaB = A2(
-			_elm_lang$core$Maybe$withDefault,
-			0,
-			_elm_lang$core$List$maximum(bhist)) - A2(
-			_elm_lang$core$Maybe$withDefault,
-			0,
-			_elm_lang$core$List$minimum(bhist));
-		var ahist = A2(
-			_elm_lang$core$List$map,
-			function (_) {
-				return _.points;
-			},
-			a.chist);
-		var deltaA = A2(
-			_elm_lang$core$Maybe$withDefault,
-			0,
-			_elm_lang$core$List$maximum(ahist)) - A2(
-			_elm_lang$core$Maybe$withDefault,
-			0,
-			_elm_lang$core$List$minimum(ahist));
-		var _p0 = A2(_elm_lang$core$Basics$compare, deltaA, deltaB);
-		switch (_p0.ctor) {
-			case 'GT':
-				return _elm_lang$core$Basics$LT;
-			case 'EQ':
-				return _elm_lang$core$Basics$EQ;
-			default:
-				return _elm_lang$core$Basics$GT;
-		}
-	});
-var _user$project$Model$isWithinCutOff = F3(
-	function (now, cutOff, data) {
-		var _p1 = _elm_lang$core$Native_Utils.cmp(data.ts, now - cutOff) > -1;
-		if (_p1 === true) {
-			return _elm_lang$core$Maybe$Just(data);
-		} else {
-			return _elm_lang$core$Maybe$Nothing;
-		}
-	});
-var _user$project$Model$truncateHistory = F3(
-	function (now, cutOff, camper) {
-		return _elm_lang$core$Native_Utils.update(
-			camper,
-			{
-				chist: A2(
-					_elm_lang$core$List$filterMap,
-					A2(_user$project$Model$isWithinCutOff, now, cutOff),
-					camper.chist)
-			});
-	});
-var _user$project$Model$flippedComparison2 = F2(
-	function (a, b) {
-		var _p2 = A2(_elm_lang$core$Basics$compare, a.last.ts, b.last.ts);
-		switch (_p2.ctor) {
-			case 'GT':
-				return _elm_lang$core$Basics$LT;
-			case 'EQ':
-				return _elm_lang$core$Basics$EQ;
-			default:
-				return _elm_lang$core$Basics$GT;
-		}
-	});
-var _user$project$Model$flippedComparison3 = F2(
-	function (a, b) {
-		var _p3 = A2(_elm_lang$core$Basics$compare, a.last.points, b.last.points);
-		switch (_p3.ctor) {
-			case 'GT':
-				return _elm_lang$core$Basics$LT;
-			case 'EQ':
-				return _elm_lang$core$Basics$EQ;
-			default:
-				return _elm_lang$core$Basics$GT;
-		}
-	});
-var _user$project$Model$sortBasedOnHistory = F3(
-	function (now, cutOff, campers) {
-		return A2(
-			_elm_lang$core$List$sortWith,
-			_user$project$Model$flippedComparison2,
-			A2(
-				_elm_lang$core$List$sortWith,
-				_user$project$Model$flippedComparison,
-				A2(_elm_lang$core$List$sortWith, _user$project$Model$flippedComparison3, campers)));
-	});
-var _user$project$Model$skipList = function (userCount) {
-	return A2(
-		_elm_lang$core$List$map,
-		function (x) {
-			return x * 30;
-		},
-		A2(
-			_elm_lang$core$List$range,
-			0,
-			_elm_lang$core$Basics$round(
-				_elm_lang$core$Basics$toFloat(userCount) / 30)));
-};
+var _user$project$Model$cutOff30Days = 2592000000 * 3;
 var _user$project$Model$pointsData = F3(
-	function (p, time, prev) {
-		return {points: p, ts: time, delta: p - prev};
+	function (currentPoints, time, prevPoints) {
+		return {points: currentPoints, ts: time, delta: currentPoints - prevPoints};
 	});
 var _user$project$Model$createCamperFromGid = F2(
 	function (tList, gid) {
@@ -10598,8 +10494,8 @@ var _user$project$Model$createCamperFromGid = F2(
 			_elm_lang$core$List$member,
 			_elm_lang$core$String$toLower(gid.username),
 			cList);
-		var _p4 = isPresent;
-		if (_p4 === false) {
+		var _p0 = isPresent;
+		if (_p0 === false) {
 			return _elm_lang$core$Maybe$Just(
 				{
 					uname: _elm_lang$core$String$toLower(gid.username),
@@ -10623,43 +10519,16 @@ var _user$project$Model$createCamper = F2(
 			last: data
 		};
 	});
-var _user$project$Model$difference = F2(
-	function (current, previous) {
-		var _p5 = current - previous;
-		if (_p5 === 0) {
-			return '';
-		} else {
-			return A2(
-				_elm_lang$core$Basics_ops['++'],
-				'(',
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					_elm_lang$core$Basics$toString(current - previous),
-					')'));
-		}
-	});
-var _user$project$Model$gUserUrl = F3(
-	function (roomID, key, index) {
-		return A2(
-			_elm_lang$core$Basics_ops['++'],
-			'https://api.gitter.im/v1/rooms/',
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				roomID,
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					'/users?access_token=',
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						key,
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							'&skip=',
-							_elm_lang$core$Basics$toString(index))))));
-	});
 var _user$project$Model$gitterKey = 'ae28f23f134c4364ad45e7b7355cfa91c92038bb';
 var _user$project$Model$gUrl = A2(_elm_lang$core$Basics_ops['++'], 'https://api.gitter.im/v1/rooms?access_token=', _user$project$Model$gitterKey);
-var _user$project$Model$fccAPI = 'https://cors-anywhere.herokuapp.com/https://www.freecodecamp.org/api/users/about?username=';
+var _user$project$Model$testGitterUserUrl = F3(
+	function (roomdID, key, index) {
+		return 'https://api.myjson.com/bins/42vt0';
+	});
+var _user$project$Model$testGitterUrl = 'https://api.myjson.com/bins/nel8';
+var _user$project$Model$testUrl2 = 'https://api.myjson.com/bins/2kjv4';
+var _user$project$Model$testUrl1 = 'https://api.myjson.com/bins/3fueo';
+var _user$project$Model$fccAPI = 'https://www.freecodecamp.org/api/users/about?username=';
 var _user$project$Model$initialModel = {
 	url: _user$project$Model$fccAPI,
 	name: '',
@@ -10678,8 +10547,6 @@ var _user$project$Model$initialModel = {
 	min15: true,
 	exclude: _user$project$Model$excluded
 };
-var _user$project$Model$url2 = 'https://api.myjson.com/bins/2kjv4';
-var _user$project$Model$url1 = 'https://api.myjson.com/bins/3fueo';
 var _user$project$Model$GRoom = F3(
 	function (a, b, c) {
 		return {id: a, name: b, userCount: c};
@@ -10737,8 +10604,13 @@ var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
 var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v3.0-beta-145-g29ffd20';
+var _user$project$Version$version = 'v4.0-beta-11-ge116c88';
 
+var _user$project$Ports$popover = _elm_lang$core$Native_Platform.outgoingPort(
+	'popover',
+	function (v) {
+		return v;
+	});
 var _user$project$Ports$modelChange = _elm_lang$core$Native_Platform.outgoingPort(
 	'modelChange',
 	function (v) {
@@ -10796,10 +10668,10 @@ var _user$project$Ports$logExternal = function (value) {
 
 var _user$project$Update$downloadHeaders = {
 	ctor: '::',
-	_0: A2(_elm_lang$http$Http$header, 'Access-Control-Allow-Headers', 'X-Requested-With'),
+	_0: A2(_elm_lang$http$Http$header, 'Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT'),
 	_1: {
 		ctor: '::',
-		_0: A2(_elm_lang$http$Http$header, 'Access-Control-Allow-Origin', '*'),
+		_0: A2(_elm_lang$http$Http$header, 'Access-Control-Allow-Headers', 'Origin,  X-Requested-With, Content-Type'),
 		_1: {ctor: '[]'}
 	}
 };
@@ -10989,6 +10861,38 @@ var _user$project$Update$decodeIDData = A2(
 	_elm_lang$core$Json_Decode$at,
 	{ctor: '[]'},
 	_elm_lang$core$Json_Decode$list(_user$project$Update$nestedListGID));
+var _user$project$Update$skipList = function (userCount) {
+	return A2(
+		_elm_lang$core$List$map,
+		function (x) {
+			return x * 30;
+		},
+		A2(
+			_elm_lang$core$List$range,
+			0,
+			_elm_lang$core$Basics$round(
+				_elm_lang$core$Basics$toFloat(userCount) / 30)));
+};
+var _user$project$Update$gUserUrl = F3(
+	function (roomID, key, index) {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			'https://api.gitter.im/v1/rooms/',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				roomID,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'/users?access_token=',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						key,
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'&skip=',
+							_elm_lang$core$Basics$toString(index))))));
+	});
+var _user$project$Update$PopHover = {ctor: 'PopHover'};
 var _user$project$Update$Set15min = function (a) {
 	return {ctor: 'Set15min', _0: a};
 };
@@ -10998,17 +10902,22 @@ var _user$project$Update$Set5min = function (a) {
 var _user$project$Update$GitterIDStatus = function (a) {
 	return {ctor: 'GitterIDStatus', _0: a};
 };
-var _user$project$Update$gitterIDRequest = F2(
-	function (groom, skip) {
+var _user$project$Update$gitterIDBatchRequest = function (groom) {
+	var gitterIDRequest = function (url) {
 		return A2(
 			_elm_lang$core$Task$attempt,
 			_user$project$Update$GitterIDStatus,
 			_elm_lang$http$Http$toTask(
-				A2(
-					_elm_lang$http$Http$get,
-					A3(_user$project$Model$gUserUrl, groom.id, _user$project$Model$gitterKey, skip),
-					_user$project$Update$decodeIDData)));
-	});
+				A2(_elm_lang$http$Http$get, url, _user$project$Update$decodeIDData)));
+	};
+	return A2(
+		_elm_lang$core$List$map,
+		gitterIDRequest,
+		A2(
+			_elm_lang$core$List$map,
+			A2(_user$project$Update$gUserUrl, groom.id, _user$project$Model$gitterKey),
+			_user$project$Update$skipList(groom.userCount)));
+};
 var _user$project$Update$FetchGitter = {ctor: 'FetchGitter'};
 var _user$project$Update$GitterStatus = function (a) {
 	return {ctor: 'GitterStatus', _0: a};
@@ -11029,15 +10938,20 @@ var _user$project$Update$StoreRoom = function (a) {
 var _user$project$Update$StoreID = function (a) {
 	return {ctor: 'StoreID', _0: a};
 };
-var _user$project$Update$UpdateSucceed = function (a) {
-	return {ctor: 'UpdateSucceed', _0: a};
-};
+var _user$project$Update$UpdateSucceed = F2(
+	function (a, b) {
+		return {ctor: 'UpdateSucceed', _0: a, _1: b};
+	});
 var _user$project$Update$tickRequest = F2(
 	function (url, name) {
 		return A2(
 			_elm_lang$core$Task$attempt,
-			_user$project$Update$UpdateSucceed,
-			A2(_user$project$Update$getUserData, url, name));
+			_user$project$Update$UpdateSucceed(name),
+			_elm_lang$http$Http$toTask(
+				A2(
+					_elm_lang$http$Http$get,
+					A2(_elm_lang$core$Basics_ops['++'], url, name),
+					_user$project$Update$decodeData)));
 	});
 var _user$project$Update$FetchAll = function (a) {
 	return {ctor: 'FetchAll', _0: a};
@@ -11068,7 +10982,7 @@ var _user$project$Update$update = F2(
 				return {
 					ctor: '_Tuple2',
 					_0: model_,
-					_1: A2(_user$project$Update$getData, model_.url, model_.uname)
+					_1: A2(_user$project$Update$getData, _user$project$Model$fccAPI, model_.uname)
 				};
 			case 'FetchOne':
 				if (_p5._0.ctor === 'Ok') {
@@ -11085,7 +10999,7 @@ var _user$project$Update$update = F2(
 						_1: _elm_lang$core$Platform_Cmd$batch(
 							A2(
 								_elm_lang$core$List$map,
-								_user$project$Update$tickRequest(model_.url),
+								_user$project$Update$tickRequest(_user$project$Model$fccAPI),
 								clist))
 					};
 				} else {
@@ -11093,12 +11007,7 @@ var _user$project$Update$update = F2(
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
-							{
-								error: true,
-								points: -1,
-								uname: '',
-								message: _elm_lang$core$Basics$toString(_p5._0._0)
-							}),
+							{error: true, points: -1, uname: '', message: 'User does not exist? '}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				}
@@ -11117,7 +11026,7 @@ var _user$project$Update$update = F2(
 						_1: _elm_lang$core$Platform_Cmd$batch(
 							A2(
 								_elm_lang$core$List$map,
-								_user$project$Update$tickRequest(model_.url),
+								_user$project$Update$tickRequest(_user$project$Model$fccAPI),
 								clist))
 					};
 				} else {
@@ -11125,12 +11034,7 @@ var _user$project$Update$update = F2(
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
-							{
-								error: true,
-								points: -1,
-								uname: '',
-								message: _elm_lang$core$Basics$toString(_p5._0._0)
-							}),
+							{error: true, points: -1, uname: '', message: 'User does not exist?'}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				}
@@ -11154,10 +11058,7 @@ var _user$project$Update$update = F2(
 								model,
 								{gRoom: _p7}),
 							_1: _elm_lang$core$Platform_Cmd$batch(
-								A2(
-									_elm_lang$core$List$map,
-									_user$project$Update$gitterIDRequest(_p7),
-									_user$project$Model$skipList(_p7.userCount)))
+								_user$project$Update$gitterIDBatchRequest(_p7))
 						};
 					}
 				} else {
@@ -11172,7 +11073,8 @@ var _user$project$Update$update = F2(
 					var model_ = _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							tList: A2(_elm_lang$core$Basics_ops['++'], model.tList, camperList)
+							tList: A2(_elm_lang$core$Basics_ops['++'], model.tList, camperList),
+							exclude: _user$project$Model$excluded
 						});
 					var cList = A2(
 						_elm_lang$core$List$map,
@@ -11186,7 +11088,7 @@ var _user$project$Update$update = F2(
 						_1: _elm_lang$core$Platform_Cmd$batch(
 							A2(
 								_elm_lang$core$List$map,
-								_user$project$Update$tickRequest(model.url),
+								_user$project$Update$tickRequest(_user$project$Model$fccAPI),
 								cList))
 					};
 				} else {
@@ -11224,18 +11126,23 @@ var _user$project$Update$update = F2(
 					model,
 					{ts: _p5._0, uname: model.name, tPoints_prev: model.tPoints});
 				var cList = A2(
-					_elm_lang$core$List$map,
-					function (_) {
-						return _.uname;
+					_elm_lang$core$List$filter,
+					function (x) {
+						return !A2(_elm_lang$core$List$member, x, model.exclude);
 					},
-					model_.tList);
+					A2(
+						_elm_lang$core$List$map,
+						function (_) {
+							return _.uname;
+						},
+						model_.tList));
 				return {
 					ctor: '_Tuple2',
 					_0: model_,
 					_1: _elm_lang$core$Platform_Cmd$batch(
 						A2(
 							_elm_lang$core$List$map,
-							_user$project$Update$tickRequest(model_.url),
+							_user$project$Update$tickRequest(_user$project$Model$fccAPI),
 							cList))
 				};
 			case 'Set5min':
@@ -11257,11 +11164,11 @@ var _user$project$Update$update = F2(
 					_1: _user$project$Ports$modelChange(model_)
 				};
 			case 'UpdateSucceed':
-				if (_p5._0.ctor === 'Ok') {
+				if (_p5._1.ctor === 'Ok') {
 					var model_ = _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							tList: A2(_user$project$Update$updateCHistory, model, _p5._0._0),
+							tList: A2(_user$project$Update$updateCHistory, model, _p5._1._0),
 							tPoints: _user$project$Update$calculateTotal(model.tList),
 							message: ''
 						});
@@ -11271,6 +11178,8 @@ var _user$project$Update$update = F2(
 						_1: _user$project$Ports$modelChange(model_)
 					};
 				} else {
+					var _p11 = _p5._0;
+					var _p9 = A2(_elm_lang$core$Debug$log, 'Error retrieving for id: ', _p11);
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
@@ -11279,14 +11188,25 @@ var _user$project$Update$update = F2(
 								error: true,
 								points: -1,
 								uname: '',
-								message: _elm_lang$core$Basics$toString(_p5._0._0)
+								message: A2(
+									_elm_lang$core$Basics_ops['++'],
+									'User ',
+									A2(_elm_lang$core$Basics_ops['++'], _p11, ' does not exist?')),
+								exclude: function () {
+									var _p10 = A2(_elm_lang$core$List$member, _p11, model.exclude);
+									if (_p10 === true) {
+										return model.exclude;
+									} else {
+										return {ctor: '::', _0: _p11, _1: model.exclude};
+									}
+								}()
 							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				}
-			default:
-				var _p9 = model.roomChange;
-				if (_p9 === true) {
+			case 'FetchGitter':
+				var _p12 = model.roomChange;
+				if (_p12 === true) {
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
@@ -11304,10 +11224,161 @@ var _user$project$Update$update = F2(
 						_1: _user$project$Update$refreshGitterIDs(_user$project$Model$gUrl)
 					};
 				}
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: _user$project$Ports$popover(true)
+				};
 		}
 	});
 var _user$project$Update$FetchData = {ctor: 'FetchData'};
 
+var _user$project$View$flippedComparison2 = F2(
+	function (a, b) {
+		var _p0 = A2(_elm_lang$core$Basics$compare, a.last.ts, b.last.ts);
+		switch (_p0.ctor) {
+			case 'GT':
+				return _elm_lang$core$Basics$LT;
+			case 'EQ':
+				return _elm_lang$core$Basics$EQ;
+			default:
+				return _elm_lang$core$Basics$GT;
+		}
+	});
+var _user$project$View$flippedComparison3 = F2(
+	function (a, b) {
+		var _p1 = A2(_elm_lang$core$Basics$compare, a.last.points, b.last.points);
+		switch (_p1.ctor) {
+			case 'GT':
+				return _elm_lang$core$Basics$LT;
+			case 'EQ':
+				return _elm_lang$core$Basics$EQ;
+			default:
+				return _elm_lang$core$Basics$GT;
+		}
+	});
+var _user$project$View$isWithinCutOff = F3(
+	function (now, cutOff, data) {
+		var _p2 = _elm_lang$core$Native_Utils.cmp(data.ts, now - cutOff) > -1;
+		if (_p2 === true) {
+			return _elm_lang$core$Maybe$Just(data.delta);
+		} else {
+			return _elm_lang$core$Maybe$Nothing;
+		}
+	});
+var _user$project$View$flippedComparison = F4(
+	function (now, cutOff, a, b) {
+		var bdelta = _elm_lang$core$List$sum(
+			A2(
+				_elm_lang$core$List$filterMap,
+				A2(_user$project$View$isWithinCutOff, now, cutOff),
+				b.chist));
+		var adelta = _elm_lang$core$List$sum(
+			A2(
+				_elm_lang$core$List$filterMap,
+				A2(_user$project$View$isWithinCutOff, now, cutOff),
+				a.chist));
+		var _p3 = A2(
+			_elm_lang$core$Basics$compare,
+			{ctor: '_Tuple3', _0: b.last.ts, _1: bdelta, _2: b.last.points},
+			{ctor: '_Tuple3', _0: a.last.ts, _1: adelta, _2: a.last.points});
+		switch (_p3.ctor) {
+			case 'GT':
+				return _elm_lang$core$Basics$GT;
+			case 'EQ':
+				return _elm_lang$core$Basics$EQ;
+			default:
+				return _elm_lang$core$Basics$LT;
+		}
+	});
+var _user$project$View$sortBasedOnHistory2 = F3(
+	function (now, cutOff, campers) {
+		return A2(
+			_elm_lang$core$List$sortWith,
+			A2(_user$project$View$flippedComparison, now, cutOff),
+			A2(_elm_lang$core$List$sortWith, _user$project$View$flippedComparison2, campers));
+	});
+var _user$project$View$sortBasedOnHistory = F3(
+	function (now, cutOff, campers) {
+		return A2(
+			_elm_lang$core$List$sortWith,
+			A2(_user$project$View$flippedComparison, now, cutOff),
+			campers);
+	});
+var _user$project$View$difference = F2(
+	function (current, previous) {
+		var _p4 = current - previous;
+		if (_p4 === 0) {
+			return '';
+		} else {
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				'(',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(current - previous),
+					')'));
+		}
+	});
+var _user$project$View$buildResponse = function (model) {
+	var cutOffYear = _elm_lang$core$Date$year(
+		_elm_lang$core$Date$fromTime(model.ts - _user$project$Model$cutOff30Days));
+	var cutOffMonth = _elm_lang$core$Date$month(
+		_elm_lang$core$Date$fromTime(model.ts - _user$project$Model$cutOff30Days));
+	var cutOffString = A2(
+		_elm_lang$core$Basics_ops['++'],
+		'(since ',
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(cutOffMonth),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				' ',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(cutOffYear),
+					'): '))));
+	var now = _elm_lang$core$Date$fromTime(model.ts);
+	var shour = A2(
+		_ggb$numeral_elm$Numeral$format,
+		'00',
+		_elm_lang$core$Basics$toFloat(
+			_elm_lang$core$Date$hour(now)));
+	var smin = A2(
+		_ggb$numeral_elm$Numeral$format,
+		'00',
+		_elm_lang$core$Basics$toFloat(
+			_elm_lang$core$Date$minute(now)));
+	var dateString = _mgold$elm_date_format$Date_Format$formatISO8601(now);
+	return (!_elm_lang$core$Native_Utils.eq(model.tPoints, -1)) ? A2(
+		_elm_lang$core$Basics_ops['++'],
+		'Challenges completed ',
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			cutOffString,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Basics$toString(model.tPoints),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					A2(_user$project$View$difference, model.tPoints, model.tPoints_prev),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						' by ',
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$Basics$toString(
+								_elm_lang$core$List$length(model.tList)),
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								' campers (excluded ',
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									_elm_lang$core$Basics$toString(
+										_elm_lang$core$List$length(model.exclude)),
+									A2(_elm_lang$core$Basics_ops['++'], '); last auto update @ ', dateString))))))))) : '';
+};
 var _user$project$View$footer = A2(
 	_elm_lang$html$Html$div,
 	{
@@ -11342,27 +11413,27 @@ var _user$project$View$footer = A2(
 	});
 var _user$project$View$formatData = F2(
 	function (prevEntry, cdata) {
-		var _p0 = prevEntry;
-		if (_p0.ctor === 'Nothing') {
+		var _p5 = prevEntry;
+		if (_p5.ctor === 'Nothing') {
 			return _elm_lang$core$Basics$toString(cdata.points);
 		} else {
-			var timeLapsed = _elm_lang$core$Time$inHours(cdata.ts - _p0._0.ts);
-			var _p1 = {
+			var timeLapsed = _elm_lang$core$Time$inHours(cdata.ts - _p5._0.ts);
+			var _p6 = {
 				ctor: '_Tuple2',
 				_0: cdata.ts,
 				_1: (!_elm_lang$core$Native_Utils.eq(timeLapsed, 0)) && (_elm_lang$core$Native_Utils.cmp(timeLapsed, -720) > -1)
 			};
-			_v1_0:
+			_v6_0:
 			do {
-				if (_p1._1 === false) {
-					if (_p1._0 === 0) {
-						break _v1_0;
+				if (_p6._1 === false) {
+					if (_p6._0 === 0) {
+						break _v6_0;
 					} else {
 						return _elm_lang$core$Basics$toString(cdata.points);
 					}
 				} else {
-					if (_p1._0 === 0) {
-						break _v1_0;
+					if (_p6._0 === 0) {
+						break _v6_0;
 					} else {
 						return A2(
 							_elm_lang$core$Basics_ops['++'],
@@ -11427,7 +11498,7 @@ var _user$project$View$camperItem = function (camper) {
 };
 var _user$project$View$campList = F3(
 	function (display, now, campers) {
-		var campers_ = A3(_user$project$Model$sortBasedOnHistory, now, _user$project$Model$cutOff, campers);
+		var campers_ = A3(_user$project$View$sortBasedOnHistory, now, _user$project$Model$cutOff30Days, campers);
 		var items = A2(_elm_lang$core$List$map, _user$project$View$camperItem, campers_);
 		return A2(
 			_elm_lang$html$Html$div,
@@ -11455,40 +11526,6 @@ var _user$project$View$rStyle = _elm_lang$html$Html_Attributes$style(
 			}
 		}
 	});
-var _user$project$View$buildResponse = function (model) {
-	var now = _elm_lang$core$Date$fromTime(model.ts);
-	var shour = A2(
-		_ggb$numeral_elm$Numeral$format,
-		'00',
-		_elm_lang$core$Basics$toFloat(
-			_elm_lang$core$Date$hour(now)));
-	var smin = A2(
-		_ggb$numeral_elm$Numeral$format,
-		'00',
-		_elm_lang$core$Basics$toFloat(
-			_elm_lang$core$Date$minute(now)));
-	var dateString = _mgold$elm_date_format$Date_Format$formatISO8601(now);
-	return (!_elm_lang$core$Native_Utils.eq(model.tPoints, -1)) ? A2(
-		_elm_lang$core$Basics_ops['++'],
-		'Challenges completed: ',
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			_elm_lang$core$Basics$toString(model.tPoints),
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				A2(_user$project$Model$difference, model.tPoints, model.tPoints_prev),
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					' by ',
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						_elm_lang$core$Basics$toString(
-							_elm_lang$core$List$length(model.tList)),
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							' campers; ',
-							A2(_elm_lang$core$Basics_ops['++'], 'last auto update @ ', dateString))))))) : '';
-};
 var _user$project$View$view = function (model) {
 	var clist = A2(
 		_elm_lang$core$List$map,
@@ -11691,12 +11728,8 @@ var _user$project$Fcc$update = F2(
 			_1: _elm_lang$core$Platform_Cmd$batch(
 				{
 					ctor: '::',
-					_0: _user$project$Ports$logExternal(msg),
-					_1: {
-						ctor: '::',
-						_0: nextCmd,
-						_1: {ctor: '[]'}
-					}
+					_0: nextCmd,
+					_1: {ctor: '[]'}
 				})
 		};
 	});
