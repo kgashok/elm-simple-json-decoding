@@ -18,7 +18,7 @@ fccAPI = "https://comfortable-fibre.glitch.me/"
 --fccAPI = "https://cors.now.sh/http://www.freecodecamp.org/api/users/about?username="
 
 gitterKey : String
-gitterKey = "ae28f23f134c4364ad45e7b7355cfa91c92038bb"
+gitterKey = "c48435238febe383667fff89e9c73990a5ec4bb0"
 
 gUrl : String
 gUrl = "https://api.gitter.im/v1/rooms?access_token=" ++ gitterKey
