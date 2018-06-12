@@ -10604,7 +10604,7 @@ var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
 var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v4.0-beta-15-g4fb0bb6';
+var _user$project$Version$version = 'v4.0-beta-19-g5150f54';
 
 var _user$project$Ports$popover = _elm_lang$core$Native_Platform.outgoingPort(
 	'popover',
