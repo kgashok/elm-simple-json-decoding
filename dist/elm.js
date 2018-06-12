@@ -10519,7 +10519,7 @@ var _user$project$Model$createCamper = F2(
 			last: data
 		};
 	});
-var _user$project$Model$gitterKey = 'ae28f23f134c4364ad45e7b7355cfa91c92038bb';
+var _user$project$Model$gitterKey = 'c48435238febe383667fff89e9c73990a5ec4bb0';
 var _user$project$Model$gUrl = A2(_elm_lang$core$Basics_ops['++'], 'https://api.gitter.im/v1/rooms?access_token=', _user$project$Model$gitterKey);
 var _user$project$Model$testGitterUserUrl = F3(
 	function (roomdID, key, index) {
