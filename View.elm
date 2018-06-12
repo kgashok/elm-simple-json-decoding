@@ -16,6 +16,7 @@ import String
 -- VIEW
 
 
+
 view : Model -> Html Msg
 view model =
     let
@@ -27,6 +28,13 @@ view model =
     in
         div []
             [ h2 [] [ text "CamperBot for KGISL Meetups" ]
+            {- , button [ id "pcontainer" 
+                     , class "btn btn-primary btn-large"
+                     , attribute "data-popover" "true"
+                     , attribute "data-html" "true"
+                     , attribute "data-content" "<a href='http://www.wojt.eu' target='blank' >click me, I\'ll try not to disappear</a>"
+                     , onClick PopHover
+                     ] [text "hover here"] -}
             , footer
             , hr [] []
 
@@ -141,31 +149,6 @@ campList display now campers =
             ]
 
 
-
-{--
-updateSettings: Model -> Html Msg
-updateSettings model =
-  div []
-    [ span [] [text "Hello, how are you?!"]
-    , radio Red "red" model
-    , radio Underline "underline" model
-    , radio Bold "bold" model
-    ]
-
-
-radio : Style -> String -> Model -> Html Msg
-radio style name model =
-  let
-    isSelected =
-      model.style == style
-  in
-    label []
-      [ br [] []
-      , input [ type' "radio", checked isSelected, onCheck (\_ -> Switch style) ] []
-      , text name
-      ]
-
---}
 
 
 footer : Html Msg
@@ -364,3 +347,30 @@ flippedComparison2 a b =
    _ = Debug.log "deltaA " deltaA
    _ = Debug.log "deltaB " deltaB
 -}
+
+
+
+{--
+updateSettings: Model -> Html Msg
+updateSettings model =
+  div []
+    [ span [] [text "Hello, how are you?!"]
+    , radio Red "red" model
+    , radio Underline "underline" model
+    , radio Bold "bold" model
+    ]
+
+
+radio : Style -> String -> Model -> Html Msg
+radio style name model =
+  let
+    isSelected =
+      model.style == style
+  in
+    label []
+      [ br [] []
+      , input [ type' "radio", checked isSelected, onCheck (\_ -> Switch style) ] []
+      , text name
+      ]
+
+--}

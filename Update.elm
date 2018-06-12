@@ -31,6 +31,7 @@ type Msg
     | GitterIDStatus (Result Http.Error (List Gid))
     | Set5min Bool
     | Set15min Bool
+    | PopHover 
 
 
 
@@ -222,6 +223,8 @@ update action model =
                 False ->
                     ( model, refreshGitterIDs gUrl )
 
+        PopHover -> 
+            (model, Ports.popover True)
 
 
 -- HTTP

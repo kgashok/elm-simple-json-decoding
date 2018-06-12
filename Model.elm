@@ -16,9 +16,6 @@ fccAPI : String
 fccAPI =
     "https://www.freecodecamp.org/api/users/about?username="
 
-gitterKey : String
-gitterKey = "c48435238febe383667fff89e9c73990a5ec4bb0"
-=======
 
 {-| mock test URL to get brownie points information for user
 -- points value is a string equivalent of the integer value
@@ -50,7 +47,7 @@ testGitterUserUrl roomdID key index =
 
 gitterKey : String
 gitterKey =
-    "ae28f23f134c4364ad45e7b7355cfa91c92038bb"
+    "bad0cafba005887e3e7e97dd5a640030f0c7e1b8"
 
 
 gUrl : String

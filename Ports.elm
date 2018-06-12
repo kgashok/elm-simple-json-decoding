@@ -6,6 +6,8 @@ import Model exposing (Model)
 -- modelChange
 -- Log a stripped version of the model
 
+port popover : Bool -> Cmd msg 
+
 
 port modelChange : Model -> Cmd msg
 

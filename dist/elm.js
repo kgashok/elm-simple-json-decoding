@@ -10519,7 +10519,7 @@ var _user$project$Model$createCamper = F2(
 			last: data
 		};
 	});
-var _user$project$Model$gitterKey = 'ae28f23f134c4364ad45e7b7355cfa91c92038bb';
+var _user$project$Model$gitterKey = 'bad0cafba005887e3e7e97dd5a640030f0c7e1b8';
 var _user$project$Model$gUrl = A2(_elm_lang$core$Basics_ops['++'], 'https://api.gitter.im/v1/rooms?access_token=', _user$project$Model$gitterKey);
 var _user$project$Model$testGitterUserUrl = F3(
 	function (roomdID, key, index) {
@@ -10604,7 +10604,7 @@ var _user$project$Model$SetMin15 = {ctor: 'SetMin15'};
 var _user$project$Model$SetMin5 = {ctor: 'SetMin5'};
 
 var _user$project$Version$gitRepo = 'https://github.com/kgashok/elm-simple-json-decoding';
-var _user$project$Version$version = 'v4.0-beta-11-ge116c88';
+var _user$project$Version$version = 'v4.0-beta-15-g4fb0bb6';
 
 var _user$project$Ports$popover = _elm_lang$core$Native_Platform.outgoingPort(
 	'popover',
